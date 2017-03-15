@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href='/static/style.css' />
+    <title>Organisation des fichiers osmc</title>
+                                                                                                                                                                                                              
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type=text/javascript>
+      $(document).ready( function()                                                                                                                                                                           
+      {                                                                                                                                                                                                       
+        $('#fileTreeDemo_1').fileTree({ root: '/home/osmc/', script: 'jqueryFileTree.py', folderEvent: 'click', expandSpeed: 750, collapseSpeed: 750, multiFolder: false, expandEasing: 'easeOutBounce', collapseEasing: 'easeOutBounce', loadMessage: 'Un momento...'  }, function(file) {                                                                                                                               
+          alert(file);                                                                                                                                                                                        
+        });                                                                                                                                                                                                   
+      });                                                                                                                                                                                                     
+    </script>
+</head>
+<body>
+<form method="post" action="emplacement.py">
+    <p>
+      <label for="repPrinc">emplacement des fichiers    traiter :</label> :
+      <input type="text" name="repPrinc" id="repPrinc" value="/mnt/LOC/USB/DDL_OK/" />
+      <input type="submit" value="Modifier" />
+    </p>
+</form>
+<p>Selectionnez le ou les fichiers puis l'emplacement et enfin cliquez sur le bouton de votre choix</p>
+<form method="post" action="action.py">
+    <p>
+       <div class="example">
+          <h2>Liste Fichiers</h2>
+          <div id="fileTreeDemo_1" class="demo"></div>
+       </div>
+       <br>
+       <div class="example">
+          <h2>repertoire de copie</h2>
+          <div id="fileTreeDemo_2" class="demo"></div>
+       </div>
+    </p>
+    <fieldset> <legend>Choix de l'action :</legend>
+      <p>
+          <input type="radio" name="ChxAction" value="NvDossier" id="NvDossier" />
+          <label for="NvDossier">Cr  er un nouveau dossier</label>
+          <br>
+          <input type="radio" name="ChxAction" value="Deplacer" id="Deplacer" /> <label for="Deplacer">D  placer le ou les fichiers</label>
+          <br>
+          <input type="radio" name="ChxAction" value="Copier" id="Copier" /> <label for="Copier">Copier le ou les fichiers</label>
+          <br>
+          <input type="radio" name="ChxAction" value="Supprimer" id="Supprimer" /> <label for="Supprimer">Supprimer le ou les fichiers</label>
+      </p>
+      <input type="submit" value="Lancer" />
+    </fieldset>
+</form>
+</body>
+</html>
