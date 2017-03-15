@@ -13,7 +13,7 @@
     <script type=text/javascript>
       $(document).ready( function()                                                                                                                                                                           
       {                                                                                                                                                                                                       
-        $('#fileTreeDemo_1').fileTree({ root: '/home/osmc/', script: 'jqueryFileTree.py', folderEvent: 'click', expandSpeed: 750, collapseSpeed: 750, multiFolder: false, expandEasing: 'easeOutBounce', collapseEasing: 'easeOutBounce', loadMessage: 'Un momento...'  }, function(file) {                                                                                                                               
+        $('#fileTreeDemo_1').fileTree({ root: {{ path }}, script: 'jqueryFileTree.py', folderEvent: 'click', expandSpeed: 750, collapseSpeed: 750, multiFolder: false, expandEasing: 'easeOutBounce', collapseEasing: 'easeOutBounce', loadMessage: 'Un momento...'  }, function(file) {                                                                                                                               
           alert(file);                                                                                                                                                                                        
         });                                                                                                                                                                                                   
       });                                                                                                                                                                                                     
@@ -23,7 +23,7 @@
 <form method="post" action="./includes/emplacement.py">
     <p>
       <label for="repPrinc">emplacement des fichiers à traiter :</label> :
-      <input type="text" name="repPrinc" id="repPrinc" value="/mnt/LOC/USB/DDL_OK/" />
+      <input type="text" name="repPrinc" id="repPrinc" value={{ path }} />
       <input type="submit" value="Modifier" />
     </p>
 </form>
