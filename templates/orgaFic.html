@@ -6,6 +6,10 @@
     <title>Organisation des fichiers osmc</title>
                                                                                                                                                                                                               
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="./includes/jquery.js" type="text/javascript"></script>
+    <script src="./includes/jquery_002.js" type="text/javascript"></script>
+    <script src="./includes/jqueryFileTree.js" type="text/javascript"></script>
+    <link href="/static/jqueryFileTree.css" media="screen" rel="stylesheet" type="text/css" />
     <script type=text/javascript>
       $(document).ready( function()                                                                                                                                                                           
       {                                                                                                                                                                                                       
@@ -18,7 +22,7 @@
 <body>
 <form method="post" action="emplacement.py">
     <p>
-      <label for="repPrinc">emplacement des fichiers    traiter :</label> :
+      <label for="repPrinc">emplacement des fichiers à traiter :</label> :
       <input type="text" name="repPrinc" id="repPrinc" value="/mnt/LOC/USB/DDL_OK/" />
       <input type="submit" value="Modifier" />
     </p>
