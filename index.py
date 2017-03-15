@@ -7,13 +7,13 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return render_template('index.html')
-@app.route('/test')
+@app.route('/test/')
 def test():
     return 'Test OK !!!'
 @app.route('/orgaFic/<path>')
 def orgaFic(path):
     return render_template('orgaFic.html',path=path)
-@app.route('/dev')
+@app.route('/dev/')
 def dev():
     return render_template('dev.html')
                                                                                                                                                                                                               
@@ -21,7 +21,7 @@ if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
                                                                                                                                                                                                               
                                                                                                                                                                                                               
-@app.route('/background_process')
+@app.route('/background_process/')
 def background_process():
     try:
          lang = request.args.get('proglang', 0, type=str)
