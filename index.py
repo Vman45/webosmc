@@ -10,9 +10,9 @@ def index():
 @app.route('/test/')
 def test():
     return 'Test OK !!!'
-@app.route('/orgaFic/<path>')
-def orgaFic(path):
-    return render_template('orgaFic.html',path=path)
+@app.route('/orgaFic/<pathFiles>')
+def orgaFic(pathFiles):
+    return render_template('orgaFic.html',pathFiles=pathFiles,path='/')
 @app.route('/dev/')
 def dev():
     return render_template('dev.html')
