@@ -13,9 +13,12 @@
     <script type=text/javascript>
       $(document).ready( function()                                                                                                                                                                           
       {                                                                                                                                                                                                       
-        $('#fileTreeDemo_1').fileTree({ root: {{ path }}, script: 'jqueryPathTree.py', folderEvent: 'click', expandSpeed: 750, collapseSpeed: 750, multiFolder: false, expandEasing: 'easeOutBounce', collapseEasing: 'easeOutBounce', loadMessage: 'Un momento...'  }, function(file) {                                                                                                                               
+        $('#fileTreeDemo_1').fileTree({ root: {{ pathFiles }}, script: 'jqueryFileTree.py', folderEvent: 'click', expandSpeed: 750, collapseSpeed: 750, multiFolder: false, expandEasing: 'easeOutBounce', collapseEasing: 'easeOutBounce', loadMessage: 'Un momento...'  }, function(file) {                                                                                                                               
           alert(file);                                                                                                                                                                                        
-        });                                                                                                                                                                                                   
+        }); 
+        $('#fileTreeDemo_2').fileTree({ root: {{ path }}, script: 'jqueryPathTree.py', folderEvent: 'click', expandSpeed: 750, collapseSpeed: 750, multiFolder: false, expandEasing: 'easeOutBounce', collapseEasing: 'easeOutBounce', loadMessage: 'Un momento...'  }, function(file) {                                                                                                                               
+          alert(file);                                                                                                                                                                                        
+        });      
       });                                                                                                                                                                                                     
     </script>
 </head>
@@ -23,7 +26,7 @@
 <form method="POST" action="index.py">
     <p>
       <label for="repPrinc">emplacement des fichiers à traiter :</label> :
-      <input type="text" name="repPrinc" id="repPrinc" value={{ path }} />
+      <input type="text" name="repPrinc" id="repPrinc" value={{ pathFiles }} />
       <input type="submit" value="Modifier" />
     </p>
 </form>
