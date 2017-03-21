@@ -10,7 +10,7 @@ app.debug = True
 def majWeb():
     import subprocess
     subprocess.call("/home/osmc/scripts/majWeb.sh",shell=True)
-    return render_template('index.html')
+    return 'maj effectuée relancer la page précédente et actualiser'
 @app.route('/')
 def index():
     return render_template('index.html')
