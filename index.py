@@ -10,6 +10,7 @@ app.debug = True
 def majWeb():
     import subprocess
     subprocess.call("/home/osmc/script/majWeb.sh",shell=True)
+    return render_template('index.html')
 @app.route('/')
 def index():
     return render_template('index.html')
