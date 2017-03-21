@@ -5,12 +5,6 @@ from flask import Flask, render_template, jsonify
 app = Flask(__name__)  
 app.debug = True
 
-
-@app.route('/majWeb/')
-def majWeb():
-    import subprocess
-    subprocess.call("/home/osmc/scripts/majWeb.sh",shell=True)
-    return 'maj effectuée relancer la page précédente et actualiser'
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -26,6 +20,12 @@ def dev():
 @app.route('/FolderBuilder/')
 def FolderBuilder():
     return render_template('../FolderBuilder/index.html')
+  
+@app.route('/majWeb/')
+def majWeb():
+    import subprocess
+    subprocess.call('./home/osmc/scripts/majWeb.sh',shell=True)
+    return 'maj effectuée relancer la page précédente et actualiser'
   
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
