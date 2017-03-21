@@ -19,7 +19,7 @@ def dev():
     return render_template('dev.html')
 @app.route('/FolderBuilder/')
 def FolderBuilder():
-    return render_template('../FolderBuilder/index.html')
+    return render_template('/FolderBuilder/index.html')
   
 @app.route('/majWeb/')
 def majWeb():
