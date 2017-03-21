@@ -17,7 +17,10 @@ def orgaFic(pathFiles):
 @app.route('/dev/')
 def dev():
     return render_template('dev.html')
-                                                                                                                                                                                                              
+@app.route('/FolderBuilder/')
+def FolderBuilder():
+    return render_template('../FolderBuilder/index.html')
+  
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
                                                                                                                                                                                                               
