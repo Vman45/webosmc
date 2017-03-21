@@ -2,7 +2,8 @@
 # -*- coding:utf-8 -*- 
                                                                                                                                                                                                               
 from flask import Flask, render_template, jsonify
-app = Flask(__name__)                                                                                                                                                                                         
+app = Flask(__name__)  
+app.debug = True
                                                                                                                                                                                                               
 @app.route('/')
 def index():
