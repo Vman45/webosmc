@@ -4,7 +4,12 @@
 from flask import Flask, render_template, jsonify
 app = Flask(__name__)  
 app.debug = True
-                                                                                                                                                                                                              
+
+
+@app.route('/majWeb/')
+def majWeb():
+    import subprocess
+    subprocess.call("/home/osmc/script/majWeb.sh",shell=True)
 @app.route('/')
 def index():
     return render_template('index.html')
