@@ -34,14 +34,4 @@ def majWeb():
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
                                                                                                                                                                                                               
-                                                                                                                                                                                                              
-@app.route('/background_process/')
-def background_process():
-    try:
-         lang = request.args.get('proglang', 0, type=str)
-         if lang.lower() == 'python':
-            return jsonify(result='You are wise')
-         else:
-            return jsonify(result='Try again.')
-    except Exception as e:
-         return str(e)
+     
