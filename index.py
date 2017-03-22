@@ -23,6 +23,10 @@ def dev():
     url_root=url_root.replace('http://','https://')
     if (url_root.endswith('/') == False) : url_root+='/'
     return render_template('dev.html',path=url_root)
+@app.route('/JD/')
+def JD():
+  return render_template('jDownloader.html',path='https://my.jdownloader.org/?deviceId=f85d6762b1f540de196fa733c649891b#webinterface:downloads')
+  
 @app.route('/FolderBuilder/')
 def FolderBuilder():
     return render_template('/FolderBuilder/index.html')
