@@ -11,7 +11,7 @@ def index():
 @app.route('/test/')
 def test():
     return 'Test OK !!!'
-@app.route('/orgaFic/<pathFiles>')
+@app.route('/orgaFic/<path:pathFiles>')
 def orgaFic(pathFiles):
     return render_template('orgaFic.html',pathFiles=pathFiles,path='/')
 @app.route('/dev/')
