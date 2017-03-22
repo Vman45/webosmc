@@ -17,7 +17,7 @@ def orgaFic(pathFiles):
     return render_template('orgaFic.html',pathFiles=pathFiles,path='/')
 @app.route('/dev/')
 def dev():
-    url_root=request.url_root.lstrip
+    url_root=request.url_root.lstrip()
     ind=url_root.find(':',6)
     if (ind != -1) : url_root = url_root[: ind]
     url_root=url_root.replace('http://','https://')
