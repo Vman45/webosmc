@@ -11,9 +11,7 @@ def index():
     return render_template('index.html')
 @app.route('/test/')
 def test():
-  with app.app_context():
-      # within this block, current_app points to app.
-      return 'Test OK !!!' + current_app.name 
+    return 'Test OK !!!' + request.url_root + '<br>' + request.base_url
 @app.route('/orgaFic/<path:pathFiles>')
 def orgaFic(pathFiles):
     return render_template('orgaFic.html',pathFiles=pathFiles,path='/')
