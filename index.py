@@ -24,7 +24,8 @@ def FolderBuilder():
 @app.route('/majWeb/')
 def majWeb():
     import subprocess
-    subprocess.call('sh /home/osmc/scripts/majWeb.sh',shell=True)
+    #subprocess.call('sh /home/osmc/scripts/majWeb.sh',shell=True)
+    subprocess.call('git --git-dir /home/osmc/webosmc/.git pull', shell=True) 
     return 'maj effectuée relancer la page précédente et actualiser'
   
 if __name__ == '__main__':
