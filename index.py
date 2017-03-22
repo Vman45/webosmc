@@ -1,7 +1,7 @@
 #! /usr/bin/python 
 # -*- coding:utf-8 -*- 
                                                                                                                                                                                                               
-from flask import Flask, flash, render_template, redirect
+from flask import Flask, flash, render_template, redirect, request, url_for
 app = Flask(__name__)  
 app.debug = True
 app.secret_key = 'kugan49'
