@@ -4,6 +4,7 @@
 from flask import Flask, render_template, jsonify
 app = Flask(__name__)  
 app.debug = True
+app.secret_key = 'kugan49'
 
 @app.route('/')
 def index():
