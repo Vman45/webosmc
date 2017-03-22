@@ -1,7 +1,7 @@
 #! /usr/bin/python 
 # -*- coding:utf-8 -*- 
                                                                                                                                                                                                               
-from flask import Flask, render_template, jsonify
+from flask import Flask, flash, render_template, jsonify
 app = Flask(__name__)  
 app.debug = True
 app.secret_key = 'kugan49'
@@ -25,10 +25,9 @@ def FolderBuilder():
 @app.route('/majWeb/')
 def majWeb():
     #import subprocess
-    #subprocess.call('sh /home/osmc/scripts/majWeb.sh',shell=True)
-    #status=subprocess.call('git --commit --git-dir /home/osmc/webosmc/.git pull', shell=True) 
     import os
-    os.system('git --git-dir /home/osmc/webosmc/.git pull --no-edit')
+    #os.system('git --git-dir /home/osmc/webosmc/.git pull --no-edit')
+    os.system('sh /home/osmc/scripts/majWeb.sh')
     flash('OK<br>maj effectuée relancer la page précédente et actualiser')
     return redirect(url_for('index'))
     
