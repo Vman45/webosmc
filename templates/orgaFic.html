@@ -22,6 +22,8 @@
 {% block titre %}Organisation des fichiers osmc{% endblock %}
 
 {% block corps %}
+<h1>{{ self.titre() }}</h1>
+<br><br>
     <form method="POST" action="/index.py">
         <p>
           <label for="repPrinc">emplacement des fichiers à traiter :</label> :
