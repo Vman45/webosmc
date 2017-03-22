@@ -24,7 +24,7 @@ def FolderBuilder():
 @app.route('/majWeb/')
 def majWeb():
     import subprocess
-    subprocess.call('./home/osmc/scripts/majWeb.sh',shell=True)
+    subprocess.call('sh /home/osmc/scripts/majWeb.sh',shell=True)
     return 'maj effectuée relancer la page précédente et actualiser'
   
 if __name__ == '__main__':
