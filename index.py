@@ -11,7 +11,7 @@ def index():
     return render_template('index.html')
 @app.route('/test/')
 def test():
-    return 'Test OK !!!' + request.path
+    return 'Test OK !!!' + flask.current_app
 @app.route('/orgaFic/<path:pathFiles>')
 def orgaFic(pathFiles):
     return render_template('orgaFic.html',pathFiles=pathFiles,path='/')
