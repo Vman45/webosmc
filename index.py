@@ -21,7 +21,6 @@ def dev():
     ind=url_root.find(':',6)
     if (ind != -1) : url_root = url_root[: ind]
     url_root.replace('http://','https://')
-    dump(url_root)
     return render_template('dev.html',path=url_root)
 @app.route('/FolderBuilder/')
 def FolderBuilder():
@@ -33,7 +32,7 @@ def majWeb():
     import os
     #os.system('git --git-dir /home/osmc/webosmc/.git pull --no-edit')
     os.system('sh /home/osmc/scripts/majWeb.sh')
-    flash('OK<br>maj effectuée relancer la page précédente et actualiser')
+    flash('OK<br>maj effectuée !!!!')
     return redirect(url_for('index'))
     
   
