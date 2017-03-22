@@ -17,7 +17,7 @@ def orgaFic(pathFiles):
     return render_template('orgaFic.html',pathFiles=pathFiles,path='/')
 @app.route('/dev/')
 def dev():
-    return render_template('dev.html')
+    return render_template('dev.html',path=request.url_root)
 @app.route('/FolderBuilder/')
 def FolderBuilder():
     return render_template('/FolderBuilder/index.html')
