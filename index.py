@@ -21,7 +21,7 @@ def dev():
     ind=url_root.find(':',6)
     if (ind != -1) : url_root = url_root[: ind]
     url_root.replace('http://','https://')
-    if (url_root.endswith('/' == FALSE) : url_root+='/'
+    if (url_root.endswith('/') == FALSE) : url_root+='/'
     return render_template('dev.html',path=url_root)
 @app.route('/FolderBuilder/')
 def FolderBuilder():
