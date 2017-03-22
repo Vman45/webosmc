@@ -25,7 +25,7 @@ def FolderBuilder():
 def majWeb():
     #import subprocess
     #subprocess.call('sh /home/osmc/scripts/majWeb.sh',shell=True)
-    #status=subprocess.call('git --git-dir /home/osmc/webosmc/.git pull', shell=True) 
+    #status=subprocess.call('git --commit --git-dir /home/osmc/webosmc/.git pull', shell=True) 
     import os
     os.system('git --git-dir /home/osmc/webosmc/.git pull')
     return '<br>OK<br>maj effectuée relancer la page précédente et actualiser'
