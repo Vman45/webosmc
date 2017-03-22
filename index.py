@@ -26,7 +26,7 @@ def majWeb():
     import subprocess
     #subprocess.call('sh /home/osmc/scripts/majWeb.sh',shell=True)
     status=subprocess.call('git --git-dir /home/osmc/webosmc/.git pull', shell=True) 
-    return status + '<br><br>maj effectuée relancer la page précédente et actualiser'
+    return 'retour=' + str(status) + '<br><br>maj effectuée relancer la page précédente et actualiser'
   
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
