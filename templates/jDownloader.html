@@ -1,2 +1,16 @@
+{% extends "squelette.html" %}
 
-https://my.jdownloader.org/?deviceId=f85d6762b1f540de196fa733c649891b#webinterface:downloads
+{% block titre %}Osmc Salon by JGriffon{% endblock %}
+
+{% block corps %}
+<h1>SSH {{ self.titre() }}</h1>
+<div id="bw_websshframe">
+	<iframe src=" {{ path }}" width="800" height="900"></iframe>
+</div>
+{% endblock %}
+
+
+{% block footer %}
+<footer>KuganCorp 2017</footer>
+{% endblock %}
+
