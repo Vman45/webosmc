@@ -13,7 +13,6 @@ def index():
 def test():
   with app.app_context():
       # within this block, current_app points to app.
-      print current_app.name
       return 'Test OK !!!' + current_app.name 
 @app.route('/orgaFic/<path:pathFiles>')
 def orgaFic(pathFiles):
