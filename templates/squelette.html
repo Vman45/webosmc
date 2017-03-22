@@ -1,27 +1,144 @@
-<!DOCTYPE html>
-<html>
-    <head>
-    {% block header %}
-        <meta charset="utf-8" />
-        <link rel="shortcut icon" href="/static/images/favicon.ico"/>
-        <link rel="stylesheet" type="text/css" href="/static/css/webiny/fontello.css">
-        <link rel="stylesheet" type="text/css" href="/static/css/webiny/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="/static/css/webiny/jquery-ui.css">
-        <link rel="stylesheet" type="text/css" href="/static/css/webiny/webiny_style.css">
-        <link rel="stylesheet" type="text/css" href="/static/css/webiny/webiny_general.css">
-        <link rel="stylesheet" type="text/css" href="/static/css/webiny/webiny_elements.css">
-        <link rel="stylesheet" type="text/css" href="/static/css/webiny/webiny_buttons.css">
-        <link rel="stylesheet" type="text/css" href="/static/css/webiny/webiny_inputs.css">
-        <link rel="stylesheet" type="text/css" href="/static/css/webiny/webiny_modal.css">
-        <link rel="stylesheet" type="text/css" href="/static/css/webiny/webiny_tooltip.css">
-        <link rel="stylesheet" type="text/css" href="/static/css/main.css">
-        <link rel="stylesheet" type="text/css" href="/static/css/icons.css">
-        <title>{% block titre %}Titre par défaut{% endblock %}</title>
-    {% endblock %}
-    </head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
 
-    <body>
-        {% block corps %}{% endblock %}        
-        {% block footer %}{% endblock %}
-    </body>
+<head>
+  <title>Osmc Salon</title>
+  <meta name="description" content="Mon site pour gérer mon Raspberry Pi" />
+  <meta name="keywords" content="" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=9" />
+  <link rel="stylesheet" type="text/css" href="./static/css/style.css" />
+  <script type="text/javascript" src="./static/js/jquery.min.js"></script>
+</head>
+
+<body>
+  <div id="main">
+    <div id="header">
+	  <div id="banner">
+	    <div id="welcome">
+        {% block welcome %}<h1>OSMC Salon       by J.Griffon</h1>{% endblock %}
+	    </div><!--close welcome-->
+        <br>
+	    <div id="welcome_slogan">
+	      {% block welcome_slogan %}<h1>Ils ne savaient pas que c'était impossible alors ils l'ont fait</h1>{% endblock %}
+	    </div><!--close welcome_slogan-->
+	  </div><!--close banner-->
+    </div><!--close header-->
+
+	<div id="menubar">
+      <ul id="menu">
+        <li class="current"><a href="/">Accueil</a></li>
+        <li><a href="/orgaFic/mnt/USB/LOC/DDL_OK/">DDL</a></li>
+        <li><a href="/FolderBuilder/">test Folder Builder</a></li>
+        <li><a href="/test/">Test</a></li>
+        <li><a href="/dev/">Développement</a></li>
+        <li><a href="/majWeb/">MaJ du serveur</a></li>
+      </ul>
+    </div><!--close menubar-->	
+    
+	<div id="site_content">		
+
+	  <div class="sidebar_container">       
+		<div class="sidebar">
+          <div class="sidebar_item">
+            <h2>Site en construction</h2>
+            <p>Bienvenue dans ce site aucune fonctionnalités n'est correct !!!</p>
+          </div><!--close sidebar_item--> 
+        </div><!--close sidebar-->     		
+		<div class="sidebar">
+          <div class="sidebar_item">
+            <h2>Latest Update</h2>
+            <h3>22 Mars 2016</h3>
+            <p>Interface visuelle</p>         
+		  </div><!--close sidebar_item--> 
+        </div><!--close sidebar-->
+        <div class="sidebar">
+          <div class="sidebar_item">
+            <h2>Latest Update</h2>
+            <h3>01 Mars 2016</h3>
+            <p>Création du site</p>         
+		  </div><!--close sidebar_item--> 
+        </div><!--close sidebar-->
+		<div class="sidebar">
+          <div class="sidebar_item">
+            <h2>Mise à jour</h2>
+            <p>Attention ne lancer que si une mise à jour de github a été faite :</p>
+            <p><a href="/majWeb/">MaJ du serveur</a></p>
+          </div><!--close sidebar_item--> 
+        </div><!--close sidebar-->
+       </div><!--close sidebar_container-->	
+	
+       <div id="content">
+        <div class="content_item">
+		  {% block corps %}
+          {% endblock %}
+<!--    
+          <h1>Welcome To Your Website</h1> 
+	      <p>This standards compliant, simple, fixed width website template is released as an 'open source' design (under the Creative Commons Attribution 3.0 Licence), which means that you are free to download and use it for anything you want (including modifying and amending it). If you wish to remove the &lsquo;ARaynorDesign&rsquo; link in the footer of the template, please contact me first, but other than that...</p>
+		  
+		  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque cursus tempor enim. Aliquam facilisis neque non nunc posuere eget volutpat metus tincidunt.</p>
+		  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque cursus tempor enim.</p>
+		  <br style="clear:both"/>
+		  
+		  <div class="content_container">
+		    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque cursus tempor enim. Aliquam facilisis neque non nunc posuere eget volutpat metus tincidunt.</p>
+		  	<div class="button_small">
+		      <a href="#">Read more</a>
+		    </div><!--close button_small-->
+<!--    
+            </div><!--close content_container-->
+<!--    
+            <div class="content_container">
+		    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque cursus tempor enim. Aliquam facilisis neque non nunc posuere eget volutpat metus tincidunt.</p>          
+		  	<div class="button_small">
+		      <a href="#">Read more</a>
+		    </div><!--close button_small-->		  
+<!--    
+            </div><!--close content_container-->			  
+          
+		</div><!--close content_item-->
+      </div><!--close content-->   
+	</div><!--close site_content--> 
+<!--	   
+	 <div id="content_grey">
+<!--	
+    <div class="content_grey_container_box">
+		<h4>Latest Blog Post</h4>
+	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
+		<div class="readmore">
+		  <a href="#">Read more</a>
+		</div><!--close readmore-->
+<!--
+        </div><!--close content_grey_container_box-->
+<!--      
+      <div class="content_grey_container_box">
+       <h4>Latest News</h4>
+	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
+	    <div class="readmore">
+		  <a href="#">Read more</a>
+		</div><!--close readmore-->
+<!--
+        </div><!--close content_grey_container_box-->
+<!--
+        <div class="content_grey_container_boxl">
+		<h4>Latest Projects</h4>
+	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
+	    <div class="readmore">
+		  <a href="#">Read more</a>
+		</div><!--close readmore-->	  
+<!--
+        </div><!--close content_grey_container_box1-->      
+<!--	
+        <br style="clear:both"/>  -->
+       
+    </div><!--close content_grey-->   
+
+
+  </div><!--close main-->
+  
+  <div id="footer">
+    {% block footer %} <a href="http://validator.w3.org/check?uri=referer">Valid XHTML</a> | <a href="http://fotogrph.com/">Images</a> | website template by <a href="http://www.araynordesign.co.uk">ARaynorDesign</a>{% endblock %}
+  </div><!--close footer-->  
+  
+</body>
 </html>
