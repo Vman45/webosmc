@@ -18,7 +18,7 @@ def orgaFic(pathFiles):
 @app.route('/dev/')
 def dev():
     url_root=request.url_root
-    if url_root.find(':') <> -1
+    if url_root.find(':') != -1
       url_root = url_root[: url_root.find(':')]
     return render_template('dev.html',path=url_root)
 @app.route('/FolderBuilder/')
