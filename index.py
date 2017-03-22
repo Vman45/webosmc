@@ -29,7 +29,9 @@ def majWeb():
     #status=subprocess.call('git --commit --git-dir /home/osmc/webosmc/.git pull', shell=True) 
     import os
     os.system('git --git-dir /home/osmc/webosmc/.git pull --no-edit')
-    return '<br>OK<br>maj effectuée relancer la page précédente et actualiser'
+    flash('OK<br>maj effectuée relancer la page précédente et actualiser')
+    return redirect(url_for('index'))
+    
   
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
