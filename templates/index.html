@@ -1,10 +1,10 @@
-<html>
-    <head>
-        <link rel="stylesheet" href='/static/css/style.css' />
-    </head>
-    <body>
-        <h1>Bienvenue sur Osmc Salon by JGriffon</h1>
-        <br>
+{% extends "squelette.html" %}
+
+{% block titre %}Osmc Salon by JGriffon{% endblock %}
+
+{% block corps %}
+<h1>Bienvenue sur Osmc Salon by JGriffon</h1>
+<br>
         <br>
         <h2><b><u>Sommaire :</b></u></h2>
         <br>
@@ -17,5 +17,9 @@
         <br>
         <a href='/dev/'>Dveloppement</a>
         <br><br><br><br><br><br><a href='/majWeb/'> MaJ du serveur</a>
-    </body>
-</html>
+{% endblock %}
+
+
+{% block footer %}
+<footer>KuganCorp 2017</footer>
+{% endblock %}
