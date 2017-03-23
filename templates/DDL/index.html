@@ -1,5 +1,4 @@
 {% extends "squelette.html" %}
-
 {% block header %}
     {{ super() }} {# renvoie le contenu du block header (celui où l'on se situe) du template parent (squelette.html) #}
     <link rel="shortcut icon" href="/static/images/favicon.ico"/>
@@ -25,12 +24,10 @@
     <script type="text/javascript" src="/static/lib/deps/shortcut.js"></script>
     <script type="text/javascript" src="/static/lib/tree.js"></script>
     <script type="text/javascript" src="/static/lib/bootstrap.js"></script>
-
-
 {% endblock %}
-
-{% block body %}
-<h1>Organisation fichier</h1>
+{% block titre %}Osmc Salon by JGriffon{% endblock %}
+{% block corps %}
+<h1>{{ self.titre() }}</h1>
 
 <div class="master-content container-fluid">
     <div class="tree-container">
@@ -190,7 +187,4 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /Modals -->
-
-
-
 {% endblock %}
