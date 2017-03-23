@@ -37,7 +37,7 @@ def test():
     return 'Test OK !!!' + request.url_root + '<br>' + request.base_url
 @app.route('/orgaFic/<path:pathFiles>')
 def orgaFic(pathFiles):
-    return render_template('DDL.html',pathFiles=pathFiles,path='/')
+    return render_template('/DDL/index.html',pathFiles=pathFiles,path='/')
     #return render_template('orgaFic.html',pathFiles=pathFiles,path='/')
 
 @app.route('/FolderBuilder/')
