@@ -75,12 +75,12 @@ ol li
 { background: transparent;}
   
 #header
-{ width: 920px;
+{ width: 1200px;
   height: 120px;
   background: transparent;}
 
 #banner
-{ width: 920px;
+{ width: 1200px;
   position: relative;
   height: 50px;
   padding: 15px 0 0 0;
@@ -95,7 +95,7 @@ ul.flashes#main
   text-shadow: none;}
 
 #menubar
-{ width: 920px;
+{ width: 1200px;
   height: 50px;
   text-align: center; 
   margin: 0 auto;
@@ -112,7 +112,7 @@ ul.flashes#main
   } 
   
 #welcome
-{ width: 880px;
+{ width: 1140px;
   float: left;
   height: 50px;
   margin: 0 auto;
@@ -120,7 +120,7 @@ ul.flashes#main
   background: transparent;} 
   
 #welcome_slogan
-{ width: 880px;
+{ width: 1140px;
   float: left;
   height: 30px;
   margin: 0 auto;
@@ -182,7 +182,7 @@ ul#menu li:hover a
   text-shadow: none;}
 
 #site_content
-{ width: 920px;
+{ width: 1200px;
   overflow: hidden;
   margin: 0 auto;} 
 
@@ -221,12 +221,12 @@ ul#menu li:hover a
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;}  
 
 #content
-{ width: 680px;
+{ width: 960px;
   margin-bottom: 20px;
   float: left;}
 
 .content_item
-{ width: 680px;
+{ width: 960px;
   margin-top: 20px;
   margin-bottom: 20px;}
   
@@ -240,13 +240,13 @@ ul#menu li:hover a
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px;}
   
 .content_container
-{ width: 320px;
+{ width: 600px;
   padding: 5px;
   margin-right: 10px;
   float: left;}
   
 #content_grey
- { width: 920px;
+ { width: 1200px;
   height: 160px;
   text-align: center; 
   background: #1D1D1D;
@@ -281,7 +281,7 @@ ul#menu li:hover a
   float: left;}
   
 #footer
-{ width: 920px;
+{ width: 1200px;
   height: 20px;
   padding-top: 20px;
   text-align: center; 
