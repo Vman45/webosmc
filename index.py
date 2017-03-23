@@ -34,8 +34,8 @@ def majWeb():
 #                                         En cours développement
 @app.route('/test/')
 def test():
-    import filetree/flask_filetree
-    filetree/flask_filetree.test()
+    import filetree
+    filetree.test()
     return 'Test OK !!!' + request.url_root + '<br>' + request.base_url
 @app.route('/orgaFic/<path:pathFiles>')
 def orgaFic(pathFiles):
