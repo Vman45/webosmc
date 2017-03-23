@@ -39,7 +39,7 @@
 	<div id="menubar">
       <ul id="menu">
         <li {% if request.path=='/' %}  class="current" {% endif %}><a href="/">Accueil</a></li>
-        <li{% if request.path.beginswith('/orgaFic/')==true %}  class="current" {% endif %}><a href="/orgaFic/mnt/USB/LOC/DDL_OK/">DDL</a></li>
+        <li{% if request.path=='/orgaFic/' %}  class="current" {% endif %}><a href="/orgaFic/mnt/USB/LOC/DDL_OK/">DDL</a></li>
         <li{% if request.path=='/JD/' %}  class="current" {% endif %}><a href="/JD/">JDownloader</a></li>
 	<li{% if request.path=='/dev/' %}  class="current" {% endif %}><a href="/dev/">Client SSH</a></li>
 	<li{% if request.path=='/FolderBuilder/' %}  class="current" {% endif %}><a href="/FolderBuilder/">test Folder Builder</a></li>
