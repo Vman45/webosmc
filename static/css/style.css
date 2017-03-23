@@ -85,6 +85,14 @@ ol li
   height: 50px;
   padding: 15px 0 0 0;
   background: transparent;}
+/* Pour les messages Flash */
+ul.flashes#main
+{ color: #1D1D1D;
+  background: #FFF;
+  background: -moz-linear-gradient(#fff, #ccc);
+  background: -o-linear-gradient(#fff, #ccc);
+  background: -webkit-linear-gradient(#fff, #ccc);
+  text-shadow: none;}
 
 #menubar
 { width: 920px;
