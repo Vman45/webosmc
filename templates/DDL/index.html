@@ -1,7 +1,5 @@
 {% extends "squelette.html" %}
 {% block header %}
-    {{ super() }} {# renvoie le contenu du block header (celui où l'on se situe) du template parent (squelette.html) #}
-    <link rel="shortcut icon" href="/static/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="/static/css/webiny/fontello.css">
     <link rel="stylesheet" type="text/css" href="/static/css/webiny/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/webiny/jquery-ui.css">
@@ -24,6 +22,7 @@
     <script type="text/javascript" src="/static/lib/deps/shortcut.js"></script>
     <script type="text/javascript" src="/static/lib/tree.js"></script>
     <script type="text/javascript" src="/static/lib/bootstrap.js"></script>
+ {{ super() }} {# renvoie le contenu du block header (celui où l'on se situe) du template parent (squelette.html) #}
 {% endblock %}
 {% block titre %}Osmc Salon by JGriffon{% endblock %}
 {% block corps %}
