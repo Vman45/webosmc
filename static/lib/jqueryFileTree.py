@@ -10,7 +10,7 @@ def dirlist(request):
    r=['<ul class="jqueryFileTree" style="display: none;">']
    try:
        r=['<ul class="jqueryFileTree" style="display: none;">']
-       d=urllib.unquote(request.POST.get('dir','c:\\temp'))
+       d=urllib.unquote(request.POST.get('dir','mnt/USB/LOC/DDL_OK/'))
        for f in os.listdir(d):
            ff=os.path.join(d,f)
            if os.path.isdir(ff):
