@@ -10,12 +10,32 @@
     <script type=text/javascript>
       $(document).ready( function()                                                                                                                                                                           
       {                                                                                                                                                                                                       
-        $('#fileTreeDemo_1').fileTree({ root: {{ pathFiles }}, script: '/static/lib/jqueryFileTree.py', folderEvent: 'click', expandSpeed: 750, collapseSpeed: 750, multiFolder: false, expandEasing: 'easeOutBounce', collapseEasing: 'easeOutBounce', loadMessage: 'Un momento...'  }, function(file) {                                                                                                                               
-          alert(file);                                                                                                                                                                                        
-        }); 
-        $('#fileTreeDemo_2').fileTree({ root: {{ path }}, script: '/static/lib/jqueryPathTree.py', folderEvent: 'click', expandSpeed: 750, collapseSpeed: 750, multiFolder: false, expandEasing: 'easeOutBounce', collapseEasing: 'easeOutBounce', loadMessage: 'Un momento...'  }, function(file) {                                                                                                                               
-          alert(file);                                                                                                                                                                                        
-        });      
+        $('#fileTreeDemo_1').fileTree({ 
+            root: {{ pathFiles }},
+            script: '/static/lib/jqueryFileTree.py',
+            folderEvent: 'click',
+            expandSpeed: 750,
+            collapseSpeed: 750,
+            multiFolder: false,
+            expandEasing: 'easeOutBounce',
+            collapseEasing: 'easeOutBounce',
+            loadMessage: 'Un momento...'
+           }, function(file) {                                                                                                                               
+               alert(file);                                                                                                                                                                                        
+            }); 
+        $('#fileTreeDemo_2').fileTree({
+              root: {{ path }}, 
+              script: '/static/lib/jqueryPathTree.py', 
+              folderEvent: 'click', 
+              expandSpeed: 750, 
+              collapseSpeed: 750, 
+              multiFolder: false, 
+              expandEasing: 'easeOutBounce', 
+              collapseEasing: 'easeOutBounce', 
+              loadMessage: 'Un momento...'  
+              }, function(file) {                                                                                                                               
+                    alert(file);                                                                                                                                                                                        
+             });      
       });                                                                                                                                                                                                     
     </script>
 {% endblock %}
@@ -37,7 +57,7 @@
         <p>
            <div class="example">
               <h2>Liste Fichiers</h2>
-              <div id="fileTreeDemo_1" class="demo"></div>
+              <div id="fileTreeDemo_1" class="demo"><ul class="jqueryFileTree" style=""><li class="directory collapsed"><a href="#" rel="{{ pathFiles }}">documents</a></li><li class="directory collapsed"><a href="#" rel="/static/images/fileico/">images</a></li></ul></div>
            </div>
            <br>
            <div class="example">
