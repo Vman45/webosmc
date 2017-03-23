@@ -42,7 +42,7 @@ def orgaFic(pathFiles):
 
 @app.route('/FolderBuilder/')
 def FolderBuilder():
-    return render_template('/jqueryfiletree/tests/manual/index.html')
+    return render_template('/filetree/tests/manual/index.html')
     #return render_template('/FolderBuilder/index.html')
   
     
