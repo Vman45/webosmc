@@ -42,9 +42,12 @@
       <ul id="menu">
         <li {% if request.path=='/' %}  class="current" {% endif %}><a href="/">Accueil</a></li>
         <li{% if request.path[:9]=='/gestionFichier/' %}  class="current" {% endif %}><a href="/gestionFichier/mnt/LOC/USB/DDL_OK/">DDL</a></li>
+        <li{% if request.path=='/MPD/' %}  class="current" {% endif %}><a href="/test/">Musique</a></li>
+	<li{% if request.path=='/log/' %}  class="current" {% endif %}><a href="/test/">Fichiers Log</a></li>
         <li{% if request.path=='/JD/' %}  class="current" {% endif %}><a href="/JD/">JDownloader</a></li>
-	<li{% if request.path=='/dev/' %}  class="current" {% endif %}><a href="/dev/">Client SSH</a></li>
+	<li{% if request.path=='/SSH/' %}  class="current" {% endif %}><a href="/dev/">Client SSH</a></li>
         <li{% if request.path=='/test/' %}  class="current" {% endif %}><a href="/test/">Test</a></li>
+	      
       </ul>
     </div><!--close menubar-->	
     
