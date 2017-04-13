@@ -1,0 +1,31 @@
+{% extends "squelette.html" %}
+{% block header %}
+    {{ super() }} {# renvoie le contenu du block header (celui où l'on se situe) du template parent (squelette.html) #}
+	<link rel="stylesheet" href="/static/css/frame.css">
+<script language="JavaScript">
+function calcHeight(){
+  //récupère la hauteur de la page
+  var the_height=document.getElementById('the_iframe').contentWindow.document.body.scrollHeight;
+ //change la hauteur de l'iframe
+  document.getElementById('the_iframe').height=the_height;
+}
+</script>
+{% endblock %}
+{% block titre %}Osmc Salon by JGriffon{% endblock %}
+<br>
+{% block corps %}
+<h1>JDownloader {{ self.titre() }}</h1><a href="{{ path }}" target="_blank">Ouvrir dans une nouvelle fenêtre</a>
+<br>
+<div id="bw_websshframe">
+	<iframe width="1300" id="the_iframe"
+		onLoad="calcHeight();"
+		src="{{ path }}"
+		scrolling="auto"
+		frameborder="1"
+		height="900">
+		ici un petit texte visible uniquement
+		des navigateurs qui ne supportent pas
+		les iframes
+	</iframe>
+</div>
+{% endblock %}

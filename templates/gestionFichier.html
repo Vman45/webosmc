@@ -1,0 +1,60 @@
+{% extends "squelette_gestionFichier.html" %}
+ {% block header %}
+        <link rel="stylesheet" href="/static/css/jqtree.css">
+  
+        <link rel="stylesheet" href="/static/css/gestionFichier.css">
+        <script src="/static/lib/jqTree/tree.jquery.js"></script>
+{% macro remastering(list,id) %}{% autoescape false %}
+{%- set idxs = [0] -%}
+    [{%- for item in list.children recursive %}
+	{%- if loop.index0 > 0 -%},{%- endif %}{name: '{{ item.name }}', fullname: '{{ item.fullname }}'{%- if id -%}, id: {{ idxs|length*1000 + loop.index}}{%- endif %}
+        {%- if item.children -%}{%- set tmp = idxs.append(loop.index) -%},children: [{{ loop(item.children) }}]{%- set tmp = idxs.pop() -%}{%- endif %}
+     }{%- endfor %}]
+{% endautoescape %}
+{%- endmacro %}
+<script type="text/javascript" charset="utf-8">
+$(function() {
+    var $treePath = $('#treePath');
+    var dataPath = {{ remastering(path_list, false) }};
+    $treePath.tree({data: dataPath,autoOpen: 1});
+    $treePath.bind('tree.dblclick',function(e) {
+        var selected_node = e.node;
+        alert(selected_node.fullname);
+    });
+    var $treeFic = $('#treeFic');
+    var dataFile = {{ remastering(file_list, true) }};
+    $treeFic.tree({data: dataFile,autoOpen: true});
+    $treeFic.bind('tree.click',function(e) {
+        // Disable single selection
+        e.preventDefault();
+        var selected_node = e.node;
+        if (selected_node.id == undefined) {console.log('The multiple selection functions require that nodes have an id');}
+        if ($treeFic.tree('isNodeSelected', selected_node)) {$treeFic.tree('removeFromSelection', selected_node);}
+        else {$treeFic.tree('addToSelection', selected_node);}
+    });
+     $treeFic.bind('tree.dblclick',function(e) {
+        var selected_node = e.node;
+        alert(selected_node.fullname);
+    });
+});
+</script>
+<script type="text/javascript" charset="utf-8" src="/static/lib/PrepaValidForm.js"></script>
+{% endblock %}
+
+{% block listes %}
+	 <fieldset>
+	<div class="liste">
+		<h2>Liste Fichiers</h2> 
+		<div id="treeFic">		</div>
+		<textarea id="FilesSelected" style="display:none;" name="FilesSelected"></textarea>
+	</div>
+	 </fieldset> <fieldset>
+	<div class="liste">
+		<h2>Liste répertoires</h2> 
+		<div id="treePath">		</div>
+		<textarea id= "PathSelected" style="display:none;" name="PathSelected"></textarea>
+	</div>
+	 </fieldset>
+<!--<button id="test" onClick="ChargementForm(this)">test</button>-->
+
+{% endblock %}
