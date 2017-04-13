@@ -9,6 +9,8 @@ app.config.from_object('config')
 #OK Terminé
 @app.route('/')
 def index():
+    import static/lib/status
+    
     return render_template('index.html')
 @app.route('/SSH/')
 def ClientSSH():
