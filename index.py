@@ -10,8 +10,8 @@ app.config.from_object('config')
 @app.route('/')
 def index():
     return render_template('index.html')
-@app.route('/dev/')
-def dev():
+@app.route('/SSH/')
+def ClientSSH():
     url_root=request.url_root.lstrip()
     ind=url_root.find(':',6)
     if (ind != -1) : url_root = url_root[: ind]
@@ -44,19 +44,17 @@ def traitement_gestionFichier(pathFiles):
     return redirect(url_for('lancement_gestionFichier',pathFiles=pathFiles))
   
 #                                         En cours développement
-@app.route('/test/<path:pathFiles>',methods=['GET'])
-def lancement_test(pathFiles):
-    from gestionFichier import make_tree
-    path = os.path.expanduser(app.config["DDL_PATH"])
-    pathFiles = '/' + pathFiles
-    treeFiles = make_tree(pathFiles, True, app.config["LST_EXCL_FILES"])
-    treePath = make_tree(path, False, app.config["LST_EXCL_PATH"])
-    return render_template('test.html',file_list=treeFiles,path_list=treePath,pathFiles=pathFiles)
-@app.route('/test/<path:pathFiles>',methods=['POST'])
-def traitement_test(pathFiles):
-    from gestionFichier import Action
-    pathFiles = Action(request, pathFiles)
-    return redirect(url_for('lancement_test',pathFiles=pathFiles))
+@app.route('/log/')
+def FichiersLog():
+    return render_template('log.html')
+@app.route('/MPD/')
+def Musique():
+    return render_template('MPD.html')
+
+@app.route('/test/')
+def lancement_test():
+    return render_template('test.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000, host='0.0.0.0')
