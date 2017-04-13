@@ -1,4 +1,4 @@
-import status
+import status_functions
 import json
 
 class WebManager(WebStructure.WebAbstract):
@@ -8,9 +8,9 @@ class WebManager(WebStructure.WebAbstract):
 	def get_html(self,http_context):
 		template=['header.tpl','status/status.tpl','footer.tpl']
 
-		cpu=status.getCpuPercent()
-		numcpu=status.getNumCpu()
-		cpuusage=status.getCPUusage()
+		cpu=status_functions.getCpuPercent()
+		numcpu=status_functions.getNumCpu()
+		cpuusage=status_functions.getCPUusage()
 		average=0
 		count=0
 		for i in cpuusage:
@@ -18,21 +18,21 @@ class WebManager(WebStructure.WebAbstract):
 			count+=1
 		average=int(average/count)
 		cpuusage={'average':average,'values':cpuusage}
-		disk=status.getDiskSummary()
-		temperature=status.getTemperature()
-		memory=status.getMemory()
+		disk=status_functions.getDiskSummary()
+		temperature=status_functions.getTemperature()
+		memory=status_functions.getMemory()
 	
-		loadavg=status.getLoadAvg()	
-		hostname=status.getHostName()
+		loadavg=status_functions.getLoadAvg()	
+		hostname=status_functions.getHostName()
 	
-		cpufrequency=str(status.getCpuFrequency()/1000000)+" Mhz"
+		cpufrequency=str(status_functions.getCpuFrequency()/1000000)+" Mhz"
 		
 		for d in disk:
 			if d['mountpoint']=='/':
 				freespace=d['free']
 
-		uptime=status.getUptime(True)
-		ip = status.getIP()
+		uptime=status_functions.getUptime(True)
+		ip = status_functions.getIP()
 		includefile='status/headerstatus.html'
 		content={'freespace':freespace,'cpufrequency':cpufrequency,'uptime':uptime,'loadavg':loadavg,'ip':ip,'hostname':hostname,'cpu':cpu,'numcpu':numcpu,'cpuusage':cpuusage,'disk':disk,'temperature':temperature,'memory':memory,'includefile':includefile}	
 		if http_context.suburl=='getinfo' :
