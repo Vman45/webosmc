@@ -9,7 +9,7 @@ app.config.from_object('config')
 #OK Terminé
 @app.route('/')
 def index():
-    import static/lib/status
+    import modules.status
     
     return render_template('index.html')
 @app.route('/SSH/')
@@ -33,7 +33,7 @@ def majWeb():
     return redirect(url_for('index'))
 @app.route('/gestionFichier/<path:pathFiles>',methods=['GET'])
 def lancement_gestionFichier(pathFiles):
-    from gestionFichier import make_tree
+    from modules.gestionFichier import make_tree
     path = os.path.expanduser(app.config["DDL_PATH"])
     pathFiles = '/' + pathFiles
     treeFiles = make_tree(pathFiles.encode('utf-8'), True, app.config["LST_EXCL_FILES"])
@@ -41,7 +41,7 @@ def lancement_gestionFichier(pathFiles):
     return render_template('gestionFichier.html',file_list=treeFiles,path_list=treePath,pathFiles=pathFiles)
 @app.route('/gestionFichier/<path:pathFiles>',methods=['POST'])
 def traitement_gestionFichier(pathFiles):
-    from gestionFichier import Action
+    from modules.gestionFichier import Action
     pathFiles = Action(request, pathFiles)
     return redirect(url_for('lancement_gestionFichier',pathFiles=pathFiles))
   
