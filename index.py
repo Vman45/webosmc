@@ -50,7 +50,7 @@ def GETconfigWeb():
     content = readConfig('../config.py')
     return render_template('config.html',content=content)  
 @app.route('/config/',methods=['POST'])
-def GETconfigWeb():
+def POSTconfigWeb():
     from modules.webConfig import writeConfig
     ret = writeConfig('../config.py',request.form['contenu'])
     return render_template('config.html',content=request.form['contenu'])  
@@ -65,8 +65,13 @@ def Musique():
 
 @app.route('/test/')
 def lancement_test():
-    return render_template('test.html')
+    from modules.status import get_status
+    return render_template('test.html',data=get_status())
 
+@app.route('/test/', method='post')
+def get_data():
+    from modules.status import get_status
+    return {"status": "OK", "data": get_status()}
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000, host='0.0.0.0')
