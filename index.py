@@ -44,8 +44,18 @@ def traitement_gestionFichier(pathFiles):
     from modules.gestionFichier import Action
     pathFiles = Action(request, pathFiles)
     return redirect(url_for('lancement_gestionFichier',pathFiles=pathFiles))
-  
-#                                         En cours développement
+@app.route('/config/',methods=['GET'])
+def GETconfigWeb():
+    from modules.webConfig import readConfig
+    content = readConfig('../config.py')
+    return render_template('config.html',content=content)  
+@app.route('/config/',methods=['POST'])
+def GETconfigWeb():
+    from modules.webConfig import writeConfig
+    ret = writeConfig('../config.py',request.form['contenu'])
+    return render_template('config.html',content=request.form['contenu'])  
+
+  #                                         En cours développement
 @app.route('/log/')
 def FichiersLog():
     return render_template('log.html')
