@@ -61,7 +61,6 @@ def FichiersLog():
     return render_template('log.html')
 @app.route('/MPD/')
 def Musique():
-    import modules.wymypy
     return render_template('MPD.html')
 
 @app.route('/test/')
