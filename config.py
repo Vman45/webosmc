@@ -5,3 +5,4 @@ JDOWNLOADER = "https://my.jdownloader.org/?deviceId=4ad32ae65d600a9b070bba54a8f0
 DDL_PATH = "/mnt/LOC/USB"
 LST_EXCL_PATH = ['$RECYCLE.BIN','save', 'System Volume Information', 'test', 'musique', 'photos']
 LST_EXCL_FILES = ['.part','xyztetst']
+WYMYPY = "/modules/wymypy/wymypy.ini"
