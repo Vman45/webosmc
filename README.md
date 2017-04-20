@@ -5,5 +5,9 @@
 ## Pour lancer la procédure de test : 
 
 ### Utilisation de pytest :
-* Installation : `pip install pytest`
-* Lancement :`py.test .`
+* Installation :
+
+`pip install pytest`
+* Lancement :
+
+`py.test .`
