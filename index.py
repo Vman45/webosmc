@@ -1,10 +1,14 @@
 #! /usr/bin/python 
 # -*- coding:utf-8 -*- 
-                                                                                                                                                                                                              
 from flask import Flask, flash, render_template, redirect, request, url_for, jsonify
 import flask, os
 app = Flask(__name__)
 app.config.from_object('config')
+
+from modules.wymypy import wymypy
+app.register_Blueprint(wymypy, url_prefix='/MPD')
+from modules.gestionFichier import gestionFichier
+app.register_Blueprint(gestionFichier, url_prefix='/gestionFichier')
 
 #OK Terminé
 @app.route('/')
@@ -29,12 +33,6 @@ def majWeb():
     os.system(app.config["MAJ_SITE"])
     flash('OK\nmaj faite !!!!')
     return redirect(url_for('index'))
-
-    
-@app.route('/gestionFichier/<path:pathFiles>')
-def gestionFichier(pathFiles):
-    import modules.gestionFichier
-    
     
 @app.route('/config/',methods=['GET'])
 def GETconfigWeb():
@@ -51,11 +49,17 @@ def POSTconfigWeb():
 @app.route('/log/')
 def FichiersLog():
     return render_template('log.html')
-@app.route('/MPD/')
-def Musique():
-    import modules.wymypy
-    return render_template('MPD.html')
+# **********************************Remplacé par Blueprint en haut 
 
+    
+# @app.route('/gestionFichier/<path:pathFiles>')
+# def gestionFichier(pathFiles):
+    # import modules.gestionFichier
+# @app.route('/MPD/')
+# def Musique():   
+    # return render_template('MPD.html')
+    
+    
 @app.route('/test/')
 def lancement_test():
     from modules.status import get_status
