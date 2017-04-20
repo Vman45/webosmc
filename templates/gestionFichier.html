@@ -1,9 +1,10 @@
 {% extends "squelette_gestionFichier.html" %}
  {% block header %}
-        <link rel="stylesheet" href="/static/css/jqtree.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/jqtree.css') }}">
   
-        <link rel="stylesheet" href="/static/css/gestionFichier.css">
-        <script src="/static/lib/jqTree/tree.jquery.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/gestionFichier.css') }}">
+        <script src="{{ url_for('static', filename='lib/jqTree/tree.jquery.js') }}"></script>
+        <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='lib/PrepaValidForm.js') }}"></script>
 {% macro remastering(list,id) %}{% autoescape false %}
 {%- set idxs = [0] -%}
     [{%- for item in list.children recursive %}
@@ -38,7 +39,6 @@ $(function() {
     });
 });
 </script>
-<script type="text/javascript" charset="utf-8" src="/static/lib/PrepaValidForm.js"></script>
 {% endblock %}
 
 {% block listes %}
