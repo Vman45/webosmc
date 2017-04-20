@@ -565,7 +565,7 @@ class MpdConnection(object):
             if isinstance(entity, Song) and len(value):
                 for item in ("artist", "album", "title", "track"):
                     if name == item.capitalize() and not getattr(entity, item):
-                        setattr(entity, item, value)
+                        setattr(entity, item, value.decode("utf-8"))
                         break
 
             self.getNextReturnElement()
@@ -1000,7 +1000,7 @@ class MpdController(MpdConnection):
 
         try:
             for name in names:
-                if not isinstance(name, str):
+                if not isinstance(name, ( str, unicode )):
                     raise ValueError("all names must be strings")
 
             map(self.sendLoadCommand, names)
@@ -1317,9 +1317,10 @@ class MpdController(MpdConnection):
 
         try:
             self.sendPlaylistInfoCommand(status.song)
-
             song = self.getNextInfoEntity()
         finally:
             self.finishCommand()
 
         return song
+
+# vim: ft=python ts=4 sw=4 et

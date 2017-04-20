@@ -2,11 +2,11 @@ import ConfigParser
 from functools import wraps
 import json
 
-from flask import Flask, render_template, request, abort, Response
+from flask import Flask, render_template, request, abort, Response, Blueprint
 
 from wymypy.libs.mpdsafe import MpdSafe
 
-app = Flask(__name__)
+app = Blueprint('wymypy',__name__,template_folder='templates', static_folder='static')
 config = ConfigParser.SafeConfigParser()
 mpd = MpdSafe()
 plugins = []
