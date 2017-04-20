@@ -9,8 +9,7 @@ app.config.from_object('config')
 #OK Terminé
 @app.route('/')
 def index():
-    from modules.status import get_status
-    return render_template('index.html',data=get_status())
+    return render_template('index.html')
 @app.route('/SSH/')
 def ClientSSH():
     url_root=request.url_root.lstrip()
@@ -30,19 +29,13 @@ def majWeb():
     os.system(app.config["MAJ_SITE"])
     flash('OK\nmaj faite !!!!')
     return redirect(url_for('index'))
-@app.route('/gestionFichier/<path:pathFiles>',methods=['GET'])
-def lancement_gestionFichier(pathFiles):
-    from modules.gestionFichier import make_tree
-    path = os.path.expanduser(app.config["DDL_PATH"])
-    pathFiles = '/' + pathFiles
-    treeFiles = make_tree(pathFiles.encode('utf-8'), True, app.config["LST_EXCL_FILES"])
-    treePath = make_tree(path.encode('utf-8'), False, app.config["LST_EXCL_PATH"])
-    return render_template('gestionFichier.html',file_list=treeFiles,path_list=treePath,pathFiles=pathFiles)
-@app.route('/gestionFichier/<path:pathFiles>',methods=['POST'])
-def traitement_gestionFichier(pathFiles):
-    from modules.gestionFichier import Action
-    pathFiles = Action(request, pathFiles)
-    return redirect(url_for('lancement_gestionFichier',pathFiles=pathFiles))
+
+    
+@app.route('/gestionFichier/<path:pathFiles>')
+def gestionFichier(pathFiles):
+    import modules.gestionFichier
+    
+    
 @app.route('/config/',methods=['GET'])
 def GETconfigWeb():
     from modules.webConfig import readConfig

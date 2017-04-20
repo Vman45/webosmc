@@ -1,10 +1,22 @@
 # coding: utf-8
 import codecs
-
+from flask import  render_template, redirect, request, url_for
 import os
-from flask import Flask
+from . import app
 
-app = Flask(__name__)
+@app.route('/gestionFichier/<path:pathFiles>',methods=['GET'])
+def lancement_gestionFichier(pathFiles):
+    # from modules.gestionFichier import make_tree
+    path = os.path.expanduser(app.config["DDL_PATH"])
+    pathFiles = '/' + pathFiles
+    treeFiles = make_tree(pathFiles.encode('utf-8'), True, app.config["LST_EXCL_FILES"])
+    treePath = make_tree(path.encode('utf-8'), False, app.config["LST_EXCL_PATH"])
+    return render_template('gestionFichier.html',file_list=treeFiles,path_list=treePath,pathFiles=pathFiles)
+@app.route('/gestionFichier/<path:pathFiles>',methods=['POST'])
+def traitement_gestionFichier(pathFiles):
+    # from modules.gestionFichier import Action
+    pathFiles = Action(request, pathFiles)
+    return redirect(url_for('lancement_gestionFichier',pathFiles=pathFiles))
 
 def insertAccents(f):
     lstcarac = [[u'\xc3\xa2' , u'â'] , [u'\xc3\xa4' , u'ä'] , [ u'\xc3\xa0' , u'à'] , [ u'\xc3\xa9' , u'é'] , [ u'\xc3\xa8', u'è'] , [ u'\xc3\xab', u'ë'] , [ u'\xc3\xaa', u'ê']]
