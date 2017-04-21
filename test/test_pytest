@@ -1,0 +1,10 @@
+
+
+# Variante avec pytest
+
+
+
+
+
+def test_machin():
+    assert 1 == 1
