@@ -1,5 +1,7 @@
 import unittest 
-import flaskr
+import flask
+
+app = flask.Flask(__name__)
 # To run tests
 # cd project_directory
 # python -m unittest discover
@@ -22,7 +24,7 @@ class MyTestClass(unittest.TestCase):
         # code that is executed before each test
     def setUp(self):
         # creates a test client
-        self.app = flaskr.app.test_client()
+        self.app = app.test_client()
         # propagate the exceptions to the test client
         self.app.testing = True 
 
