@@ -1,4 +1,5 @@
 import unittest 
+import flaskr
 # To run tests
 # cd project_directory
 # python -m unittest discover
@@ -21,7 +22,7 @@ class MyTestClass(unittest.TestCase):
         # code that is executed before each test
     def setUp(self):
         # creates a test client
-        self.app = app.test_client()
+        self.app = flaskr.app.test_client()
         # propagate the exceptions to the test client
         self.app.testing = True 
 
@@ -74,4 +75,4 @@ class MyTestClass(unittest.TestCase):
 
 
 def test_machin():
-    assert foo == bar
+    assert 1 == 1
