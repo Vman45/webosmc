@@ -13,6 +13,10 @@ app.register_Blueprint(gestionFichier, url_prefix='/gestionFichier')
 #OK Terminé
 @app.route('/')
 def index():
+    import subprocess
+    ret = subprocess.check_output(app.config["RECH_MAJ"])
+    if (ret == 1) :
+        flash("Une nouvelle version du site est disponible\n Veuillez faire une mise à jour")
     return render_template('index.html')
 @app.route('/SSH/')
 def ClientSSH():
