@@ -65,7 +65,7 @@ def get_instances(mpd, bannend_plugins=[], plugin_configs={}):
     return instances
 
 
-def main(config_file="/etc/wymypy.ini"):
+def main(config_file="/static/wymypy.ini"):
     # load configuration
     wymypy.app.config.read(config_file)
     plugin_configs = {}
@@ -96,4 +96,4 @@ def main(config_file="/etc/wymypy.ini"):
 
 if __name__ == "__main__":
     #main(os.path.join(os.path.dirname(os.path.abspath(__file__)), "/etc/wymypy.ini"))
-    main("/etc/wymypy.ini")
+    main("/static/wymypy.ini")
