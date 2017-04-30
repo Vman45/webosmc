@@ -9,22 +9,23 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 # Gestion fichier config 
-# app.config.from_object('config')
-ini = ConfigParser.ConfigParser()
-ini.read('config.ini')
-app.config.update(SECRET_KEY=ini.get('RUN','SECRET_KEY'))
+app.config.from_object('config')
 # Modules complémentaires
-from modules.wymypy import wymypy
-app.register_Blueprint(wymypy, url_prefix='/MPD')
-from modules.gestionFichier import gestionFichier
-app.register_Blueprint(gestionFichier, url_prefix='/gestionFichier')
+# from modules.wymypy import wymypy
+# app.register_blueprint(wymypy, url_prefix='/MPD')
+from modules.gestionFichier.view import gestionFichier
+app.register_blueprint(gestionFichier, url_prefix='/gestionFichier')
 
 #OK Terminé
+@app.context_processor
+def inject_dict_for_all_templates():
+    return dict(MENU=app.config["MENU"])
+    
 @app.route('/')
 def index():
     import subprocess
-    ret = subprocess.check_output(ini.get('LINK', 'RECH_MAJ'))
-    # ret = subprocess.check_output(app.config["RECH_MAJ"])
+    # ret = subprocess.check_output(app.config["LINK_RECH_MAJ"])
+    ret = 0
     if (ret == 1) :
         flash("Une nouvelle version du site est disponible\n Veuillez faire une mise à jour")
     return render_template('index.html')
@@ -41,26 +42,22 @@ def ClientSSH():
     return render_template('dev.html',path=url_root)
 @app.route('/JD/')
 def JD():
-  # return render_template('jDownloader.html',path=app.config["JDOWNLOADER"])
-  return render_template('jDownloader.html',path=ini.get('LINK', 'JDOWNLOADER'))
+  return render_template('jDownloader.html',path=app.config["LINK_JDOWNLOADER"])
 @app.route('/majWeb/')
 def majWeb():
-    # os.system(app.config["MAJ_SITE"])
-    os.system(ini.get('LINK', "MAJ_SITE"))
+    os.system(app.config["LINK_MAJ_SITE"])
     flash('OK\nmaj faite !!!!')
     return redirect(url_for('index'))
     
 @app.route('/config/',methods=['GET'])
 def GETconfigWeb():
     from modules.webConfig import readConfig
-    # content = readConfig('../config.py')
-    content = readConfig('../config.ini')
-    return render_template('config.html',content=content)  
+    content = readConfig('config.py')
+    return render_template('config.html',content=content)
 @app.route('/config/',methods=['POST'])
 def POSTconfigWeb():
     from modules.webConfig import writeConfig
-    # ret = writeConfig('../config.py',request.form['contenu'])
-    ret = writeConfig('../config.ini',request.form['contenu'])
+    ret = writeConfig('config.py',request.form['contenu'])
     return render_template('config.html',content=request.form['contenu'])  
 
   #                                         En cours développement
@@ -86,14 +83,13 @@ def lancement_test():
     app.logger.error('testing error log')
     return render_template('test.html',data=get_status())
 
-@app.route('/test/', method='post')
+@app.route('/test/', methods=['POST'])
 def get_data():
     from modules.status import get_status
     return {"status": "OK", "data": get_status()}
 
 if __name__ == '__main__':
-    # Debug = app.config["DEBUG"]
-    Debug = ini.get('RUN','DEBUG')
+    Debug = app.config["DEBUG"]
     if Debug == 'True':
         # initialize the log handler
         logHandler = RotatingFileHandler('info.log', maxBytes=1000000, backupCount=3)
@@ -109,5 +105,4 @@ if __name__ == '__main__':
 #        app.logger.setLevel(logging.INFO)
         app.logger.addHandler(logHandler)    
 
-    # app.run(debug=Debug, port=app.config["PORT"], host='0.0.0.0')
-    app.run(debug=Debug, port=ini.get('RUN','PORT'), host='0.0.0.0')
+    app.run(debug=Debug, port=app.config["PORT"], host='0.0.0.0')
