@@ -27,7 +27,7 @@ switch(chxAction) {
 		if (FilesSelected == ""){alert("Pas de fichier selectionné");return false;}
 		lblAction = "Supprimer les fichiers " + FilesSelected
 		break;
-	case "SupprimerDossiers":
+	case "SupprimerDossier":
 		if (pathSelect == undefined){alert("Pas de répertoire selectionné");return false;}
 		lblAction = "Supprimer le répertoire " + pathSelect
 		break;		
