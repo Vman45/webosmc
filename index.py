@@ -53,12 +53,12 @@ def majWeb():
 def GETconfigWeb():
     from modules.webConfig import readConfig
     content = readConfig('config.py')
-    return render_template('config.html',content=content)
+    return render_template('config.html',content=content.strip())
 @app.route('/config/',methods=['POST'])
 def POSTconfigWeb():
     from modules.webConfig import writeConfig
-    ret = writeConfig('config.py',request.form['contenu'])
-    return render_template('config.html',content=request.form['contenu'])  
+    ret = writeConfig('config.py',request.form['contenu'].strip())
+    return render_template('config.html',content=request.form['contenu'].strip())
 
   #                                         En cours développement
 @app.route('/log/')
