@@ -61,7 +61,7 @@ def Action(request,pathFiles):
         import os
         import shutil
         if TypeAction=='NvDossier':
-            os.mkdir(os.path.join(Rep,'New'))
+            os.mkdir(os.path.join(Rep,request.form['NomNvDossier']))
         elif TypeAction=='SupprimerDossier':
             isDir = os.path.isdir(Rep)
             if isDir == True:
