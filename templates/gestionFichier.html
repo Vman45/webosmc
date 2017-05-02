@@ -55,43 +55,55 @@
     </form>
     <p>Selectionnez le ou les fichiers puis l'emplacement et enfin cliquez sur le bouton de votre choix</p>
     <form class="form_settings" method="post" onSubmit="return ChargementForm(this);" action="">
-        <p>
-            <script type="text/javascript">
-                function changeaffiche(element,visible){
-                    var targetElement;
-                    targetElement = document.getElementById(element) ;
-                    if (visible == true){targetElement.style.display = "" ;}
-                    else{targetElement.style.display = "none" ;}
-                }
-            </script>
-            <fieldset>
-                <div class="liste">
-                    <h2>Liste Fichiers</h2> 
-                    <div id="treeFic">		</div>
-                    <textarea id="FilesSelected" style="display:none;" name="FilesSelected"></textarea>
-                </div>
-            </fieldset> <fieldset>
-                <div class="liste">
-                    <h2>Liste répertoires</h2> 
-                    <div id="treePath">		</div>
-                    <textarea id= "PathSelected" style="display:none;" name="PathSelected"></textarea>
-                </div>
-            </fieldset>
-            <!--<button id="test" onClick="ChargementForm(this)">test</button>-->
-            <fieldset> <legend>Choix de l'action :</legend>
-                <input type="radio" name="ChxAction" value="NvDossier" id="NvDossier" onclick="changeaffiche('NomNvDossier',true)" /> <label for="NvDossier">Créer un nouveau dossier</label>
-                <input type="text" name="NomNvDossier" id="NomNvDossier" style="display:none" value="New Dossier" />
-                <br>
-                <input type="radio" name="ChxAction" value="Deplacer" id="Deplacer" onclick="changeaffiche('NomNvDossier',false)"/> <label for="Deplacer">Déplacer le ou les fichiers</label>
-                <br>
-                <input type="radio" name="ChxAction" value="Copier" id="Copier" onclick="changeaffiche('NomNvDossier',false)" /> <label for="Copier">Copier le ou les fichiers</label>
-                <br>
-                <input type="radio" name="ChxAction" value="SupprimerFichiers" id="SupprimerFichiers" onclick="changeaffiche('NomNvDossier',false)" /> <label for="SupprimerFichiers">Supprimer le ou les fichiers</label>
-                <br>
-                <input type="radio" name="ChxAction" value="SupprimerDossier" id="SupprimerDossier" onclick="changeaffiche('NomNvDossier',false)" /> <label for="SupprimerDossier">Supprimer le dossier</label>
-            </fieldset>
-            <button type="submit" name="submitButton" value="Lancer">Lancer</button>
-        </p>
+        <script type="text/javascript">
+            function changeaffiche(element,visible){
+                var targetElement;
+                targetElement = document.getElementById(element) ;
+                if (visible == true){targetElement.style.display = "" ;}
+                else{targetElement.style.display = "none" ;}
+            }
+        </script>
+        <fieldset>
+            <div class="liste">
+                <h2>Liste Fichiers</h2> 
+                <div id="treeFic">		</div>
+                <textarea id="FilesSelected" style="display:none;" name="FilesSelected"></textarea>
+            </div>
+        </fieldset> <fieldset>
+            <div class="liste">
+                <h2>Liste répertoires</h2> 
+                <div id="treePath">		</div>
+                <textarea id= "PathSelected" style="display:none;" name="PathSelected"></textarea>
+            </div>
+        </fieldset>
+        <!--<button id="test" onClick="ChargementForm(this)">test</button>-->
+        <fieldset> <legend>Choix de l'action :</legend>
+            <p>
+            <input type="radio" name="ChxAction" value="NvDossier" id="NvDossier" onclick="changeaffiche('NomNvDossier',true)" /> <label for="NvDossier">Créer un nouveau dossier</label>
+            <input type="text" name="NomNvDossier" id="NomNvDossier" style="display:none" value="New Dossier" />
+            </p>
+            <p>
+            <br>
+            <br>
+            <input type="radio" name="ChxAction" value="Deplacer" id="Deplacer" onclick="changeaffiche('NomNvDossier',false)"/> <label for="Deplacer">Déplacer le ou les fichiers</label>
+            </p>
+            <p>
+            <br>
+            <br>
+            <input type="radio" name="ChxAction" value="Copier" id="Copier" onclick="changeaffiche('NomNvDossier',false)" /> <label for="Copier">Copier le ou les fichiers</label>
+            </p>
+            <p>
+            <br>
+            <br>
+            <input type="radio" name="ChxAction" value="SupprimerFichiers" id="SupprimerFichiers" onclick="changeaffiche('NomNvDossier',false)" /> <label for="SupprimerFichiers">Supprimer le ou les fichiers</label>
+            </p>
+            <p>
+            <br>
+            <br>
+            <input type="radio" name="ChxAction" value="SupprimerDossier" id="SupprimerDossier" onclick="changeaffiche('NomNvDossier',false)" /> <label for="SupprimerDossier">Supprimer le dossier</label>
+            </p>
+        </fieldset>
+        <button type="submit" name="submitButton" value="Lancer">Lancer</button>
     </form>
 {% endblock %}
  

@@ -376,12 +376,12 @@ ul#menu li:hover a
   color: #47433F;
 }
 
-.form_settings input{
+.form_settings input [type="radio"]{
   position: absolute;
   left: -9999px;
 }
 
-.form_settings input + label
+.form_settings input[type="radio"] + label
 { float: left;
   font: bold 120% Arial, Helvetica, sans-serif;
   height: 30px;
@@ -404,7 +404,7 @@ ul#menu li:hover a
 }
 
 
-.form_settings input + label:hover
+.form_settings input[type="radio"] + label:hover
 { border-radius: 15px 15px 15px 15px;
   -moz-border-radius: 15px 15px 15px 15px;
   -webkit-border: 15px 15px 15px 15px;
@@ -413,7 +413,7 @@ ul#menu li:hover a
   box-shadow: rgba(0, 0, 0, 1) 0px 0px 15px;
 }
 
-.form_settings input:checked + label
+.form_settings input[type="radio"]:checked + label
 { color: #1D1D1D;
   background: #1D1D1D;
   background: -moz-linear-gradient(#535353, #1d1d1d);
