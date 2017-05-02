@@ -1,4 +1,4 @@
-import status_functions
+import modules.status_functions as status_functions
 import json
 
 def get_status():

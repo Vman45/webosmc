@@ -1,14 +1,21 @@
+<script type="text/javascript" src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
 <script type="text/javascript">
-    function refresh() {
+$( document ).ready(function() {
+    console.log( "ready!" )
+    start()
+});   
+   function refresh() {
         $.post('/getdata' , {
                 'action': 'refresh',
             },
             function success(reponse){
                 if (timeout_flag != null) {
                     if (reponse.status == 'OK') {
-                        $('#current-diapo')[0].src = '/ftp/' + reponse.last_file
+                        alert('mise à jour OK :{{ data }}')
+                        $('#data') = {{ data }}
                     } else {
-                        $('#current-diapo')[0].src = '{{default_image}}'
+                        alert('mise à jour vide')
+                        $('#data') = 'nothing'
                     }
                     timeout_flag = setTimeout(function(){ refresh(); }, 3000)
                 }
@@ -18,18 +25,24 @@
     }
 
     function start() {
+        alert('mise en place')
         timeout_flag = setTimeout(function(){ refresh(); }, 100)
     }
 
     function stop() {
+        alert('Arret')
         clearTimeout(timeout_flag)
     }
 </script>
 
-
+{{ status }}
   <div class="actions">
-            <ul>
+<span id="data"></span>
+  {{ temp }}      
+        <ul>
                 <li><a href="#" onclick="start(); return false;" title="start briefing"> Start Briefing</a></li>
                 <li><a href="#" onclick="stop(); return false;"> Stop Briefing</a></li>
             </ul>
         </div><!-- actions -->
+        
+        {{ data }}

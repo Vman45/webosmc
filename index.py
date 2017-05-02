@@ -64,26 +64,16 @@ def POSTconfigWeb():
 @app.route('/log/')
 def FichiersLog():
     return render_template('log.html')
-# **********************************Remplacé par Blueprint en haut 
 
-    
-# @app.route('/gestionFichier/<path:pathFiles>')
-# def gestionFichier(pathFiles):
-    # import modules.gestionFichier
-# @app.route('/MPD/')
-# def Musique():   
-    # return render_template('MPD.html')
-    
-    
 @app.route('/test/')
 def lancement_test():
     from modules.status import get_status
     app.logger.warning('testing warning log %s %d','ok', 21)
     app.logger.info('testing info log')
-    app.logger.error('testing error log')
+    # app.logger.error('testing error log')
     return render_template('test.html',data=get_status())
 
-@app.route('/test/', methods=['POST'])
+@app.route('/getdata/', methods=['POST'])
 def get_data():
     from modules.status import get_status
     return {"status": "OK", "data": get_status()}
