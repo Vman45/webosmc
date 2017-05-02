@@ -7,7 +7,7 @@ def insertAccents(f):
     lstcarac = [[u'\xc3\xa2' , u'â'] , [u'\xc3\xa4' , u'ä'] , [ u'\xc3\xa0' , u'à'] , [ u'\xc3\xa9' , u'é'] , [ u'\xc3\xa8', u'è'] , [ u'\xc3\xab', u'ë'] , [ u'\xc3\xaa', u'ê']]
     for old, new in lstcarac:
         #if old==u'\xc3\xa9':
-		#     raise
+        #     raise
         f = f.replace(old, new)
     #for carac in lstcarac:
     #    f = f.replace(carac[0],carac[1])
@@ -48,34 +48,34 @@ def make_tree(path, includeFiles, lstExcl):
     return tree
 
 def Action(request,pathFiles):
-	if request.form['submitButton']=='ModifPath':
-		return request.form['repPrinc'][1:].encode('utf-8')
-		#url=request.path
-		#url += request.form['repPrinc']
-		#return render_template(url) 
-	elif request.form['submitButton']=='Lancer':
-		TypeAction=request.form['ChxAction']
-		import urllib
-		Rep=insertAccents(urllib.unquote(request.form['PathSelected'])).encode('utf-8')
-		Files=insertAccents(urllib.unquote(request.form['FilesSelected'])).encode('utf-8').split(";")
-		import os
-		import shutil
-		if TypeAction=='NvDossier':
-			os.mkdir(os.path.join(Rep,'New'))
-		elif TypeAction=='SupprimerDossier':
+    if request.form['submitButton']=='ModifPath':
+        return request.form['repPrinc'][1:].encode('utf-8')
+        #url=request.path
+        #url += request.form['repPrinc']
+        #return render_template(url) 
+    elif request.form['submitButton']=='Lancer':
+        TypeAction=request.form['ChxAction']
+        import urllib
+        Rep=insertAccents(urllib.unquote(request.form['PathSelected'])).encode('utf-8')
+        Files=insertAccents(urllib.unquote(request.form['FilesSelected'])).encode('utf-8').split(";")
+        import os
+        import shutil
+        if TypeAction=='NvDossier':
+            os.mkdir(os.path.join(Rep,'New'))
+        elif TypeAction=='SupprimerDossier':
             isDir = os.path.isdir(Rep)
             if isDir == True:
                 shutil.rmtree(Rep)
                 raise
             else:
                 raise
-		elif TypeAction=='SupprimerFichiers':
-			for File in Files:
-				if File!='':os.remove(File)
-		elif TypeAction=='Deplacer':
-			for File in Files:
-				if File!='':shutil.move(File,Rep)
-		elif TypeAction=='Copier':
-			for File in Files:
-				if File!='':shutil.copy2(File,Rep)
-		return pathFiles
+        elif TypeAction=='SupprimerFichiers':
+            for File in Files:
+                if File!='':os.remove(File)
+        elif TypeAction=='Deplacer':
+            for File in Files:
+                if File!='':shutil.move(File,Rep)
+        elif TypeAction=='Copier':
+            for File in Files:
+                if File!='':shutil.copy2(File,Rep)
+        return pathFiles

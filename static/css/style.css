@@ -376,7 +376,7 @@ ul#menu li:hover a
   color: #47433F;
 }
 
-.form_settings input [type="radio"]{
+.form_settings input[type="radio"]{
   position: absolute;
   left: -9999px;
 }
