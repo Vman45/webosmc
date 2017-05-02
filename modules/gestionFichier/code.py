@@ -66,6 +66,7 @@ def Action(request,pathFiles):
             isDir = os.path.isdir(Rep)
             if isDir == True:
                 shutil.rmtree(Rep)
+                raise
             else:
                 raise
 		elif TypeAction=='SupprimerFichiers':
