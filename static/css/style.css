@@ -369,7 +369,7 @@ ul#menu li:hover a
 
 .form_settings textarea
 { padding: 2px; 
-  width: 299px; 
+  width: 699px; 
   font: 100% arial; 
   border: 1px solid #E5E5DB; 
   background: #FFF; 
@@ -385,6 +385,7 @@ ul#menu li:hover a
 { float: left;
   font: bold 120% Arial, Helvetica, sans-serif;
   height: 30px;
+  width: 220px;
   margin: 0 0 0 20px;
   text-shadow: 0px -1px 0px #000;
   padding: 15px 20px 2px 20px;
