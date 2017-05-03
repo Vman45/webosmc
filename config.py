@@ -12,7 +12,7 @@ GEN_MENU[6] = {"Config":"/config/"}
 GEN_MENU[7] = {"test":"/test/"}
 GEN_AFF_BANDEAU = False
 LINK_MAJ_SITE = "git --git-dir /home/osmc/webosmc/.git pull" #"sh /home/osmc/scripts/majWeb.sh"
-LINK_VERIFMAJ = "sh /home/osmc/webosmc/verifVersion.sh"
+LINK_VERIFMAJ = ["sh","/home/osmc/webosmc/verifVersion.sh"]
 LINK_JDOWNLOADER = "https://my.jdownloader.org/?deviceId=4ad32ae65d600a9b070bba54a8f0429d#webinterface:downloads"
 GESTIONFICHIER_DDL_PATH = "/mnt/LOC/USB"
 GESTIONFICHIER_LST_EXCL_PATH = ['$RECYCLE.BIN','save', 'System Volume Information', 'test', 'musique', 'photos']
@@ -20,5 +20,5 @@ GESTIONFICHIER_LST_EXCL_FILES = ['.part','xyztetst']
 SSH_PORT = 4200
 KODI_PORT = 8080
 # A cabler
-LINK_LOG = "tail -f /home/osmc/tmp/*"
+LINK_LOG = ["tail","-f /home/osmc/tmp/*"]
 MPD_CONFIG = "/modules/wymypy/wymypy.ini"
