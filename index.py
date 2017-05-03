@@ -70,10 +70,10 @@ def lancement_test():
     # app.logger.error('testing error log')
     return render_template('test.html',data=get_status())
 
-@app.route('/getdata/', methods=['POST'])
-def get_data():
+@app.route('/_majData/', methods=['GET'])
+def get_majData():
     from modules.status import get_status
-    return {"status": "OK", "data": get_status()}
+    return jsonify("status": "OK", "data": get_status())
 
 if __name__ == '__main__':
     Debug = app.config["DEBUG"]
