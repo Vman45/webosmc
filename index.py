@@ -19,27 +19,24 @@ app.register_blueprint(gestionFichier, url_prefix='/gestionFichier')
 #OK Terminé
 @app.context_processor
 def inject_dict_for_all_templates():
-    return dict(MENU=app.config["MENU"])
+    return dict(MENU=app.config["GEN_MENU"],AFF_BANDEAU=app.config["GEN_AFF_BANDEAU"])
     
 @app.route('/')
 def index():
     import subprocess
-    # ret = subprocess.check_output(app.config["LINK_RECH_MAJ"])
-    ret = 0
-    if (ret == 1) :
+    ret = subprocess.check_output(app.config["LINK_VERIFMAJ"])
+    app.logger.info('Verif MAJ :' + app.config["LINK_VERIFMAJ"] + ' Resultat : ' + ret)
+    if (ret <> "Up-to-date") :
         flash("Une nouvelle version du site est disponible\n Veuillez faire une mise à jour")
     return render_template('index.html')
 @app.route('/SSH/')
 def ClientSSH():
-    url_root=request.url_root.lstrip()
-    ind=url_root.find(':',6)
-    if (ind != -1) : url_root = url_root[: ind]
-    url_root=url_root.replace('https://','http://')
-    if (url_root.endswith('/') == False) : 
-      url_root+=':4200/'
-    else:
-      url_root=url_root[0:-1] + ':4200/'
-    return render_template('dev.html',path=url_root)
+    from modules.webConfig import modifPortURL
+    return render_template('SSH.html',path=modifPortURL(request.url_root.lstrip(),app.config('SSH_PORT')))
+@app.route('/kodi/')
+def ClientKodi():
+    from modules.webConfig import modifPortURL
+    return render_template('kodi.html',path=modifPortURL(request.url_root.lstrip(),app.config('KODI_PORT')))
 @app.route('/JD/')
 def JD():
   return render_template('jDownloader.html',path=app.config["LINK_JDOWNLOADER"])

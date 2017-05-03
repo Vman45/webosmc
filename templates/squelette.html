@@ -54,7 +54,8 @@
       </ul>
     </div><!--close menubar-->	
     
-	<div id="site_content">		
+	<div id="site_content">
+      {% if AFF_BANDEAU %}
 	  <div class="sidebar_container">       
 		<div class="sidebar">
 		  <div class="sidebar_item">
@@ -83,7 +84,7 @@
 		  </div><!--close sidebar_item--> 
 	     </div><!--close sidebar-->
          </div><!--close sidebar_container-->	
-	
+        {% endif %}
          <div id="content">
         	<div class="content_item">
 		  	{% block corps %}
