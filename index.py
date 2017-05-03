@@ -32,11 +32,11 @@ def index():
 @app.route('/SSH/')
 def ClientSSH():
     from modules.webConfig import modifPortURL
-    return render_template('SSH.html',path=modifPortURL(request.url_root.lstrip(),app.config('SSH_PORT')))
+    return render_template('SSH.html',path=modifPortURL(request.url_root.lstrip(),app.config['SSH_PORT']))
 @app.route('/kodi/')
 def ClientKodi():
     from modules.webConfig import modifPortURL
-    return render_template('kodi.html',path=modifPortURL(request.url_root.lstrip(),app.config('KODI_PORT')))
+    return render_template('kodi.html',path=modifPortURL(request.url_root.lstrip(),app.config['KODI_PORT']))
 @app.route('/JD/')
 def JD():
   return render_template('jDownloader.html',path=app.config["LINK_JDOWNLOADER"])
