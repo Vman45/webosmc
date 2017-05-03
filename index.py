@@ -25,7 +25,7 @@ def inject_dict_for_all_templates():
 def index():
     import subprocess
     ret = subprocess.check_output(app.config["LINK_VERIFMAJ"])
-    app.logger.info('Verif MAJ :' + app.config["LINK_VERIFMAJ"] + ' Resultat : ' + ret)
+    app.logger.info('Verif MAJ :' + ' Resultat : ' + ret)
     if (ret <> "Up-to-date") :
         flash("Une nouvelle version du site est disponible\n Veuillez faire une mise à jour")
     return render_template('index.html')
