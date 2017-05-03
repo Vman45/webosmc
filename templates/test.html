@@ -1,5 +1,6 @@
 <!-- <meta http-equiv="refresh" content="60" /> -->
 <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
+<div><h2>Scripts</h2>
 $( document ).ready(function() {
     console.log( "ready!" )
     start()
@@ -33,11 +34,13 @@ $( document ).ready(function() {
         alert('Arret')
         clearTimeout(timeout_flag)
     }
+</div>
 <script type="text/javascript">
     function update_values() {
         $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
         $.getJSON($SCRIPT_ROOT+"/_majData",
             function(data) {
+                $("#data").text(data)
                 $("#cpuload").text(data.cpu+" %")
                 //$("#ram").text(data.ram+" %")
                 //$("#disk").text(data.disk+" %")
@@ -47,21 +50,27 @@ $( document ).ready(function() {
         lancement();
     });
     function lancement(){
+        console.log( "ready!" );
+        alert("lancement");
         var refreshId = setInterval(update_values() {}, 1000);
     }
 </script>
-
-{{ status }}
-  <div class="actions">
+<hr>
+<div>{{ status }}</div>
+<hr>
+<div class="actions">
 <span id="data">data</span>
+<hr>
 <span id="ram">ram</span>
+<hr>
 <span id="disk">disk</span>
+<hr>
 <span id="cpuload">cpuload</span>
-  {{ temp }}      
+<hr>  
         <ul>
                 <li><a href="#" onclick="start(); return false;" title="start briefing"> Start Briefing</a></li>
                 <li><a href="#" onclick="stop(); return false;"> Stop Briefing</a></li>
             </ul>
         </div><!-- actions -->
-        
-        {{ data }}
+<hr>        
+<div>{{ data }}</div>

@@ -16,6 +16,12 @@ app.config.from_object('config')
 from modules.gestionFichier.view import gestionFichier
 app.register_blueprint(gestionFichier, url_prefix='/gestionFichier')
 
+
+# app.logger.warning('testing warning log %s %d','ok', 21)
+# app.logger.info('testing info log')
+# app.logger.error('testing error log')
+
+
 #OK Terminé
 @app.context_processor
 def inject_dict_for_all_templates():
@@ -65,16 +71,15 @@ def FichiersLog():
 @app.route('/test/')
 def lancement_test():
     from modules.status import get_status
-    app.logger.warning('testing warning log %s %d','ok', 21)
     app.logger.info('testing info log')
-    # app.logger.error('testing error log')
     return render_template('test.html',data=get_status())
 
 @app.route('/_majData/', methods=['GET'])
 def get_majData():
     from modules.status import get_status
-    return jsonify("status": "OK", "data": get_status())
-
+    # return jsonify("status"= "OK", "data"= get_status())
+    app.logger.info('_Majdata=')
+    return {"status": "OK", "data": get_status()}
 if __name__ == '__main__':
     Debug = app.config["DEBUG"]
     if Debug == 'True':
