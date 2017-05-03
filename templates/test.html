@@ -36,23 +36,20 @@ $( document ).ready(function() {
     }
 </div>
 <script type="text/javascript">
+    $(document).ready(function(){
+        lancement();
+    });
+    function lancement(){
+        alert("lancement");
+        var refreshId = setInterval(update_values() {}, 1000);
+    }
     function update_values() {
         $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
         $.getJSON($SCRIPT_ROOT+"/_majData",
             function(data) {
                 $("#data").text(data)
                 $("#cpuload").text(data.cpu+" %")
-                //$("#ram").text(data.ram+" %")
-                //$("#disk").text(data.disk+" %")
             });
-    }
-    $(document).ready(function(){
-        lancement();
-    });
-    function lancement(){
-        console.log( "ready!" );
-        alert("lancement");
-        var refreshId = setInterval(update_values() {}, 1000);
     }
 </script>
 <hr>
@@ -68,8 +65,9 @@ $( document ).ready(function() {
 <span id="cpuload">cpuload</span>
 <hr>  
         <ul>
-                <li><a href="#" onclick="start(); return false;" title="start briefing"> Start Briefing</a></li>
-                <li><a href="#" onclick="stop(); return false;"> Stop Briefing</a></li>
+                <li><a href="#" onclick="lancement()" title="start briefing"> Start Briefing</a></li>
+                <li><a href="#" onclick="alert('test')"> Stop Briefing</a></li>
+                <li><a href="javascript:alert('test')"> test Briefing</a></li>
             </ul>
         </div><!-- actions -->
 <hr>        
