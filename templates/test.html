@@ -1,59 +1,57 @@
 <!-- <meta http-equiv="refresh" content="60" /> -->
+<head>
 <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
-<div><h2>Scripts</h2>
-$( document ).ready(function() {
-    console.log( "ready!" )
-    start()
-});   
-   function refresh() {
-        $.post('/getdata' , {
-                'action': 'refresh',
-            },
-            function success(reponse){
-                if (timeout_flag != null) {
-                    if (reponse.status == 'OK') {
-                        alert('mise à jour OK :{{ data }}')
-                        $('#data') = {{ data }}
-                    } else {
-                        alert('mise à jour vide')
-                        $('#data') = 'nothing'
-                    }
-                    timeout_flag = setTimeout(function(){ refresh(); }, 3000)
-                }
-            },
-            "json"
-        );
-    }
+</head>
+<body>
+<button onclick="start()">Lancer le décompte</button>
+<button onclick="stop()">stopper le décompte</button>
+<div id="bip" class="display"></div>
 
-    function start() {
-        alert('mise en place')
-        timeout_flag = setTimeout(function(){ refresh(); }, 100)
-    }
+<script>
+var counter = 20;
+var intervalId = null;
+function stop()
+{
+  clearInterval(intervalId);
+  document.getElementById("bip").innerHTML = "TERMINE!";	
+}
+function bip()
+{
+    document.getElementById("bip").innerHTML = counter + " secondes restantes";
+    counter--;
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    var content = $SCRIPT_ROOT+"/_majData";
+    $.getJSON($SCRIPT_ROOT+"/_majData",
+        function(data) {
+            $("#data").text(data)
+            $("#cpuload").text(data.cpu+" %")
+            $("#ram").text(data.ram+" %")
+            $("#disk").text(data.disk+" %")
+            $("#freespace").text(data.freespace)
+        }
+    );
+    $("#data").text(content);
+}
+function start()
+{
+  intervalId = setInterval(bip, 1000);
+}
 
-    function stop() {
-        alert('Arret')
-        clearTimeout(timeout_flag)
-    }
-</div>
-<script type="text/javascript">
+</script>
+ function update_values() {
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    $.getJSON($SCRIPT_ROOT+"/_majData",
+        function(data) {
+            $("#data").text(data)
+            
+        });
+}
     $(document).ready(function(){
         lancement();
     });
-    function lancement(){
-        alert("lancement");
-        var refreshId = setInterval(update_values() {}, 1000);
-    }
-    function update_values() {
-        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-        $.getJSON($SCRIPT_ROOT+"/_majData",
-            function(data) {
-                $("#data").text(data)
-                $("#cpuload").text(data.cpu+" %")
-            });
-    }
-</script>
+
+<div><h2>Scripts</h2>
 <hr>
-<div>{{ status }}</div>
 <hr>
 <div class="actions">
 <span id="data">data</span>
@@ -64,11 +62,34 @@ $( document ).ready(function() {
 <hr>
 <span id="cpuload">cpuload</span>
 <hr>  
-        <ul>
-                <li><a href="#" onclick="lancement()" title="start briefing"> Start Briefing</a></li>
-                <li><a href="#" onclick="alert('test')"> Stop Briefing</a></li>
-                <li><a href="javascript:alert('test')"> test Briefing</a></li>
-            </ul>
+<hr>
+<span id="freespace">freespace</span>
+<hr>  
         </div><!-- actions -->
 <hr>        
 <div>{{ data }}</div>
+</body>
+
+
+<!-- <button onclick="start()">Lancer le décompte</button> -->
+<!-- <div id="bip" class="display"></div> -->
+
+<!-- <script> -->
+<!-- var counter = 20; -->
+<!-- var intervalId = null; -->
+<!-- function action() -->
+<!-- { -->
+  <!-- clearInterval(intervalId); -->
+  <!-- document.getElementById("bip").innerHTML = "TERMINE!";	 -->
+<!-- } -->
+<!-- function bip() -->
+<!-- { -->
+  <!-- document.getElementById("bip").innerHTML = counter + " secondes restantes"; -->
+  <!-- counter--; -->
+<!-- } -->
+<!-- function start() -->
+<!-- { -->
+  <!-- intervalId = setInterval(bip, 1000); -->
+  <!-- setTimeout(action, counter * 1000); -->
+<!-- }	 -->
+<!-- </script> -->

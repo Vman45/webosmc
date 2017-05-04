@@ -78,8 +78,9 @@ def lancement_test():
 def get_majData():
     from modules.status import get_status
     # return jsonify("status"= "OK", "data"= get_status())
-    app.logger.info('_Majdata=')
-    return {"status": "OK", "data": get_status()}
+    data = get_status()
+    app.logger.info('_Majdata=' + data)
+    return jsonify(data = data)
 if __name__ == '__main__':
     Debug = app.config["DEBUG"]
     if Debug == 'True':
