@@ -6,27 +6,137 @@
 <h1>Bienvenue {{ self.titre() }}</h1>
 <br>
         <br>Bienvenue dans cet environnement de test <br>
-<br><br><br><h2><a href="/majWeb/">MaJ du serveur</a></h2>
-        
-        <ul><h3>Fonctionnel :</h3>
-        <br>
- <li>Accès SSH </li>
- <li>Accès JDownloader </li>
- <li>Organisation des fichiers </li>
- <li>Accès SSH </li><
- <li>Esthétique globale</li>
- <li>Fichier Config</li>
-/ul>
-<ul><h3>En cours : </h3>
- <br>
- <li>Etat du raspberry + logs</li>
- <li>Accès kodi</li>
- <li>Accès musique</li> 
- <br>
- </ul>
-<ul>A venir : 
-        <br>
+<h2><a href="/majWeb/">MaJ du serveur</a></h2><br><br><br>
+<form class="form_settings">
+<button onclick="start()">Lancer la mise à jour</button>
+<button onclick="stop()">stopper la mise à jour</button>
+<div id="bip" class="display"></div>
 
- <li> </li>
- </ul>
+<script>
+var counter = 0;
+var intervalId = null;
+function stop()
+{
+  clearInterval(intervalId);
+  document.getElementById("bip").innerHTML = "TERMINE!";	
+}
+function bip()
+{
+    document.getElementById("bip").innerHTML = counter + " secondes passées";
+    counter++;
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    var content = $SCRIPT_ROOT+"/_majData";
+    $.getJSON($SCRIPT_ROOT+"/_majData",
+        function(data) {
+            $("#ram").text(data.uptime+" %")
+            var sortie = "<ul>cpufrequency" + data.cpufrequency + "</ul>"
+             sortie += "<ul>ip" + data.ip + "</ul>"
+            for(elt in data.disk){
+                sortie+= "<ul>    used : " + data.disk[elt].used + "</ul>"
+                sortie+= "<ul>    free : " + data.disk[elt].free + "</ul>"
+            }
+            
+            $("#data").text(sortie);
+            
+            
+            
+            $("#disk").text(data.disk+" %")
+            $("#cpuload").text(data.cpu+" %")
+            $("#freespace").text(data.freespace)
+        }
+    );
+}
+function start()
+{
+  intervalId = setInterval(bip, 1000);
+}
+</script>    
+
+
+<!-- content= -->
+<!-- {'cpufrequency': '0 Mhz', -->
+ <!-- 'ip': ['192.168.1.16'],  -->
+ <!-- 'disk': [{'used': '2 Gb',  -->
+            <!-- 'percent': 16,  -->
+            <!-- 'free': '10 Gb',  -->
+            <!-- 'fstype': 'ext4',  -->
+            <!-- 'device': '/dev/mmcblk0p2',  -->
+            <!-- 'mountpoint': '/',  -->
+            <!-- 'total': '13 Gb'}, -->
+        <!-- {'used': '332 Gb',  -->
+            <!-- 'percent': 35,  -->
+            <!-- 'free': '599 Gb', -->
+            <!-- 'fstype': 'fuseblk',  -->
+            <!-- 'device': '/dev/sda1',  -->
+            <!-- 'mountpoint': '/media/Maxtor',  -->
+            <!-- 'total': '931 Gb'},  -->
+        <!-- {'used': '29 Mb',  -->
+            <!-- 'percent': 12,  -->
+            <!-- 'free': '209 Mb',  -->
+            <!-- 'fstype': 'vfat',  -->
+            <!-- 'device': '/dev/mmcblk0p1',  -->
+            <!-- 'mountpoint': '/boot',  -->
+            <!-- 'total': '239 Mb'},  -->
+        <!-- {'used': '332 Gb',  -->
+            <!-- 'percent': 35,  -->
+            <!-- 'free': '599 Gb',  -->
+            <!-- 'fstype': 'fuseblk',  -->
+            <!-- 'device': '/dev/sda1',  -->
+            <!-- 'mountpoint': '/mnt/LOC/USB',  -->
+            <!-- 'total': '931 Gb' -->
+        <!-- }],  -->
+    <!-- 'freespace': '10 Gb', -->
+    <!-- 'uptime': '0d 15h 39m 36s',  -->
+    <!-- 'temperature': 0,  -->
+    <!-- 'numcpu': 4, -->
+    <!-- 'hostname': 'osmc',  -->
+    <!-- 'cpuusage': { -->
+        <!-- 'average': 30,  -->
+        <!-- 'values': [20.0, 100.0, 0.0, 0.0] -->
+    <!-- },  -->
+    <!-- 'loadavg': { -->
+        <!-- 'la1': 0.68,  -->
+        <!-- 'la2': 0.77,  -->
+        <!-- 'la3': 0.74 -->
+    <!-- },  -->
+    <!-- 'memory': { -->
+        <!-- 'available': '287 Mb',  -->
+        <!-- 'used': '446 Mb',  -->
+        <!-- 'bufferraw': 31608832,  -->
+        <!-- 'usedraw': 468017152,  -->
+        <!-- 'free': '214 Mb',  -->
+        <!-- 'total': '733 Mb',  -->
+        <!-- 'buffers': '30 Mb',  -->
+        <!-- 'freeraw': 225222656,  -->
+        <!-- 'cachedraw': 89501696,  -->
+        <!-- 'cached': '85 Mb',  -->
+        <!-- 'swtotal': '0 b',  -->
+        <!-- 'percent': 60,  -->
+        <!-- 'swpercent': 0,  -->
+        <!-- 'swfree': '0 b' -->
+    <!-- },  -->
+    <!-- 'cpu': { -->
+        <!-- 'softirq': 0,  -->
+        <!-- 'iowait': 1,  -->
+        <!-- 'system': 0,  -->
+        <!-- 'idle': 91,  -->
+        <!-- 'user': 6,  -->
+        <!-- 'irq': 0,  -->
+        <!-- 'nice': 0 -->
+    <!-- } -->
+<!-- } -->
+
+
+<textarea id="data">data</textarea>
+<hr>
+<span id="memory">ram</span>
+<hr>
+<span id="disk">disk</span>
+<hr>
+<span id="cpuload">cpuload</span>
+<hr>  
+<hr>
+<span id="freespace">freespace</span>
+<hr>  
+</form>
 {% endblock %}
