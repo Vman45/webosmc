@@ -28,7 +28,7 @@ def get_status():
     uptime=status_functions.getUptime(True)
     ip = status_functions.getIP()
     content={'freespace':freespace,'cpufrequency':cpufrequency,'uptime':uptime,'loadavg':loadavg,'ip':ip,'hostname':hostname,'cpu':cpu,'numcpu':numcpu,'cpuusage':cpuusage,'disk':disk,'temperature':temperature,'memory':memory}	
-    return json.dumps(content)
+    return content
     #if http_context.suburl=='getinfo' :
     #    return WebStructure.HttpContext(statuscode=200,content=json.dumps(content), template=None, mimetype='text/html')
     #return WebStructure.HttpContext(statuscode=200,content=content,template=template,mimetype='text/html')
