@@ -80,7 +80,7 @@ def get_majData():
     # return jsonify("status"= "OK", "data"= get_status())
     data = get_status()
     app.logger.info('_Majdata=' + data)
-    return jsonify(data = data)
+    return data
 if __name__ == '__main__':
     Debug = app.config["DEBUG"]
     if Debug == 'True':
@@ -90,12 +90,12 @@ if __name__ == '__main__':
         formatter = logging.Formatter( "%(asctime)s | %(pathname)s:%(lineno)d | %(funcName)s | %(levelname)s | %(message)s ")
         logHandler.setFormatter(formatter)
         # set the log handler level
-        logHandler.setLevel(logging.DEBUG)
-#        logHandler.setLevel(logging.INFO)
+#        logHandler.setLevel(logging.DEBUG)
+        logHandler.setLevel(logging.INFO)
 #        logHandler.setLevel(logging.ERROR)
         # set the app logger level
-        app.logger.setLevel(logging.DEBUG)
-#        app.logger.setLevel(logging.INFO)
+#        app.logger.setLevel(logging.DEBUG)
+        app.logger.setLevel(logging.INFO)
         app.logger.addHandler(logHandler)    
 
     app.run(debug=Debug, port=app.config["PORT"], host='0.0.0.0')
