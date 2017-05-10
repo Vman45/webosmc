@@ -11,8 +11,6 @@ from logging.handlers import RotatingFileHandler
 # Gestion fichier config 
 app.config.from_object('config')
 # Modules complémentaires
-from modules.wymypy.app import wymypy
-app.register_blueprint(wymypy, url_prefix='/MPD')
 from modules.gestionFichier.view import gestionFichier
 app.register_blueprint(gestionFichier, url_prefix='/gestionFichier')
 
