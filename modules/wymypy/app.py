@@ -4,9 +4,10 @@ import json
 
 from flask import Flask, render_template, request, abort, Response, Blueprint
 
+app = Blueprint('wymypy',__name__,template_folder='templates', static_folder='static')
+
 from wymypy.libs.mpdsafe import MpdSafe
 
-app = Blueprint('wymypy',__name__,template_folder='templates', static_folder='static')
 config = ConfigParser.SafeConfigParser()
 mpd = MpdSafe()
 plugins = []
