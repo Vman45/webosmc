@@ -6,6 +6,8 @@ from flask import Flask, render_template, request, abort, Response, Blueprint
 
 app = Blueprint('wymypy',__name__,template_folder='templates', static_folder='static')
 
+import modules.wymypy as wymypy
+
 from wymypy.libs.mpdsafe import MpdSafe
 
 config = ConfigParser.SafeConfigParser()
