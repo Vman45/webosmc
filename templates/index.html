@@ -18,7 +18,7 @@ var intervalId = null;
 function stop()
 {
   clearInterval(intervalId);
-  document.getElementById("bip").innerHTML = "TERMINE!";	
+  document.getElementById("bip").innerHTML = "";	
 }
 function bip()
 {
@@ -28,21 +28,38 @@ function bip()
     var content = $SCRIPT_ROOT+"/_majData";
     $.getJSON($SCRIPT_ROOT+"/_majData",
         function(data) {
-            $("#ram").text(data.uptime+" %")
-            var sortie = "<ul>cpufrequency" + data.cpufrequency + "</ul>"
-             sortie += "<ul>ip" + data.ip + "</ul>"
+            var sortie = ""
             for(elt in data.disk){
-                sortie+= "<ul>    used : " + data.disk[elt].used + "</ul>"
-                sortie+= "<ul>    free : " + data.disk[elt].free + "</ul>"
+                sortie += "<li>disk device : " + data.disk[elt].device + "( mountpoint : " +  data.disk[elt].mountpoint + ", fstype : " + data.disk[elt].fstype + " )<ul>"
+                sortie+= "<li>total : " + data.disk[elt].total + "</li>"
+                sortie+= "<li>used : " + data.disk[elt].used + "</li>"
+                sortie+= "<li>free : " + data.disk[elt].free + " ( " + data.disk[elt].percent + " % )</li>"
+                sortie+= "</ul></li>"
             }
+            document.getElementById("disk").innerHTML(sortie);
             
-            $("#data").text(sortie);
+            sortie = ""
+            sortie += "<li>hostname  " + data.hostname + " ( " + data.ip + " ) </li>"
+            sortie += "<li>uptime : " + data.uptime + "</li>"
+            sortie += "<li>temperature : " + data.temperature + "</li>"
+            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li>"
+            document.getElementById("gen").innerHTML(sortie)
             
+            sortie = "<ul>"
+            sortie += "<li>Nb cpu : " + data.numcpu + "</li>"
+            sortie += "<li>cpuusage :</li><ul>"
+            sortie += "<li>average : " + data.average + "</li>"
+            sortie += "<li>values : " + data.values + "</li></ul>"
+            sortie += "</ul>"
+            document.getElementById("cpu").innerHTML(sortie)
             
-            
-            $("#disk").text(data.disk+" %")
-            $("#cpuload").text(data.cpu+" %")
-            $("#freespace").text(data.freespace)
+            sortie = ""
+            sortie += "<li>total : " + data.total + "</li>"
+            sortie += "<li>used : " + data.used + "</li>"
+            sortie += "<li>available : " + data.available + "</li>"
+            sortie += "<li>free : " + data.free + "</li>"
+            sortie += ""
+            document.getElementById("mem").innerHTML(sortie)
         }
     );
 }
@@ -51,12 +68,21 @@ function start()
   intervalId = setInterval(bip, 1000);
 }
 </script>    
-
+<hr>  
+<div id="gen"></div>
+<hr>
+<div id="cpu"></div>
+<hr>
+<div id="mem"></div>
+<hr>
+<div id="disk"></div>
+<hr>
+</form>
+{% endblock %}
 
 <!-- content= -->
-<!-- {'cpufrequency': '0 Mhz', -->
- <!-- 'ip': ['192.168.1.16'],  -->
- <!-- 'disk': [{'used': '2 Gb',  -->
+<!-- *******disk********* -->
+    <!-- 'disk': [{'used': '2 Gb',  -->
             <!-- 'percent': 16,  -->
             <!-- 'free': '10 Gb',  -->
             <!-- 'fstype': 'ext4',  -->
@@ -85,11 +111,16 @@ function start()
             <!-- 'mountpoint': '/mnt/LOC/USB',  -->
             <!-- 'total': '931 Gb' -->
         <!-- }],  -->
+<!-- *******gen********* -->
+    <!-- { -->
+    <!-- 'cpufrequency': '0 Mhz', --> 
+    <!-- 'ip': ['192.168.1.16'],  -->
     <!-- 'freespace': '10 Gb', -->
     <!-- 'uptime': '0d 15h 39m 36s',  -->
     <!-- 'temperature': 0,  -->
-    <!-- 'numcpu': 4, -->
     <!-- 'hostname': 'osmc',  -->
+<!-- *******cpu********* -->
+    <!-- 'numcpu': 4, -->
     <!-- 'cpuusage': { -->
         <!-- 'average': 30,  -->
         <!-- 'values': [20.0, 100.0, 0.0, 0.0] -->
@@ -99,6 +130,16 @@ function start()
         <!-- 'la2': 0.77,  -->
         <!-- 'la3': 0.74 -->
     <!-- },  -->
+    <!-- 'cpu': { -->
+        <!-- 'softirq': 0,  -->
+        <!-- 'iowait': 1,  -->
+        <!-- 'system': 0,  -->
+        <!-- 'idle': 91,  -->
+        <!-- 'user': 6,  -->
+        <!-- 'irq': 0,  -->
+        <!-- 'nice': 0 -->
+    <!-- } -->
+<!-- *******mem********* -->    
     <!-- 'memory': { -->
         <!-- 'available': '287 Mb',  -->
         <!-- 'used': '446 Mb',  -->
@@ -115,28 +156,5 @@ function start()
         <!-- 'swpercent': 0,  -->
         <!-- 'swfree': '0 b' -->
     <!-- },  -->
-    <!-- 'cpu': { -->
-        <!-- 'softirq': 0,  -->
-        <!-- 'iowait': 1,  -->
-        <!-- 'system': 0,  -->
-        <!-- 'idle': 91,  -->
-        <!-- 'user': 6,  -->
-        <!-- 'irq': 0,  -->
-        <!-- 'nice': 0 -->
-    <!-- } -->
+    
 <!-- } -->
-
-
-<textarea id="data">data</textarea>
-<hr>
-<span id="memory">ram</span>
-<hr>
-<span id="disk">disk</span>
-<hr>
-<span id="cpuload">cpuload</span>
-<hr>  
-<hr>
-<span id="freespace">freespace</span>
-<hr>  
-</form>
-{% endblock %}
