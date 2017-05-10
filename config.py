@@ -21,4 +21,3 @@ SSH_PORT = 4200
 KODI_PORT = 8080
 # A cabler
 LINK_LOG = ["tail","-f /home/osmc/tmp/*"]
-MPD_CONFIG = "/modules/wymypy/wymypy.ini"

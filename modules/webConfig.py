@@ -15,7 +15,7 @@ def modifPortURL(URL,Port):
     if (ind != -1) : URL = URL[: ind]
     URL=URL.replace('https://','http://')
     if (URL.endswith('/') == False) : 
-      URL+='' + Port + '/'
+      URL+=':' + str(Port) + '/'
     else:
-      URL=URL[0:-1] + ':' + Port + '/'
+      URL=URL[0:-1] + ':' + str(Port) + '/'
     return URL
