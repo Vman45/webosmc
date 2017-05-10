@@ -7,7 +7,7 @@
 <br>
         <br>Bienvenue dans cet environnement de test <br>
 <h2><a href="/majWeb/">MaJ du serveur</a></h2><br><br><br>
-<form class="form_settings">
+<!-- <form class="form_settings"> -->
 <button onclick="start()">Lancer la mise à jour</button>
 <button onclick="stop()">stopper la mise à jour</button>
 <div id="bip" class="display"></div>
@@ -28,38 +28,41 @@ function bip()
     var content = $SCRIPT_ROOT+"/_majData";
     $.getJSON($SCRIPT_ROOT+"/_majData",
         function(data) {
-            var sortie = ""
+            $("#gen").text(data.uptime);
+            var sortie = "";
+            sortie += "<li>total : " + data.total + "</li>";
+            sortie += "<li>used : " + data.used + "</li>";
+            sortie += "<li>available : " + data.available + "</li>";
+            sortie += "<li>free : " + data.free + "</li>";
+            sortie += "";
+            $("#mem").html(sortie);
+            sortie = "";
             for(elt in data.disk){
-                sortie += "<li>disk device : " + data.disk[elt].device + "( mountpoint : " +  data.disk[elt].mountpoint + ", fstype : " + data.disk[elt].fstype + " )<ul>"
-                sortie+= "<li>total : " + data.disk[elt].total + "</li>"
-                sortie+= "<li>used : " + data.disk[elt].used + "</li>"
-                sortie+= "<li>free : " + data.disk[elt].free + " ( " + data.disk[elt].percent + " % )</li>"
-                sortie+= "</ul></li>"
-            }
-            document.getElementById("disk").innerHTML(sortie);
+                sortie += "<li>disk device : " + data.disk[elt].device + "( mountpoint : " +  data.disk[elt].mountpoint + ", fstype : " + data.disk[elt].fstype + " )<ul>";
+                sortie+= "<li>total : " + data.disk[elt].total + "</li>";
+                sortie+= "<li>used : " + data.disk[elt].used + "</li>";
+                sortie+= "<li>free : " + data.disk[elt].free + " ( " + data.disk[elt].percent + " % )</li>";
+                sortie+= "</ul></li>";
+            };
+            $("#disk").html(sortie);
             
-            sortie = ""
-            sortie += "<li>hostname  " + data.hostname + " ( " + data.ip + " ) </li>"
-            sortie += "<li>uptime : " + data.uptime + "</li>"
-            sortie += "<li>temperature : " + data.temperature + "</li>"
-            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li>"
-            document.getElementById("gen").innerHTML(sortie)
+            sortie = "";
+            sortie += "<li>hostname  " + data.hostname + " ( " + data.ip + " ) </li>";
+            sortie += "<li>uptime : " + data.uptime + "</li>";
+            sortie += "<li>temperature : " + data.temperature + "</li>";
+            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li>";
+            $("#gen").html(sortie);
             
-            sortie = "<ul>"
-            sortie += "<li>Nb cpu : " + data.numcpu + "</li>"
-            sortie += "<li>cpuusage :</li><ul>"
-            sortie += "<li>average : " + data.average + "</li>"
-            sortie += "<li>values : " + data.values + "</li></ul>"
-            sortie += "</ul>"
-            document.getElementById("cpu").innerHTML(sortie)
+            sortie = "<ul>";
+            sortie += "<li>Nb cpu : " + data.numcpu + "</li>";
+            sortie += "<li>cpuusage :</li><ul>";
+            sortie += "<li>average : " + data.average + "</li>";
+            sortie += "<li>values : " + data.values + "</li></ul>";
+            sortie += "</ul>";
+            $("#cpu").html(sortie);
             
-            sortie = ""
-            sortie += "<li>total : " + data.total + "</li>"
-            sortie += "<li>used : " + data.used + "</li>"
-            sortie += "<li>available : " + data.available + "</li>"
-            sortie += "<li>free : " + data.free + "</li>"
-            sortie += ""
-            document.getElementById("mem").innerHTML(sortie)
+            
+            
         }
     );
 }
@@ -77,7 +80,8 @@ function start()
 <hr>
 <div id="disk"></div>
 <hr>
-</form>
+{{ data }}
+<!-- </form> -->
 {% endblock %}
 
 <!-- content= -->

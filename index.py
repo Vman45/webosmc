@@ -30,13 +30,14 @@ def index():
     import subprocess
     ret = subprocess.check_output(app.config["LINK_VERIFMAJ"])
     app.logger.info('Verif MAJ :' + ' Resultat : ' + ret + '///')
-    if (ret[:10] <> "Up-to-date") :
+    if (ret[:10] != "Up-to-date") :
         flash(u"Une nouvelle version du site est disponible\n Veuillez faire une mise à jour")
     return render_template('index.html')
 @app.route('/_majData/', methods=['GET'])
 def get_majData():
     from modules.status import get_status
     # return jsonify("status"= "OK", "data"= get_status())
+    app.logger.info('majdata')
     data = get_status()
     return jsonify(data)
 @app.route('/SSH/')
