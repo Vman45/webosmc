@@ -7,9 +7,10 @@
 <br>
         <br>Bienvenue dans cet environnement de test <br>
 <h2><a href="/majWeb/">MaJ du serveur</a></h2><br><br><br>
-<!-- <form class="form_settings"> -->
-<button onclick="start()">Lancer la mise à jour</button>
-<button onclick="stop()">stopper la mise à jour</button>
+
+<button onclick="start()">Lancer MAJ</button>
+<button onclick="stop()">stopper MAJ</button>
+<br><br><br>
 <div id="bip" class="display"></div>
 
 <script>
@@ -29,12 +30,12 @@ function bip()
     $.getJSON($SCRIPT_ROOT+"/_majData",
         function(data) {
             $("#gen").text(data.uptime);
-            var sortie = "";
+            var sortie = "<hr>";
             sortie += "<li>total : " + data.total + "</li>";
             sortie += "<li>used : " + data.used + "</li>";
             sortie += "<li>available : " + data.available + "</li>";
             sortie += "<li>free : " + data.free + "</li>";
-            sortie += "";
+            sortie += "<hr>";
             $("#mem").html(sortie);
             sortie = "";
             for(elt in data.disk){
@@ -42,7 +43,7 @@ function bip()
                 sortie+= "<li>total : " + data.disk[elt].total + "</li>";
                 sortie+= "<li>used : " + data.disk[elt].used + "</li>";
                 sortie+= "<li>free : " + data.disk[elt].free + " ( " + data.disk[elt].percent + " % )</li>";
-                sortie+= "</ul></li>";
+                sortie+= "</ul></li><hr>";
             };
             $("#disk").html(sortie);
             
@@ -50,7 +51,7 @@ function bip()
             sortie += "<li>hostname  " + data.hostname + " ( " + data.ip + " ) </li>";
             sortie += "<li>uptime : " + data.uptime + "</li>";
             sortie += "<li>temperature : " + data.temperature + "</li>";
-            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li>";
+            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li><hr>";
             $("#gen").html(sortie);
             
             sortie = "<ul>";
@@ -58,7 +59,7 @@ function bip()
             sortie += "<li>cpuusage :</li><ul>";
             sortie += "<li>average : " + data.average + "</li>";
             sortie += "<li>values : " + data.values + "</li></ul>";
-            sortie += "</ul>";
+            sortie += "</ul><hr>";
             $("#cpu").html(sortie);
             
             
@@ -71,17 +72,10 @@ function start()
   intervalId = setInterval(bip, 1000);
 }
 </script>    
-<hr>  
-<div id="gen"></div>
-<hr>
-<div id="cpu"></div>
-<hr>
-<div id="mem"></div>
-<hr>
-<div id="disk"></div>
-<hr>
-{{ data }}
-<!-- </form> -->
+<div class="status" id="gen"></div>
+<div class="status" id="cpu"></div>
+<div class="status" id="mem"></div>
+<div class="status" id="disk"></div>
 {% endblock %}
 
 <!-- content= -->
