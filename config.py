@@ -19,6 +19,11 @@ GESTIONFICHIER_LST_EXCL_PATH = ['$RECYCLE.BIN','save', 'System Volume Informatio
 GESTIONFICHIER_LST_EXCL_FILES = ['.part','xyztetst']
 SSH_PORT = 4200
 KODI_PORT = 8080
+STATUS_LSTPROC={}
+STATUS_LSTPROC[0] = {"Kodi":"kodi.bin"}
+STATUS_LSTPROC[1] = {"JDownloader":"JAVA"}
+STATUS_LSTPROC[2] = {"Site web":"PYTHON"}
+STATUS_LSTPROC[3] = {"MPD":"MPD"}
 # A cabler
 LINK_LOG = ["tail","-f /home/osmc/tmp/*"]
 MPD_CONFIG = "/modules/wymypy/wymypy.ini"

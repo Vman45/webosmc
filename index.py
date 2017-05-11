@@ -38,7 +38,7 @@ def get_majData():
     from modules.status import get_status
     # return jsonify("status"= "OK", "data"= get_status())
     app.logger.info('majdata')
-    data = get_status()
+    data = get_status(app.config["STATUS_LSTPROC"])
     return jsonify(data)
 @app.route('/SSH/')
 def ClientSSH():

@@ -29,22 +29,30 @@ function bip()
     var content = $SCRIPT_ROOT+"/_majData";
     $.getJSON($SCRIPT_ROOT+"/_majData",
         function(data) {
-            $("#gen").text(data.uptime);
             var sortie = "<hr>";
+            for(elt in data.processes){
+                sortie += "<li>" + data.name + " : " + data.lstPID </li>";
+            };
+            sortie += "<hr>";
+            $("#processus").html(sortie);
+
+            sortie = "";
             sortie += "<li>total : " + data.total + "</li>";
             sortie += "<li>used : " + data.used + "</li>";
             sortie += "<li>available : " + data.available + "</li>";
             sortie += "<li>free : " + data.free + "</li>";
             sortie += "<hr>";
             $("#mem").html(sortie);
+
             sortie = "";
             for(elt in data.disk){
                 sortie += "<li>disk device : " + data.disk[elt].device + "( mountpoint : " +  data.disk[elt].mountpoint + ", fstype : " + data.disk[elt].fstype + " )<ul>";
                 sortie+= "<li>total : " + data.disk[elt].total + "</li>";
                 sortie+= "<li>used : " + data.disk[elt].used + "</li>";
                 sortie+= "<li>free : " + data.disk[elt].free + " ( " + data.disk[elt].percent + " % )</li>";
-                sortie+= "</ul></li><hr>";
+                sortie+= "</ul></li>";
             };
+            sortie += "<hr>";
             $("#disk").html(sortie);
             
             sortie = "";
@@ -62,8 +70,6 @@ function bip()
             sortie += "</ul><hr>";
             $("#cpu").html(sortie);
             
-            
-            
         }
     );
 }
@@ -72,6 +78,7 @@ function start()
   intervalId = setInterval(bip, 1000);
 }
 </script>    
+<div class="status" id="processus"></div>
 <div class="status" id="gen"></div>
 <div class="status" id="cpu"></div>
 <div class="status" id="mem"></div>

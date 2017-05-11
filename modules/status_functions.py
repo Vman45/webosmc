@@ -5,6 +5,18 @@ import os
 import time
 from netifaces import interfaces, ifaddresses, AF_INET
 
+def getProcessStatus(LstProcName):
+    S = {}
+    for item in LstProcName
+        for name, path in LstProcName[item].items()  
+                S[item] = {'name' : name ,'lstPID': subprocess.check_output(["pidof",path])}
+    return S
+    # while kill -0 $pid 2>/dev/null
+    # do
+      # echo ProcName tourne toujours
+      # sleep 2
+    # done
+
 def getHostName():
     return socket.gethostname()
 
@@ -95,6 +107,7 @@ def getUptime(text=False):
 def getTemperature():
     try:
         s = subprocess.check_output(["/usr/bin/vcgencmd","measure_temp"])
+        app.logger.info('temperature = %s'% (s))
         return float(s.replace("temp=","").replace("'C\n",""))
     except:
         return 0
@@ -102,6 +115,7 @@ def getTemperature():
 def getCpuFrequency():
     try:
         s = subprocess.check_output(["/usr/bin/vcgencmd","measure_clock arm"])
+        app.logger.info('CpuFrequency = %s'% (s))
         return int(s.split("=")[1].replace("'C\n",""))
     except:
         return 0
