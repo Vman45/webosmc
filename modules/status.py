@@ -1,7 +1,7 @@
 import modules.status_functions as status_functions
 import json
 
-def get_status():
+def get_status(LstProcName):
     cpu=status_functions.getCpuPercent()
     numcpu=status_functions.getNumCpu()
     cpuusage=status_functions.getCPUusage()
@@ -27,7 +27,8 @@ def get_status():
 
     uptime=status_functions.getUptime(True)
     ip = status_functions.getIP()
-    content={'freespace':freespace,'cpufrequency':cpufrequency,'uptime':uptime,'loadavg':loadavg,'ip':ip,'hostname':hostname,'cpu':cpu,'numcpu':numcpu,'cpuusage':cpuusage,'disk':disk,'temperature':temperature,'memory':memory}	
+    processes = status_functions.getProcessStatus(LstProcName)
+    content={'processes':processes,'freespace':freespace,'cpufrequency':cpufrequency,'uptime':uptime,'loadavg':loadavg,'ip':ip,'hostname':hostname,'cpu':cpu,'numcpu':numcpu,'cpuusage':cpuusage,'disk':disk,'temperature':temperature,'memory':memory}	
     return content
     #if http_context.suburl=='getinfo' :
     #    return WebStructure.HttpContext(statuscode=200,content=json.dumps(content), template=None, mimetype='text/html')

@@ -67,6 +67,20 @@ ol
 ol li
 { margin: 0 0 11px 0;}
 
+
+.status
+{
+  line-height :1.2em;
+  padding-left: 200px;
+  marging-left: 200px;
+}
+.status li
+{
+  line-height :1.1em;
+  /*padding-left: 200px;
+  marging-left: 200px;*/
+}
+
 #main, #header, #banner, #menubar, #site_content, #footer, #content_grey
 { margin-left: auto; 
   margin-right: auto;}
@@ -339,6 +353,28 @@ ul#menu li:hover a
 { color: #FFF;
   padding-left: 5px;}
 
+ button
+{ font: bold 110% Arial, Helvetica, sans-serif;
+  color: #1D1D1D;
+  height: 40px;
+  /*width: 100px;*/
+  padding: 5px 12px 7px 12px;
+  background: #1D1D1D;
+  background: -moz-linear-gradient(#535353, #1d1d1d);
+  background: -o-linear-gradient(#535353, #1d1d1d);
+  background: -webkit-linear-gradient(#535353, #1d1d1d);
+  border-radius: 15px 15px 15px 15px;
+  -moz-border-radius: 15px 15px 15px 15px;
+  -webkit-border: 15px 15px 15px 15px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
+}
+ button:hover
+{ font: bold 110% Arial, Helvetica, sans-serif;
+  color: #FFFFFF;
+}  
+  
 .form_settings
 { /*margin: 15px 0 0 0;*/}
 
@@ -349,7 +385,7 @@ ul#menu li:hover a
 { /*float: left; 
   width: 280px; 
   text-align: left;*/}
-.form_settings button[type="submit"]
+/*.form_settings button[type="submit"]
 { font: bold 110% Arial, Helvetica, sans-serif;
   color: #1D1D1D;
   height: 40px;
@@ -365,7 +401,7 @@ ul#menu li:hover a
   -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
   -moz-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
-}
+}*/
 
 .form_settings textarea
 { padding: 2px; 
