@@ -14,7 +14,6 @@ app.config.from_object('config')
 from modules.gestionFichier.view import gestionFichier
 app.register_blueprint(gestionFichier, url_prefix='/gestionFichier')
 
-
 # app.logger.warning('testing warning log %s %d','ok', 21)
 # app.logger.info('testing info log')
 # app.logger.error('testing error log')
@@ -35,8 +34,7 @@ def index():
     return render_template('index.html')
 @app.route('/_majData/', methods=['GET'])
 def get_majData():
-    from modules.status import get_status
-    # return jsonify("status"= "OK", "data"= get_status())
+    from modules.status.app import get_status
     app.logger.info('majdata')
     data = get_status(app.config["STATUS_LSTPROC"])
     return jsonify(data)
@@ -72,12 +70,13 @@ def POSTconfigWeb():
 @app.route('/log/')
 def FichiersLog():
     return render_template('log.html')
+@app.route('/scripts/')
+def FichiersScripts():
+    return render_template('scripts.html')
 
 @app.route('/test/')
 def lancement_test():
-    from modules.status import get_status
-    app.logger.info('testing info log')
-    return render_template('test.html',data=get_status())
+    return render_template('test.html')
 
 
 if __name__ == '__main__':

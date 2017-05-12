@@ -16,11 +16,6 @@ def getProcessStatus(LstProcName):
                     pass
                 S[item] = {'name' : name ,'lstPID': lstPID}
     return S
-    # while kill -0 $pid 2>/dev/null
-    # do
-      # echo ProcName tourne toujours
-      # sleep 2
-    # done
 
 def getHostName():
     return socket.gethostname()

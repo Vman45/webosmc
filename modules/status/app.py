@@ -1,4 +1,5 @@
-import modules.status_functions as status_functions
+# coding: utf-8
+import modules.status.status_functions as status_functions
 import json
 
 def get_status(LstProcName):
