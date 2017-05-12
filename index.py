@@ -84,7 +84,7 @@ if __name__ == '__main__':
     Debug = app.config["DEBUG"]
     if Debug == 'True':
         # initialize the log handler
-        logHandler = RotatingFileHandler('info.log', maxBytes=1000000, backupCount=3)
+        logHandler = RotatingFileHandler(filename='/home/osmc/tmp/webinfo.log', maxBytes=1000000, backupCount=3)
 #        formatter = logging.Formatter("[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
         formatter = logging.Formatter( "%(asctime)s | %(pathname)s:%(lineno)d | %(funcName)s | %(levelname)s | %(message)s ")
         logHandler.setFormatter(formatter)

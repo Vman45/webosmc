@@ -30,45 +30,47 @@ function bip()
     $.getJSON($SCRIPT_ROOT+"/_majData",
         function(data) {
             var sortie = "<hr>";
+            sortie += "<h2>Processus (PID ou statut)</h2>";
             for(elt in data.processes){
-                sortie += "<li>" + data.name + " : " + data.lstPID </li>";
+                sortie += "<li>" + data.processes[elt].name + " : " + (data.processes[elt].lstPID == "" ? "OFF !!" : data.processes[elt].lstPID) + "</li>";
             };
             sortie += "<hr>";
             $("#processus").html(sortie);
-
-            sortie = "";
-            sortie += "<li>total : " + data.total + "</li>";
-            sortie += "<li>used : " + data.used + "</li>";
-            sortie += "<li>available : " + data.available + "</li>";
-            sortie += "<li>free : " + data.free + "</li>";
+            
+            sortie = "<h2>Généralités</h2>";
+            sortie += "<li>hostname  " + data.hostname + " ( " + data.ip + " ) </li>";
+            sortie += "<li>uptime : " + data.uptime + "</li>";
+            sortie += "<li>temperature : " + data.temperature + " °C</li>";
+            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li><hr>";
+            $("#gen").html(sortie);
+            
+            sortie = "<h2>Processeur</h2><ul>";
+            sortie += "<li>Nb cpu : " + data.numcpu + "</li>";
+            sortie += "<li>cpuusage :</li><ul>";
+            sortie += "<li>average : " + data.cpuusage.average + "</li>";
+            sortie += "<li>values : " + data.cpuusage.values + "</li></ul>";
+            sortie += "</ul><hr>";
+            $("#cpu").html(sortie);
+            
+            sortie = "<h2>Mémoire</h2>";
+            sortie += "<li>total : " + data.memory.total + "</li>";
+            sortie += "<li>used : " + data.memory.used + "</li>";
+            sortie += "<li>available : " + data.memory.available + "</li>";
+            sortie += "<li>free : " + data.memory.free + "</li>";
             sortie += "<hr>";
             $("#mem").html(sortie);
 
-            sortie = "";
+            sortie = "<h2>Disques</h2>";
             for(elt in data.disk){
                 sortie += "<li>disk device : " + data.disk[elt].device + "( mountpoint : " +  data.disk[elt].mountpoint + ", fstype : " + data.disk[elt].fstype + " )<ul>";
                 sortie+= "<li>total : " + data.disk[elt].total + "</li>";
-                sortie+= "<li>used : " + data.disk[elt].used + "</li>";
-                sortie+= "<li>free : " + data.disk[elt].free + " ( " + data.disk[elt].percent + " % )</li>";
+                sortie+= "<li>used  : " + data.disk[elt].used + "</li>";
+                sortie+= "<li>free  : " + data.disk[elt].free + " ( " + data.disk[elt].percent + " % )</li>";
                 sortie+= "</ul></li>";
             };
             sortie += "<hr>";
             $("#disk").html(sortie);
-            
-            sortie = "";
-            sortie += "<li>hostname  " + data.hostname + " ( " + data.ip + " ) </li>";
-            sortie += "<li>uptime : " + data.uptime + "</li>";
-            sortie += "<li>temperature : " + data.temperature + "</li>";
-            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li><hr>";
-            $("#gen").html(sortie);
-            
-            sortie = "<ul>";
-            sortie += "<li>Nb cpu : " + data.numcpu + "</li>";
-            sortie += "<li>cpuusage :</li><ul>";
-            sortie += "<li>average : " + data.average + "</li>";
-            sortie += "<li>values : " + data.values + "</li></ul>";
-            sortie += "</ul><hr>";
-            $("#cpu").html(sortie);
+
             
         }
     );
@@ -78,11 +80,13 @@ function start()
   intervalId = setInterval(bip, 1000);
 }
 </script>    
-<div class="status" id="processus"></div>
+
 <div class="status" id="gen"></div>
+<div class="status" id="processus"></div>
 <div class="status" id="cpu"></div>
 <div class="status" id="mem"></div>
 <div class="status" id="disk"></div>
+<br><br><br><br><hr>
 {% endblock %}
 
 <!-- content= -->

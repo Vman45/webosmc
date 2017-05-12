@@ -21,8 +21,9 @@ SSH_PORT = 4200
 KODI_PORT = 8080
 STATUS_LSTPROC={}
 STATUS_LSTPROC[0] = {"Kodi":"kodi.bin"}
-STATUS_LSTPROC[1] = {"JDownloader":"JAVA"}
-STATUS_LSTPROC[2] = {"Site web":"PYTHON"}
-STATUS_LSTPROC[3] = {"MPD":"MPD"}
+STATUS_LSTPROC[1] = {"JDownloader":"java"}
+STATUS_LSTPROC[2] = {"Site web":"python"}
+STATUS_LSTPROC[3] = {"MPD":"mpd"}
+STATUS_LSTPROC[4] = {"Synchronisation":"unison"}
 # A cabler
 LINK_LOG = ["tail","-f /home/osmc/tmp/*"]

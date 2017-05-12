@@ -7,9 +7,14 @@ from netifaces import interfaces, ifaddresses, AF_INET
 
 def getProcessStatus(LstProcName):
     S = {}
-    for item in LstProcName
-        for name, path in LstProcName[item].items()  
-                S[item] = {'name' : name ,'lstPID': subprocess.check_output(["pidof",path])}
+    for item in LstProcName:
+        for name, path in LstProcName[item].items():
+                try:
+                    lstPID = subprocess.check_output(["pidof",path])
+                except:
+                    lstPID = ""
+                    pass
+                S[item] = {'name' : name ,'lstPID': lstPID}
     return S
     # while kill -0 $pid 2>/dev/null
     # do
@@ -105,20 +110,26 @@ def getUptime(text=False):
 
 
 def getTemperature():
-    try:
-        s = subprocess.check_output(["/usr/bin/vcgencmd","measure_temp"])
-        app.logger.info('temperature = %s'% (s))
-        return float(s.replace("temp=","").replace("'C\n",""))
-    except:
-        return 0
+    process = subprocess.Popen(['vcgencmd', 'measure_temp'], stdout=subprocess.PIPE)
+    output, _error = process.communicate()
+    return float(output[output.index('=') + 1:output.rindex("'")])
+    # try:
+        # s = subprocess.check_output(["vcgencmd","measure_temp"])
+        # app.logger.info('temperature = %s'% (s))
+        # return float(s.replace("temp=","").replace("'C\n",""))
+    # except:
+        # return 0
 
 def getCpuFrequency():
-    try:
-        s = subprocess.check_output(["/usr/bin/vcgencmd","measure_clock arm"])
-        app.logger.info('CpuFrequency = %s'% (s))
-        return int(s.split("=")[1].replace("'C\n",""))
-    except:
-        return 0
+    process = subprocess.Popen(['vcgencmd', 'measure_clock arm'], stdout=subprocess.PIPE)
+    output, _error = process.communicate()
+    return int(output.split('=')[1].replace("\n",""))
+    # try:
+        # s = subprocess.check_output(["vcgencmd","measure_clock arm"])
+        # app.logger.info('CpuFrequency = %s'% (s))
+        # return int(s.split("=")[1].replace("'C\n",""))
+    # except:
+        # return 0
 
 def getDisplayValue(value):
     if value>(1024*1024*1024):
