@@ -67,12 +67,6 @@ def POSTconfigWeb():
     return render_template('config.html',content=request.form['contenu'].strip())
 
   #                                         En cours développement
-@app.route('/log/')
-def FichiersLog():
-    return render_template('log.html')
-@app.route('/scripts/')
-def FichiersScripts():
-    return render_template('scripts.html')
 
 @app.route('/test/')
 def lancement_test():

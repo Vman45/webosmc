@@ -1,6 +1,6 @@
 # coding: utf-8
-import codecs, os
-from flask import Flask,render_template, redirect, request, url_for, Blueprint
+import codecs, os, subprocess
+from flask import Flask,render_template, redirect, request, url_for, Blueprint, jsonify
 app = Flask(__name__)
 app.config.from_object('config')
 gestionFichier = Blueprint('gestionFichier',__name__)
@@ -20,3 +20,32 @@ def traitement_gestionFichier(pathFiles):
     from modules.gestionFichier.code import Action
     pathFiles = Action(request, pathFiles)
     return redirect(url_for('gestionFichier.lancement_gestionFichier',pathFiles=pathFiles))
+
+    
+@gestionFichier.route('/scripts/<path:pathFiles>',methods=['GET'])
+def FichiersScriptsGET(pathFiles):
+    from modules.gestionFichier.code import recup_files
+    pathFiles = '/' + pathFiles
+    treeFiles = recup_files(pathFiles.encode('utf-8'), "")
+    return render_template('scripts.html',file_list=treeFiles,pathFiles=pathFiles)
+@gestionFichier.route('/scripts/<path:pathFiles>',methods=['POST'])
+def FichiersScriptsPOST(pathFiles):
+    from modules.gestionFichier.code import Action
+    pathFiles = Action(request, pathFiles)
+    return redirect(url_for('gestionFichier.FichiersScriptsGET',pathFiles=pathFiles))
+    
+@gestionFichier.route('/_retScripts/<path:pathFiles>', methods=['GET'])
+def retScriptsGET(pathFiles):
+    app.logger.info('lancement_script' + pathFiles)
+    from modules.gestionFichier.code import launch_script
+    
+    ret = launch_script('/' + pathFiles)
+    app.logger.info(' retour script' + str(ret))
+    return jsonify({'data' : ret})
+@gestionFichier.route('/log/')
+def FichiersLogGET():
+    return render_template('log.html')
+@gestionFichier.route('/log/_majData',methods=['GET'])
+def FichiersLogMAJ():
+    from modules.gestionFichier.code import getLog
+    return getLog(app.config["PATH_LOG"])

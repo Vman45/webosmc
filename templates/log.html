@@ -4,4 +4,38 @@
 
 {% block corps %}
 <h1>Fichiers Log {{ self.titre() }}</h1>
+
+<button onclick="start()">Lancer MAJ</button>
+<button onclick="stop()">stopper MAJ</button>
+<br><br><br>
+<div id="bip" class="display"></div>
+
+<script>
+var counter = 0;
+var intervalId = null;
+function stop()
+{
+  clearInterval(intervalId);
+  document.getElementById("bip").innerHTML = "";	
+}
+function bip()
+{
+    document.getElementById("bip").innerHTML = counter + " secondes passées";
+    counter++;
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    var content = $SCRIPT_ROOT+"/gestionFichier/log/_majData";
+    $.getJSON($SCRIPT_ROOT+"/gestionFichier/log/_majData",
+        function(data) {
+            var sortie = "<hr>" + data.log.replace(/\n/g, "<"+"br/>"); + "<hr>";
+            $("#gen").html(sortie);
+        }
+    );
+}
+function start()
+{
+  intervalId = setInterval(bip, 1000);
+}
+</script>    
+
+<div class="status" id="gen"></div>
 {% endblock %}
