@@ -1,0 +1,25 @@
+{% extends "squelette.html" %}
+
+{% block titre %}Osmc Salon by JGriffon{% endblock %}
+
+{% block corps %}
+
+<script type="text/javascript" charset="utf-8">
+function ChargementForm(Form){
+var lblAction = "Vous allez modifier un fichier important pour le site";
+if (confirm(lblAction + "\n\nEtes vous sûr ?")) {    //alert("oui")  
+}
+  else {    return false;  }
+}
+</script>
+
+<h1>Fichier Config {{ self.titre() }}</h1>
+ <form class="form_settings" method="post" onSubmit="return ChargementForm(this);" action="" autocomplete="false">
+   <p>
+     <label for="contenu">Contenu du fichier config :<br></label>
+     <textarea name="contenu" id="contenu" rows="30" cols="200">{{ content }}</textarea><br>
+<button type="submit" name="submitButton" value="Enregistrement">Modifier</button>
+   </p>
+</form>
+
+{% endblock %}

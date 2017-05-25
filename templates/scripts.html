@@ -1,0 +1,90 @@
+{% extends "squelette.html" %}
+{% block header %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jqtree.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gestionFichier.css') }}">
+    <script src="{{ url_for('static', filename='lib/jqTree/tree.jquery.js') }}"></script>
+    {% macro remastering(list,id) %}{% autoescape false %}
+        {%- set idxs = [0] -%}
+        [{%- for item in list.children recursive %}
+            {%- if loop.index0 > 0 -%},{%- endif %}{name: '{{ item.name }}', fullname: '{{ item.fullname }}'{%- if id -%}, id: {{ idxs|length*1000 + loop.index}}{%- endif %}
+            {%- if item.children -%}{%- set tmp = idxs.append(loop.index) -%},children: [{{ loop(item.children) }}]{%- set tmp = idxs.pop() -%}{%- endif %}
+        }{%- endfor %}]
+        {% endautoescape %}
+    {%- endmacro %}
+    <script type="text/javascript" charset="utf-8">
+    $(function() {
+            var $treeFic = $('#treeFic');
+            var dataFile = {{ remastering(file_list, true) }};
+            $treeFic.tree({data: dataFile,autoOpen: true});
+            $treeFic.bind('tree.dblclick',function(e) {
+                var selected_node = e.node;
+                alert(selected_node.fullname);
+        });
+    });
+    </script>
+{% endblock %}
+
+
+{% block titre %}Osmc Salon by JGriffon{% endblock %}
+
+{% block corps %}
+<h1>scripts machine {{ self.titre() }}</h1>
+<br><br>
+<form class="form_settings" method="POST" action="">
+    <p>
+        <label for="repPrinc">emplacement des scripts :</label> :
+        <input type="text" name="repPrinc" id="repPrinc" value={{ pathFiles }} />
+        <button type="submit" name="submitButton" value="ModifPath">Modifier</button>
+    </p>
+</form>
+<p>Selectionnez le script puis cliquez sur le bouton Executer</p>
+<script type="text/javascript">
+    function changeaffiche(element,visible){
+        var targetElement;
+        targetElement = document.getElementById(element) ;
+        if (visible == true){targetElement.style.display = "" ;}
+        else{targetElement.style.display = "none" ;}
+    }
+</script>
+<fieldset>
+    <div class="liste">
+        <h2>Liste Fichiers</h2> 
+        <div id="treeFic">		</div>
+        <textarea id="FilesSelected" style="display:none;" name="FilesSelected"></textarea>
+    </div>
+</fieldset>
+
+ <button onclick="ConfirmExec()">Lancer MAJ</button>
+ <script type="text/javascript">
+function ConfirmExec(){
+    var FileSelect=$('#treeFic').tree('getSelectedNode').fullname;
+    if (FileSelect == undefined){alert("Pas de script selectionné");return false;}
+    var lblAction = "Vous aller executer le script " + FileSelect;
+    if (confirm(lblAction + "\n\nEtes vous sûr ?")) {
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        var content = $SCRIPT_ROOT+"/gestionFichier/_retScripts"+encodeURIComponent(FileSelect);
+        $.getJSON($SCRIPT_ROOT+"/gestionFichier/_retScripts"+encodeURIComponent(FileSelect),
+           function(data) {
+                var sortie = "<hr>";
+                sortie += "<h2>Processus (PID ou statut)</h2>" + data.output + '<br><br>' + data.error;
+                
+                for(elt in data.processes){
+                    sortie += "<li>" + data.processes[elt].name + " : " + (data.processes[elt].lstPID == "" ? "OFF !!" : data.processes[elt].lstPID) + "</li>";
+                };
+                sortie += "<hr>";
+                $("#scriptresult").html(sortie);
+            }
+        );
+    }
+        else {    return false;  }
+}
+</script>
+
+       
+        
+           
+        
+<div class="result" id="scriptresult"></div>
+{% endblock %}
+ 
