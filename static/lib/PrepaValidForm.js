@@ -16,6 +16,12 @@ function ChargementForm(Form){
             if (Form.NomNvDossier.value == ""){alert("Veuillez indiquer un nom pour le nouveau dossier");return false;}
                 lblAction = "Création du dossier " + Form.NomNvDossier.value + " dans le répertoire " + pathSelect;
                 break;
+        case "RenameFile":
+                if (FilesSelected == ""){alert("Pas de fichier selectionné");return false;}
+                 if (nodes.length > 1){alert('Vous ne pouvez renommer qu\'un fichier à la fois');return false;}
+                if (Form.RenameFile.value == ""){alert("Veuillez indiquer un nouveau nom pour le fichier");return false;}
+                lblAction = "Changement de nom du fichier " + FilesSelected + " en répertoire " + Form.RenameFile.value;
+                break;
         case "Copier":
 
         case "Deplacer":

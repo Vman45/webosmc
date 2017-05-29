@@ -60,8 +60,17 @@
             function changeaffiche(element,visible){
                 var targetElement;
                 targetElement = document.getElementById(element) ;
+                if (element == "RenameFile")
+                {
+                    var nodes = $('#treeFic').tree('getSelectedNodes');
+                    if (nodes.length > 1){alert('Vous ne pouvez renommer qu\'un fichier à la fois');
+                    }else{
+                        targetElement.value =  encodeURIComponent(nodes[0].fullname) ;
+                    }
+                }
                 if (visible == true){targetElement.style.display = "" ;}
                 else{targetElement.style.display = "none" ;}
+                
             }
         </script>
         <fieldset>
@@ -82,6 +91,12 @@
             <p>
             <input type="radio" name="ChxAction" value="NvDossier" id="NvDossier" onclick="changeaffiche('NomNvDossier',true)" /> <label for="NvDossier">Créer un nouveau dossier</label>
             <input type="text" name="NomNvDossier" id="NomNvDossier" style="display:none" value="New Dossier" />
+            </p>
+            <p>
+            <br>
+            <br>
+            <input type="radio" name="ChxAction" value="Renommer" id="RenameFile" onclick="changeaffiche('RenameFile',true)" /> <label for="RenameFile">Renommer le fichier</label>
+            <input type="text" name="RenameFile" id="RenameFile" style="display:none" value="New File" />
             </p>
             <p>
             <br>
