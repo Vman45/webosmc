@@ -33,19 +33,18 @@ def FichiersScriptsPOST(pathFiles):
     from modules.gestionFichier.code import Action
     pathFiles = Action(request, pathFiles)
     return redirect(url_for('gestionFichier.FichiersScriptsGET',pathFiles=pathFiles))
-    
 @gestionFichier.route('/_retScripts/<path:pathFiles>', methods=['GET'])
 def retScriptsGET(pathFiles):
     app.logger.info('lancement_script' + pathFiles)
     from modules.gestionFichier.code import launch_script
-    
     ret = launch_script('/' + pathFiles)
     app.logger.info(' retour script' + str(ret))
     return jsonify(ret)
-@gestionFichier.route('/log/')
-def FichiersLogGET():
-    return render_template('log.html')
-@gestionFichier.route('/log/_majData',methods=['GET'])
-def FichiersLogMAJ():
+    
+@gestionFichier.route('/log/<path:pathFiles>',methods=['GET','POST'])
+def FichiersLogGET(pathFiles):
+    return render_template('log.html',pathFiles=pathFiles)
+@gestionFichier.route('/log/_majData/<path:pathFiles>',methods=['GET'])
+def FichiersLogMAJ(pathFiles):
     from modules.gestionFichier.code import getLog
-    return getLog(app.config["PATH_LOG"])
+    return getLog(pathFiles)

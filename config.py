@@ -27,5 +27,4 @@ STATUS_LSTPROC[2] = {"Site web":"python"}
 STATUS_LSTPROC[3] = {"MPD":"mpd"}
 STATUS_LSTPROC[4] = {"Synchronisation":"unison"}
 # A cabler
-PATH_LOG = "/home/osmc/tmp/"
 # LINK_LOG = ["tail","%s" % (PATH_LOG)] #--verbose --lines 20
