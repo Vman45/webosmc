@@ -20,18 +20,15 @@ def get_status(LstProcName):
     loadavg=status_functions.getLoadAvg()	
     hostname=status_functions.getHostName()
 
-    cpufrequency=str(status_functions.getCpuFrequency()/1000000)+" Mhz"
+    cpufrequency=status_functions.getCpuFrequency()+" Mhz"
     
     for d in disk:
         if d['mountpoint']=='/':
             freespace=d['free']
 
     uptime=status_functions.getUptime(True)
-    ip = status_functions.getIP() + '\n' +  status_functions.infoNetwork()
+    ip = str(status_functions.getIP()) + '\n' +  str(status_functions.infoNetwork())
     processes = status_functions.getProcessStatus(LstProcName)
     allprocesses = status_functions.ListProcess()
     content={'allprocesses':allprocesses,'processes':processes,'freespace':freespace,'cpufrequency':cpufrequency,'uptime':uptime,'loadavg':loadavg,'ip':ip,'hostname':hostname,'cpu':cpu,'numcpu':numcpu,'cpuusage':cpuusage,'disk':disk,'temperature':temperature,'memory':memory}	
     return content
-    #if http_context.suburl=='getinfo' :
-    #    return WebStructure.HttpContext(statuscode=200,content=json.dumps(content), template=None, mimetype='text/html')
-    #return WebStructure.HttpContext(statuscode=200,content=content,template=template,mimetype='text/html')

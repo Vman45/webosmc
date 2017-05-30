@@ -3,6 +3,7 @@ import subprocess
 import socket
 import os
 import time
+import datetime
 from netifaces import interfaces, ifaddresses, AF_INET
 
 def getProcessStatus(LstProcName):
@@ -23,9 +24,11 @@ def ListProcess(cpumin=0):
     if cpumin > 0:
         pslist = psutil.get_process_list()
         iter = filter( process.get_cpu_percent() > cpumin, pslist )
+    item =0
     for p in iter:
         S[item] = p.as_dict(attrs=['name','pid','cpu_times','cpu_percent','create_time','status'])
         S[item]['create_time'] = datetime.datetime.fromtimestamp(S[item]['create_time']).strftime("%Y-%m-%d %H:%M:%S")
+        item+=1
         # with p.oneshot():
         #   S[item] = {'name' : p.name ,'PID': p.pid(),'cpu_times':p.cpu_times(),'cpu_percent':p.cpu_percent(),'create_time':p.create_time(), 'status': p.status()}
     return S
@@ -123,26 +126,16 @@ def getUptime(text=False):
 
 
 def getTemperature():
-    process = subprocess.Popen(['vcgencmd', 'measure_temp'], stdout=subprocess.PIPE)
+    process = subprocess.Popen(['/opt/vc/bin/vcgencmd', 'measure_temp'], stdout=subprocess.PIPE)
     output, _error = process.communicate()
-    return float(output[output.index('=') + 1:output.rindex("'")])
-    # try:
-        # s = subprocess.check_output(["vcgencmd","measure_temp"])
-        # app.logger.info('temperature = %s'% (s))
-        # return float(s.replace("temp=","").replace("'C\n",""))
-    # except:
-        # return 0
-
+    return str(output.replace('temp=','')[:4])
+    
+    # ret = psutil.cpu_temperature()
+    # return str(ret)
+    
 def getCpuFrequency():
-    process = subprocess.Popen(['vcgencmd', 'measure_clock arm'], stdout=subprocess.PIPE)
-    output, _error = process.communicate()
-    return int(output.split('=')[1].replace("\n",""))
-    # try:
-        # s = subprocess.check_output(["vcgencmd","measure_clock arm"])
-        # app.logger.info('CpuFrequency = %s'% (s))
-        # return int(s.split("=")[1].replace("'C\n",""))
-    # except:
-        # return 0
+    ret = psutil.cpu_freq()
+    return str(ret)
 
 def getDisplayValue(value):
     if value>(1024*1024*1024):
