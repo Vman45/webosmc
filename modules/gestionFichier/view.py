@@ -41,7 +41,7 @@ def retScriptsGET(pathFiles):
     
     ret = launch_script('/' + pathFiles)
     app.logger.info(' retour script' + str(ret))
-    return jsonify({'data' : ret})
+    return jsonify(ret)
 @gestionFichier.route('/log/')
 def FichiersLogGET():
     return render_template('log.html')

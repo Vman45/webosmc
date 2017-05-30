@@ -66,13 +66,14 @@ function ConfirmExec(){
         var content = $SCRIPT_ROOT+"/gestionFichier/_retScripts"+encodeURIComponent(FileSelect);
         $.getJSON($SCRIPT_ROOT+"/gestionFichier/_retScripts"+encodeURIComponent(FileSelect),
            function(data) {
-                var sortie = "<hr>";
-                sortie += "<h2>Processus (PID ou statut)</h2>" + data.output + '<br><br>' + data.error;
-                
-                for(elt in data.processes){
-                    sortie += "<li>" + data.processes[elt].name + " : " + (data.processes[elt].lstPID == "" ? "OFF !!" : data.processes[elt].lstPID) + "</li>";
-                };
-                sortie += "<hr>";
+                var sortie = "<br><br><br><hr>";
+                sortie += "<h2>retour script :</h2>" 
+                sortie += data.output;
+                if (data.error != "null"){
+                    sortie += "<h3>ERREUR :</h3>" 
+                    sortie += '<br>' + data.error;
+                }
+                sortie += "<br><br><hr>";
                 $("#scriptresult").html(sortie);
             }
         );
