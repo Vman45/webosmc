@@ -31,7 +31,7 @@ function bip()
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     var FileSelect= document.getElementById("repPrinc").value
     var content = $SCRIPT_ROOT+"/gestionFichier/log/_majData/"+encodeURIComponent(FileSelect);
-    $.getJSON($SCRIPT_ROOT+"/gestionFichier/log/_majData/"+encodeURIComponent(FileSelect),
+    $.getJSON(content,
         function(data) {
             var sortie = "<hr>" + data.log.replace(/\n/g, "<"+"br/>"); + "<hr>";
             $("#gen").html(sortie);

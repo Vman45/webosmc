@@ -31,6 +31,7 @@
 {% block corps %}
 <h1>scripts machine {{ self.titre() }}</h1>
 <br><br>
+<div id="ButtonChoix">
 <form class="form_settings" method="POST" action="">
     <p>
         <label for="repPrinc">emplacement des scripts :</label> :
@@ -38,15 +39,8 @@
         <button type="submit" name="submitButton" value="ModifPath">Modifier</button>
     </p>
 </form>
+
 <p>Selectionnez le script puis cliquez sur le bouton Executer</p>
-<script type="text/javascript">
-    function changeaffiche(element,visible){
-        var targetElement;
-        targetElement = document.getElementById(element) ;
-        if (visible == true){targetElement.style.display = "" ;}
-        else{targetElement.style.display = "none" ;}
-    }
-</script>
 <fieldset>
     <div class="liste">
         <h2>Liste Fichiers</h2> 
@@ -56,6 +50,9 @@
 </fieldset>
 
  <button onclick="ConfirmExec()">Lancer MAJ</button>
+ 
+ <button onclick="OuvertureEdition()">Editer</button>
+ </div>
  <script type="text/javascript">
 function ConfirmExec(){
     var FileSelect=$('#treeFic').tree('getSelectedNode').fullname;
@@ -64,7 +61,7 @@ function ConfirmExec(){
     if (confirm(lblAction + "\n\nEtes vous sûr ?")) {
         $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
         var content = $SCRIPT_ROOT+"/gestionFichier/_retScripts"+encodeURIComponent(FileSelect);
-        $.getJSON($SCRIPT_ROOT+"/gestionFichier/_retScripts"+encodeURIComponent(FileSelect),
+        $.getJSON(content,
            function(data) {
                 var sortie = "<br><br><br><hr>";
                 sortie += "<h2>retour script :</h2>" 
@@ -80,12 +77,64 @@ function ConfirmExec(){
     }
         else {    return false;  }
 }
+function OuvertureEdition(){
+     var FileSelect=$('#treeFic').tree('getSelectedNode').fullname;
+    if (FileSelect == undefined){alert("Pas de script selectionné");return false;}
+    var lblAction = "Vous aller Modifier le script " + FileSelect;
+    if (confirm(lblAction + "\n\nEtes vous sûr ?")) {
+        //var page = url_for('scriptModif',username=user.username);
+        //var nom = '';
+        //var option = '';
+        //window.open(page,nom,option);
+        changeaffiche("ButtonChoix",false);
+        changeaffiche("scriptmodif",true);
+        RecupContenuFichier(FileSelect);
+        // Récupération du contenu du fichier
+    }
+       else {    return false;  }
+}
+
+function RecupContenuFichier(Fichier){
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        var content = $SCRIPT_ROOT+"/gestionFichier/_modScripts"+encodeURIComponent(Fichier);
+        $.getJSON(content,
+           function(data) { 
+                $("#Scriptcontenu").text(data.content);
+                $("#TitreFichier").text(data.name);
+                $("#FileSelected").text(data.name);
+            }
+        );
+}
+
+function ChargementForm(Form){
+var lblAction = "Vous allez modifier un fichier important !";
+if (confirm(lblAction + "\n\nEtes vous sûr ?")) {    //alert("oui")  
+}
+  else {    return false;  }
+}
+function changeaffiche(element,visible){
+    var targetElement;
+    targetElement = document.getElementById(element) ;
+    if (visible == true){targetElement.style.display = "" ;}
+    else{targetElement.style.display = "none" ;}
+}
 </script>
 
-       
-        
-           
-        
+<div id="scriptmodif" style="display:none">
+<h1>Fichier</h1>
+ <form class="form_settings" method="post" onSubmit="return ChargementForm(this);" action="">
+   <p>
+     <h1 id="TitreFichier">?</h1>
+     <textarea id="FileSelected" style="display:none;" name="FileSelected"></textarea>
+     <label for="Scriptcontenu">Contenu du fichier :<br></label>
+     
+     <textarea name="Scriptcontenu" id="Scriptcontenu" rows="30" cols="500"></textarea><br>
+     
+     <button type="submit" name="submitButton" value="EnregFichier">Modifier</button>
+   </p>
+</form>
+</div>           
+
 <div class="result" id="scriptresult"></div>
 {% endblock %}
  

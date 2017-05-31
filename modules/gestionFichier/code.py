@@ -79,6 +79,8 @@ def make_tree(path, includeFiles, lstExcl):
     return tree
 
 def Action(request,pathFiles):
+    app.logger.info('Traitement du formulaire : ')
+    app.logger.info( request.form['submitButton'])
     if request.form['submitButton']=='ModifPath':
         return request.form['repPrinc'][1:].encode('utf-8')
     elif request.form['submitButton']=='Lancer':
@@ -108,7 +110,16 @@ def Action(request,pathFiles):
             for File in Files:
                 if File!='':shutil.copy2(File,Rep)
         return pathFiles
-
+    elif request.form['submitButton']=='EnregFichier':
+        content=request.form['Scriptcontenu'].strip()
+        fichier=request.form['FileSelected'].strip()
+        app.logger.info('Enregistrement du fichier : ' + fichier + '\n' + content)
+        from modules.webConfig import writeConfig
+        with open (fichier,"w") as fic:
+            fic.write(content)
+        return pathFiles
+    
+    
 def launch_script(pathFiles):
     process = subprocess.Popen(['sh', pathFiles], stdout=subprocess.PIPE)
     output, _error = process.communicate()
