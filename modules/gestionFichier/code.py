@@ -100,7 +100,7 @@ def Action(request,pathFiles):
                     else:
                         os.remove(File)
         elif TypeAction=='RenameFile':
-            shutil.rename(File,os.path.join(Rep,request.form['RenameFile'].encode('utf-8')))
+            shutil.rename(File,os.path.join(Rep,request.form['NomNvFile'].encode('utf-8')))
         elif TypeAction=='Deplacer':
             for File in Files:
                 if File!='':shutil.move(File,Rep)

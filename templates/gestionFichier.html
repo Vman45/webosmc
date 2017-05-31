@@ -50,7 +50,7 @@
     <form class="form_settings" method="POST" action="">
         <p>
             <label for="repPrinc">emplacement des fichiers à traiter :</label> :
-            <input type="text" name="repPrinc" id="repPrinc" value={{ pathFiles }} />
+            <input type="text" name="repPrinc" id="repPrinc" style="width:300px;" value={{ pathFiles }} />
             <button type="submit" name="submitButton" value="ModifPath">Modifier</button>
         </p>
     </form>
@@ -95,8 +95,8 @@
             <p>
             <br>
             <br>
-            <input type="radio" name="ChxAction" value="Renommer" id="RenameFile" onclick="changeaffiche('RenameFile',true)" /> <label for="RenameFile">Renommer le fichier</label>
-            <input type="text" name="RenameFile" id="RenameFile" style="display:none" value="New File" />
+            <input type="radio" name="ChxAction" value="Renommer" id="RenameFile" onclick="changeaffiche('NomNvFile',true)" /> <label for="RenameFile">Renommer le fichier</label>
+            <input type="text" name="NomNvFile" id="NomNvFile" style="display:none" value="New File" />
             </p>
             <p>
             <br>
