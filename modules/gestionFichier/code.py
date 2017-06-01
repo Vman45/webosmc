@@ -121,11 +121,10 @@ def Action(request,pathFiles):
     
     
 def launch_script(pathFiles):
-    process = subprocess.Popen(['sh', pathFiles], stdout=subprocess.PIPE)
-    output, _error = process.communicate()
-    return {'output' : output, 'error' : _error}
-    # ret = subprocess.check_output(["sh",pathFiles])
-    # return ret
+    process = subprocess.Popen(['sh', pathFiles], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process.wait()
+    return {'output' : process.stdout.read(), 'error' : process.stderr.read()}
+  
     
 def getLog(pathFiles):
     process = subprocess.Popen(["ls", pathFiles], stdout=subprocess.PIPE, stderr=subprocess.PIPE)

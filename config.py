@@ -12,7 +12,7 @@ GEN_MENU[6] = {"SSH":"/SSH/"}
 GEN_MENU[7] = {"Config":"/config/"}
 GEN_MENU[8] = {"log":"/gestionFichier/log/home/osmc/tmp/"}
 GEN_AFF_BANDEAU = False
-LINK_MAJ_SITE = "git --git-dir /home/osmc/webosmc/.git pull" #"sh /home/osmc/scripts/majWeb.sh"
+LINK_MAJ_SITE = ["git", "--git-dir /home/osmc/webosmc/.git pull"] #"sh /home/osmc/scripts/majWeb.sh"
 LINK_VERIFMAJ = ["sh","/home/osmc/webosmc/verifVersion.sh"]#["git","-C /home/osmc/webosmc/ pull --dry-run 2>&1 | grep 'master' >/dev/null |echo $?"]
 LINK_JDOWNLOADER = "https://my.jdownloader.org/?deviceId=4ad32ae65d600a9b070bba54a8f0429d#webinterface:downloads"
 GESTIONFICHIER_DDL_PATH = "/mnt/LOC/USB"
