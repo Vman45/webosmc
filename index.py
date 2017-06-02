@@ -30,8 +30,10 @@ def inject_dict_for_all_templates():
 def index():
     ret = launch_process(app.config["LINK_VERIFMAJ"])
     app.logger.info('Verif MAJ :' + ' Resultat : ' + ret['output'] + '///' + ret['error'])
-    if (ret['output'][:10] != "Up-to-date" or ret['error']  != '') :
-        flash(u"Une nouvelle version du site est disponible\n Veuillez faire une mise à jour\n\nMessage :" + ret['output'] + '\n\n\nErreur :' + ret['error'])
+    if (ret['error']  != '') :
+        flash(u"Un problème est surcenu dans la vérification de mise à jour n\nMessage : <br>" + ret['output'] + u"\n\nErreur :\n" + ret['error'])
+    elif (ret['output'][:10] != "Up-to-date" or ret['error']  != '') :
+        flash(u"Une nouvelle version du site est disponible.\nVeuillez faire une mise à jour\n\nMessage : \n" + ret['output'] )
     return render_template('index.html')
 @app.route('/_majData/', methods=['GET'])
 def get_majData():
@@ -51,7 +53,11 @@ def JD():
 def majWeb():
     ret = launch_process(app.config["LINK_MAJ_SITE"])
     app.logger.info('MAJ site :' + ' Resultat : ' + ret['output'] + '///' + ret['error'])
-    flash('OK\nmaj faite !!!!' + ret['output'] + '///' + ret['error'])
+    if ret['error']  == '':
+        message = u'OK maj faite !!!!\n\n' + ret['output']
+    else:
+        message = u'Problème de mise à jour !!!!\n\n' + ret['output'] + u'\n\nErreur:\n' + ret['error']
+    flash(message)
     return redirect(url_for('index'))
     
 @app.route('/config/',methods=['GET'])

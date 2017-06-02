@@ -24,6 +24,6 @@ def modifPortURL(URL,Port):
 def launch_process(param):
     process = subprocess.Popen(param, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     process.wait()
-    return {'output' : process.stdout.read(), 'error' : process.stderr.read()}
+    return {'output' : unicode(process.stdout.read(),"utf-8"), 'error' : unicode(process.stderr.read(),"utf-8")}
   
     
