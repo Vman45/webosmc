@@ -30,19 +30,30 @@ function bip()
     $.getJSON($SCRIPT_ROOT+"/_majData",
         function(data) {
             var sortie = "<hr>";
-            sortie += "<h2>Processus (PID ou statut)</h2>";
-            sortie += data.allprocesses.toString() + "<hr>";
+            sortie += "<h2>Processus :</h2>";
             for(elt in data.processes){
                 sortie += "<li>" + data.processes[elt].name + " : " + (data.processes[elt].lstPID == "" ? "OFF !!" : data.processes[elt].lstPID) + "</li>";
             };
             sortie += "<hr>";
+            for(elt in data.allprocesses){
+                sortie += "<li>" + data.allprocesses[elt].name + " : " + data.allprocesses[elt].pid + "\t" + data.allprocesses[elt].cpu_percent + "</li>";
+            };
+            sortie += "<hr>";
+            
+            
             $("#processus").html(sortie);
             
-            sortie = "<h2>Généralités</h2>";
-            sortie += "<li>hostname  " + data.hostname + " ( " + data.ip + " ) </li>";
+            sortie = "<h2>Généralités</h2><ul>";
+            sortie += "<li>hostname  " + data.hostname + "</li>";
             sortie += "<li>uptime : " + data.uptime + "</li>";
             sortie += "<li>temperature : " + data.temperature + " °C</li>";
-            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li><hr>";
+            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li>";
+            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li>";
+            sortie += "<li>Connexions : " + data.ip.IPadress + "</li><ul>";
+            sortie += "<li>détail Général  : " + data.ip.detail.Io + "</li>";
+            sortie += "<li>détail Ethernet : " + data.ip.detail.eth0 + "</li>";
+            sortie += "<li>détail Wi-Fi    : " + data.ip.detail.wlan0 + "</li></ul>";
+            sortie += "</ul><hr>";
             $("#gen").html(sortie);
             
             sortie = "<h2>Processeur</h2><ul>";

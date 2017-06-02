@@ -27,7 +27,7 @@ def get_status(LstProcName):
             freespace=d['free']
 
     uptime=status_functions.getUptime(True)
-    ip = str(status_functions.getIP()) + '\n' +  str(status_functions.infoNetwork())
+    ip = ['IPadress':str(status_functions.getIP()),'detail':status_functions.infoNetwork()]
     processes = status_functions.getProcessStatus(LstProcName)
     allprocesses = status_functions.ListProcess()
     content={'allprocesses':allprocesses,'processes':processes,'freespace':freespace,'cpufrequency':cpufrequency,'uptime':uptime,'loadavg':loadavg,'ip':ip,'hostname':hostname,'cpu':cpu,'numcpu':numcpu,'cpuusage':cpuusage,'disk':disk,'temperature':temperature,'memory':memory}	
