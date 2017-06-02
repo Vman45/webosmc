@@ -66,7 +66,7 @@ function ConfirmExec(){
                 var sortie = "<br><br><br><hr>";
                 sortie += "<h2>retour script :</h2>" 
                 sortie += data.output;
-                if (data.error != null){
+                if (data.error != null && data.error != ''){
                     sortie += "<h3>ERREUR :</h3>" 
                     sortie += '<br>' + data.error;
                 }

@@ -1,5 +1,6 @@
 # coding: utf-8
 # Permet de gérer des fonctions pour le fihcier index.py
+import subprocess
 
 def readConfig(f):
     with open (f,"r") as fic:
@@ -20,8 +21,8 @@ def modifPortURL(URL,Port):
       URL=URL[0:-1] + ':' + str(Port) + '/'
     return URL
    
-def launch_process(command,param):
-    process = subprocess.Popen([command, param], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+def launch_process(param):
+    process = subprocess.Popen(param, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     process.wait()
     return {'output' : process.stdout.read(), 'error' : process.stderr.read()}
   

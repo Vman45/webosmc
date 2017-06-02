@@ -2,7 +2,6 @@
 import codecs
 # from flask import request
 import os
-import subprocess
 from flask import Flask,jsonify
 app = Flask(__name__)
 

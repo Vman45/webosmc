@@ -34,7 +34,7 @@ def FichiersScriptsGET(pathFiles):
 def FichiersScriptsPOST(pathFiles):
     # pathFiles = '/' + pathFiles
     app.logger.info('Enregistrement_script : ' + str(request.form))
-    Action(request, '')
+    pathFiles = Action(request, pathFiles)
     app.logger.info('script enregistré')
     return redirect(url_for('gestionFichier.FichiersScriptsGET',pathFiles=pathFiles))
 @gestionFichier.route('/_retScripts/<path:pathFiles>', methods=['GET'])
