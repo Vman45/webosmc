@@ -6,6 +6,8 @@ import subprocess
 from flask import Flask,jsonify
 app = Flask(__name__)
 
+from modules.webConfig import launch_process
+
 def insertAccents(f):
     lstcarac = [[u'\xc3\xa2' , u'â'] , [u'\xc3\xa4' , u'ä'] , [ u'\xc3\xa0' , u'à'] , [ u'\xc3\xa9' , u'é'] , [ u'\xc3\xa8', u'è'] , [ u'\xc3\xab', u'ë'] , [ u'\xc3\xaa', u'ê']]
     for old, new in lstcarac:
@@ -121,26 +123,18 @@ def Action(request,pathFiles):
     
     
 def launch_script(pathFiles):
-    process = subprocess.Popen(['sh', pathFiles], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    process.wait()
-    return {'output' : process.stdout.read(), 'error' : process.stderr.read()}
-  
+    return launch_process(['sh', pathFiles])
     
 def getLog(pathFiles):
-    process = subprocess.Popen(["ls", pathFiles], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    process.wait()
-    ret = ''
-    if process.stderr.read() == '':
-        retls = process.stdout.read()
+    ret= launch_process(["ls",pathFiles])
+    if ret['error'] == '':
+        retls = ret['output']
         # app.logger.info('Resultat ls : \n' + retls)
         lstFic = retls.splitlines()
         # app.logger.info('LstFic=' + str(lstFic))
         for Fic in lstFic:
-            param = ["tail", pathFiles + Fic]
-            process = subprocess.Popen(param, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            process.wait()
-            rettail = process.stdout.read()
-            # app.logger.info(' retour ' + str(param) + ' : ' + rettail + 'erreurs :' + process.stderr.read())
-            ret+= '===>  ' + Fic  + '  <===\n' + rettail + '\n\n'
+            rettail = launch_process(["tail", pathFiles + Fic])
+            # app.logger.info(' retour ' + str(param) + ' : ' + rettail['output'] + 'erreurs :' + rettail['error'])
+            ret+= '===>  ' + Fic  + '  <===\n' + rettail['output'] + '\n\n'
     app.logger.info(' retour log ' + str(pathFiles) + ' : ' + str(ret))
     return jsonify({'log':ret})

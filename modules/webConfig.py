@@ -19,3 +19,10 @@ def modifPortURL(URL,Port):
     else:
       URL=URL[0:-1] + ':' + str(Port) + '/'
     return URL
+   
+def launch_process(command,param):
+    process = subprocess.Popen([command, param], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process.wait()
+    return {'output' : process.stdout.read(), 'error' : process.stderr.read()}
+  
+    

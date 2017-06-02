@@ -19,6 +19,7 @@ from modules.status.app import get_status
 from modules.webConfig import modifPortURL
 from modules.webConfig import readConfig
 from modules.webConfig import writeConfig
+from modules.webConfig import launch_process
 
 #OK Terminé
 @app.context_processor
@@ -27,15 +28,10 @@ def inject_dict_for_all_templates():
     
 @app.route('/')
 def index():
-    process = subprocess.Popen(app.config["LINK_VERIFMAJ"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    process.wait()
-    error = process.stderr.read()
-    output = ''
-    if error == '':
-        output = process.stdout.read()
-    app.logger.info('Verif MAJ :' + ' Resultat : ' + output + '///' + error)
-    if (output[:10] != "Up-to-date" or error  != '') :
-        flash(u"Une nouvelle version du site est disponible\n Veuillez faire une mise à jour\n\nMessage :" + output + '\n\n\nErreur :' + error)
+    ret = launch_process(app.config["LINK_VERIFMAJ"])
+    app.logger.info('Verif MAJ :' + ' Resultat : ' + ret['output'] + '///' + ret['error'])
+    if (ret['output'][:10] != "Up-to-date" or ret['error']  != '') :
+        flash(u"Une nouvelle version du site est disponible\n Veuillez faire une mise à jour\n\nMessage :" + ret['output'] + '\n\n\nErreur :' + ret['error'])
     return render_template('index.html')
 @app.route('/_majData/', methods=['GET'])
 def get_majData():
@@ -53,14 +49,9 @@ def JD():
   return render_template('jDownloader.html',path=app.config["LINK_JDOWNLOADER"])
 @app.route('/majWeb/')
 def majWeb():
-    process = subprocess.Popen(app.config["LINK_MAJ_SITE"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    process.wait()
-    error = process.stderr.read()
-    output = ''
-    if error == '':
-        output = process.stdout.read()
-    app.logger.info('MAJ site :' + ' Resultat : ' + output + '///' + error)
-    flash('OK\nmaj faite !!!!' + output + '///' + error)
+    ret = launch_process(app.config["LINK_MAJ_SITE"])
+    app.logger.info('MAJ site :' + ' Resultat : ' + ret['output'] + '///' + ret['error'])
+    flash('OK\nmaj faite !!!!' + ret['output'] + '///' + ret['error'])
     return redirect(url_for('index'))
     
 @app.route('/config/',methods=['GET'])
