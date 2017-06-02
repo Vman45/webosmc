@@ -56,6 +56,7 @@ def FichiersLogGET(pathFiles):
     return render_template('log.html',pathFiles=pathFiles)
 @gestionFichier.route('/log/<path:pathFiles>',methods=['POST'])
 def FichiersLogPOST(pathFiles):
+    pathFiles = Action(request, pathFiles)
     return redirect(url_for('gestionFichier.FichiersLogGET',pathFiles=pathFiles))
 @gestionFichier.route('/log/_majData/<path:pathFiles>',methods=['GET'])
 def FichiersLogMAJ(pathFiles):

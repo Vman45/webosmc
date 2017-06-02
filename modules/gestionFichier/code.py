@@ -130,10 +130,11 @@ def getLog(pathFiles):
         retls = ret['output']
         # app.logger.info('Resultat ls : \n' + retls)
         lstFic = retls.splitlines()
+        retour = ""
         # app.logger.info('LstFic=' + str(lstFic))
         for Fic in lstFic:
             rettail = launch_process(["tail", pathFiles + Fic])
             # app.logger.info(' retour ' + str(param) + ' : ' + rettail['output'] + 'erreurs :' + rettail['error'])
-            ret+= '===>  ' + Fic  + '  <===\n' + rettail['output'] + '\n\n'
-    app.logger.info(' retour log ' + str(pathFiles) + ' : ' + str(ret))
-    return jsonify({'log':ret})
+            retour+= '===>  ' + Fic  + '  <===\n' + str(rettail['output']) + '\n\n'
+    app.logger.info(' retour log ' + str(pathFiles) + ' : ' + str(retour))
+    return jsonify({'log':retour})
