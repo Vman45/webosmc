@@ -37,7 +37,7 @@ def index():
     return render_template('index.html')
 @app.route('/_majData/', methods=['GET'])
 def get_majData():
-    data = get_status(app.config["STATUS_LSTPROC"])
+    data = get_status(app.config["STATUS_LSTPROC"],app.config["STATUS_CPUMIN"])
     app.logger.info('majdata : ' + str(data) )
     return jsonify(data)
 @app.route('/SSH/')

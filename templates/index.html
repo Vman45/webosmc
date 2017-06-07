@@ -30,19 +30,32 @@ function bip()
     $.getJSON($SCRIPT_ROOT+"/_majData",
         function(data) {
             var sortie = "<hr>";
-            sortie += "<h2>Processus (PID ou statut)</h2>";
-            sortie += data.allprocesses.toString() + "<hr>";
+            sortie += "<h2>Processus :</h2>";
             for(elt in data.processes){
                 sortie += "<li>" + data.processes[elt].name + " : " + (data.processes[elt].lstPID == "" ? "OFF !!" : data.processes[elt].lstPID) + "</li>";
             };
             sortie += "<hr>";
+            sortie += "<table><tr><th>Nom</th><th>CPU</th><th>PID</th></tr>"
+            for(elt in data.allprocesses){
+            
+                sortie += "<tr><th>" + data.allprocesses[elt].name + "</th><td>" + data.allprocesses[elt].cpu_percent + "</td><td>" + data.allprocesses[elt].pid + "</td></tr>";
+            };
+            sortie += "</table><hr>";
+            
+            
             $("#processus").html(sortie);
             
-            sortie = "<h2>Généralités</h2>";
-            sortie += "<li>hostname  " + data.hostname + " ( " + data.ip + " ) </li>";
+            sortie = "<h2>Généralités</h2><ul>";
+            sortie += "<li>hostname  " + data.hostname + "</li>";
             sortie += "<li>uptime : " + data.uptime + "</li>";
             sortie += "<li>temperature : " + data.temperature + " °C</li>";
-            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li><hr>";
+            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li>";
+            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li>";
+            sortie += "<li>Connexions : " + data.ip.IPadress + "</li><ul>";
+            sortie += "<li>détail Général  : sent=" + data.ip.detail.lo.bytes_sent + "   received=" + data.ip.detail.lo.bytes_recv + "</li>";
+            sortie += "<li>détail Ethernet : sent=" + data.ip.detail.eth0.bytes_sent + "   received=" + data.ip.detail.eth0.bytes_recv + "</li>";
+            sortie += "<li>détail Wi-Fi    : sent=" + data.ip.detail.wlan0.bytes_sent + "   received=" + data.ip.detail.wlan0.bytes_recv + "</li></ul>";
+            sortie += "</ul><hr>";
             $("#gen").html(sortie);
             
             sortie = "<h2>Processeur</h2><ul>";
