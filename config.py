@@ -26,5 +26,6 @@ STATUS_LSTPROC[1] = {"JDownloader":"java"}
 STATUS_LSTPROC[2] = {"Site web":"python"}
 STATUS_LSTPROC[3] = {"MPD":"mpd"}
 STATUS_LSTPROC[4] = {"Synchronisation":"unison"}
+MPD_CONFIG="/home/osmc/webosmc/modules/MPD/wymypy.ini"
 # A cabler
 # LINK_LOG = ["tail","%s" % (PATH_LOG)] #--verbose --lines 20

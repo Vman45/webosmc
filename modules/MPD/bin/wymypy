@@ -1,0 +1,17 @@
+#!/bin/sh
+
+BASENAME="$(readlink -f "$0")"
+PREFIX="${BASENAME%/*/*}"
+
+PYMODPATH="$PREFIX"
+MODNAME=wymypy
+
+#PYTHON="python"
+PYTHON="$(which python)"
+
+
+export LC_ALL=en_US.UTF8
+
+cd "$PYMODPATH"
+exec "$PYTHON" -m"$MODNAME"
+
