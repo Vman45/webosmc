@@ -19,22 +19,44 @@ def getProcessStatus(LstProcName):
     return S
 
 def ListProcess(cpumin=0):
-    S = {}
+    procs = []
+    procs_status = {}
     iter = psutil.process_iter()
-    if cpumin > 0:
-        pslist = psutil.get_process_list()
-        iter = filter( process.get_cpu_percent() > cpumin, pslist )
     item =0
     for p in iter:
-        S[item] = p.as_dict(attrs=['name','pid','cpu_times','cpu_percent','create_time','status'])
-        S[item]['create_time'] = datetime.datetime.fromtimestamp(S[item]['create_time']).strftime("%Y-%m-%d %H:%M:%S")
-        item+=1
-        # with p.oneshot():
-        #   S[item] = {'name' : p.name ,'PID': p.pid(),'cpu_times':p.cpu_times(),'cpu_percent':p.cpu_percent(),'create_time':p.create_time(), 'status': p.status()}
-    return S
+        try:
+            p.dict = p.as_dict(['username','pid', 'nice', 'memory_info',
+                                'memory_percent', 'cpu_percent',
+                                'cpu_times', 'name', 'status','create_time'])
+            try:
+                procs_status[p.dict['status']] += 1
+            except KeyError:
+                procs_status[p.dict['status']] = 1
+        except psutil.NoSuchProcess:
+            pass
+        else:
+            AddVal = True
+            if cpumin > 0:
+                if p.dict['cpu_percent'] <= cpumin:
+                    AddVal = False
+            if AddVal == True:    
+                createTime = p.dict['create_time']
+                createTime = datetime.datetime.fromtimestamp(createTime).strftime("%Y-%m-%d %H:%M:%S")
+                p.dict['create_time'] = createTime
+                item+=1
+                procs.append(p.dict)
+    # return processes sorted by CPU percent usage
+    processes = sorted(procs, key=lambda p: p['cpu_percent'], reverse=True)
+    return processes
 
 def infoNetwork():
-    return  psutil.net_io_counters(pernic=True)
+    Tab = psutil.net_io_counters(pernic=True)
+    TabRet = {}
+
+    for name in list(Tab.keys()):
+        p = Tab[name]
+        TabRet[name] = {'bytes_sent' : getDisplayValue(p.bytes_sent),'bytes_recv':getDisplayValue(p.bytes_recv)}
+    return TabRet
     # {'lo': snetio(bytes_sent=547971, bytes_recv=547971, packets_sent=5075, packets_recv=5075, errin=0, errout=0, dropin=0, dropout=0),
     # 'wlan0': snetio(bytes_sent=13921765, bytes_recv=62162574, packets_sent=79097, packets_recv=89648, errin=0, errout=0, dropin=0, dropout=0)}
     
@@ -129,9 +151,6 @@ def getTemperature():
     process = subprocess.Popen(['/opt/vc/bin/vcgencmd', 'measure_temp'], stdout=subprocess.PIPE)
     output, _error = process.communicate()
     return str(output.replace('temp=','')[:4])
-    
-    # ret = psutil.cpu_temperature()
-    # return str(ret)
     
 def getCpuFrequency():
     ret = psutil.cpu_freq()

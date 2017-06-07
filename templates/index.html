@@ -35,10 +35,12 @@ function bip()
                 sortie += "<li>" + data.processes[elt].name + " : " + (data.processes[elt].lstPID == "" ? "OFF !!" : data.processes[elt].lstPID) + "</li>";
             };
             sortie += "<hr>";
+            sortie += "<table><tr><th>Nom</th><th>CPU</th><th>PID</th></tr>"
             for(elt in data.allprocesses){
-                sortie += "<li>" + data.allprocesses[elt].name + " : " + data.allprocesses[elt].pid + "\t" + data.allprocesses[elt].cpu_percent + "</li>";
+            
+                sortie += "<tr><th>" + data.allprocesses[elt].name + "</th><td>" + data.allprocesses[elt].cpu_percent + "</td><td>" + data.allprocesses[elt].pid + "</td></tr>";
             };
-            sortie += "<hr>";
+            sortie += "</table><hr>";
             
             
             $("#processus").html(sortie);
@@ -50,9 +52,9 @@ function bip()
             sortie += "<li>cpufrequency : " + data.cpufrequency + "</li>";
             sortie += "<li>cpufrequency : " + data.cpufrequency + "</li>";
             sortie += "<li>Connexions : " + data.ip.IPadress + "</li><ul>";
-            sortie += "<li>détail Général  : " + data.ip.detail.Io + "</li>";
-            sortie += "<li>détail Ethernet : " + data.ip.detail.eth0 + "</li>";
-            sortie += "<li>détail Wi-Fi    : " + data.ip.detail.wlan0 + "</li></ul>";
+            sortie += "<li>détail Général  : sent=" + data.ip.detail.lo.bytes_sent + "   received=" + data.ip.detail.lo.bytes_recv + "</li>";
+            sortie += "<li>détail Ethernet : sent=" + data.ip.detail.eth0.bytes_sent + "   received=" + data.ip.detail.eth0.bytes_recv + "</li>";
+            sortie += "<li>détail Wi-Fi    : sent=" + data.ip.detail.wlan0.bytes_sent + "   received=" + data.ip.detail.wlan0.bytes_recv + "</li></ul>";
             sortie += "</ul><hr>";
             $("#gen").html(sortie);
             
