@@ -33,24 +33,13 @@ def init():
     # mpd->stream is special as it implies plugins-player->has_stream
     plugin_configs['player']['has_stream'] = bool(config.get('mpd', 'stream'))
 
-    # configure logging
-    # if MPDClient.config.has_option("general", "logging"):
-        # logging.basicConfig(filename=MPDClient.config.get("general", "logging"), format="%(asctime)s %(levelname)s %(message)s", level=logging.DEBUG)
-    # else:
-        # logging.basicConfig(format="%(asctime)s %(levelname)s %(message)s", level=logging.DEBUG)
-
     # connect to MPD
     mpd.connect(config.get("mpd", "host"), config.getint("mpd", "port"))
 
     # discover plugins
     plugins = get_instances(mpd, config.get("plugins", "banned").split(","), plugin_configs)
     InitDone = True
-    # start server
-    # MPDClient.app.run(host=MPDClient.config.get("server", "interface"),
-                       # port=MPDClient.config.getint("server", "port"),
-                       # debug=MPDClient.config.getboolean("general", "debug"),
-                       # request_handler=WyMyPyRequestHandler)
-
+   
 def get_instances(mpd, bannend_plugins=[], plugin_configs={}):
     """ instantiate classes which inherits of me, return the list """
     instances = {}
@@ -74,13 +63,13 @@ def get_instances(mpd, bannend_plugins=[], plugin_configs={}):
 
         # load it
         try:
-            __import__("wymypy.plugins.%s" % plugin_module_name)
+            __import__("MPD.plugins.%s" % plugin_module_name)
         except Exception, m:
             app.logger.exception("Plugin import error for [%(name)s]: %(error)s" % {'name': plugin_module_name, 'error': m})
             continue
 
         # lookup module
-        plugin_module = sys.modules["wymypy.plugins.%s" % plugin_module_name]
+        plugin_module = sys.modules["MPD.plugins.%s" % plugin_module_name]
 
         # lookup class
         if not hasattr(plugin_module, plugin_module_name.capitalize()): continue
