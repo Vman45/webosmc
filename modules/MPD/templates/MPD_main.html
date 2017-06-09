@@ -5,7 +5,7 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta http-equiv="content-language" content="en-US" />
         <meta name="language" content="en-US" />
-        <title>wymypy</title>
+        <title>Musique</title>
         <!-- ======================================================
             CSS
         ====================================================== -->
@@ -14,9 +14,8 @@
         <!-- ======================================================
             JavaScript
         ====================================================== -->
-        <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='lib/MPD.js') }}"></script>
-        <script type="text/javascript" src="static/main.js"></script>
+        <script type="text/javascript" src="static/lib/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='lib/main.js') }}"></script>
 
         <script type="text/javascript">
             $(document).ready(function() {
@@ -43,7 +42,6 @@
         </div>
         
         <div id="zone_options">
-            <b style='float:right; margin-top:8px;'><a href='http://github.com/02strich/wymypy'>wymypy</a></b>
             <div style="display:inline;">
                 <select id='timer' onchange="refresh_player_loop();">
                     <option value='1000'>refresh 1s</option>
@@ -63,11 +61,8 @@
         
         <div id="zone_player">{{ player|safe }}</div>
         <div id="zone_plugins">
-            <h1>Welcome</h1>
-            <p>Welcome to wymypy ! From here you can pilot your Music Player Daemon!</p>
-            <p>At the top, you have the "plugin bar" with provide the main operations in your library. Plugins will always be displayed in this zone.</p>
-            <p>At the right, you can control your player, and your playlist.</p>
-            <p>At the bottom right, you can control the refresh rate.</p>
+            <h1>Bienvenue</h1>
+            <p>Bienvenue dans le lecteur  musical</p>
         </div>
         <div id="zone_playList">{{ player_playlist|safe }}</div>
     </body>
