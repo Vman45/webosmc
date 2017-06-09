@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, abort, Response, Blueprint
-MPDClient = Blueprint('MPDClient',__name__, static_folder='static', template_folder='templates')
+MPDClient = Blueprint('MPDClient',__name__, static_folder='static', static_url_path='/modules/MPD/static', template_folder='templates')
 app = Flask(__name__)
 app.config.from_object('config')
 
@@ -7,7 +7,7 @@ app.config.from_object('config')
 import ConfigParser
 from functools import wraps
 import json
-from modules.MPD.lib.mpdsafe import MpdSafe
+from modules.MPD.libs.mpdsafe import MpdSafe
 
 config = ConfigParser.SafeConfigParser()
 mpd = MpdSafe()
