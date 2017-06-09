@@ -1,8 +1,8 @@
-
 from flask import Flask, render_template, request, abort, Response, Blueprint
+MPDClient = Blueprint('MPDClient',__name__, template_folder='templates')
 app = Flask(__name__)
 app.config.from_object('config')
-MPDClient = Blueprint('MPDClient',__name__, template_folder='templates')
+
 
 
 import ConfigParser
@@ -63,13 +63,13 @@ def get_instances(mpd, bannend_plugins=[], plugin_configs={}):
 
         # load it
         try:
-            __import__("MPD.plugins.%s" % plugin_module_name)
+            __import__("modules.MPD.plugins.%s" % plugin_module_name)
         except Exception, m:
             app.logger.exception("Plugin import error for [%(name)s]: %(error)s" % {'name': plugin_module_name, 'error': m})
             continue
 
         # lookup module
-        plugin_module = sys.modules["MPD.plugins.%s" % plugin_module_name]
+        plugin_module = sys.modules["modules.MPD.plugins.%s" % plugin_module_name]
 
         # lookup class
         if not hasattr(plugin_module, plugin_module_name.capitalize()): continue
