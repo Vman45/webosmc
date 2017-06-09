@@ -37,7 +37,7 @@ def init():
     mpd.connect(config.get("mpd", "host"), config.getint("mpd", "port"))
 
     # discover plugins
-    plugins = get_instances(mpd, config.get("plugins", "banned").split(","), plugin_configs)
+    MPDClient.plugins = get_instances(mpd, config.get("plugins", "banned").split(","), plugin_configs)
     app.logger.debug("val plugins dans init " + str(plugins))
     InitDone = True
    
