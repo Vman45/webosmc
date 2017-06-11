@@ -38,7 +38,7 @@ def init():
     # discover plugins
     global plugins
     plugins = get_instances(mpd, config.get("plugins", "banned").split(","), plugin_configs)
-    app.logger.debug("val plugins dans init " + str(plugins))
+    # app.logger.debug("val plugins dans init " + str(plugins))
     InitDone = True
    
 def get_instances(mpd, bannend_plugins=[], plugin_configs={}):
@@ -86,7 +86,7 @@ def get_instances(mpd, bannend_plugins=[], plugin_configs={}):
             instances[plugin_module_name].name = plugin_module_name
         except Exception, m:
             app.logger.error("Plugin instantiation error for %s: %s" % (plugin_module_name, m))
-    app.logger.debug("return plugins " + str(instances))
+    # app.logger.debug("return plugins " + str(instances))
     return instances
 
                        
@@ -109,7 +109,7 @@ def requires_auth(f):
 @MPDClient.route('/MPD/')
 @requires_auth
 def root():
-    app.logger.debug("val plugins dans root " + str(plugins))
+    # app.logger.debug("val plugins dans root " + str(plugins))
     return render_template('MPD_main.html',
                            player=plugins['player'].index(),
                            player_playlist=plugins['player'].playlist(),

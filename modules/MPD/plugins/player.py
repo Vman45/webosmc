@@ -30,26 +30,22 @@ class Player(object):
 Error : Can't play that!
 {% endif %}
 
-<button onclick='execute_plugin("player", "prev", {}, refresh_player);'><<</button>
+<button onclick='execute_plugin("player", "prev", {}, refresh_player);'><img src="{{ url_for('MPDClient.static', filename='images/rewind.png') }}" height="12" width="12"/></button>
 {% if stat.state != 2 %}
-    <button onclick='execute_plugin("player", "play", {}, refresh_player);'>></button>
+    <button onclick='execute_plugin("player", "play", {}, refresh_player);'><img src="{{ url_for('MPDClient.static', filename='images/play.png') }}" height="12" width="12"/></button>
 {% else %}
-    <button onclick='execute_plugin("player", "pause", {}, refresh_player);'>||</button>
+    <button onclick='execute_plugin("player", "pause", {}, refresh_player);'><img src="{{ url_for('MPDClient.static', filename='images/pause.png') }}" height="12" width="12"/></button>
 {% endif %}
 {% if stat.state != 1 %}
-    <button onclick='execute_plugin("player", "stop", {}, refresh_player);'>[]</button>
+    <button onclick='execute_plugin("player", "stop", {}, refresh_player);'><img src="{{ url_for('MPDClient.static', filename='images/stop.png') }}" height="12" width="12"/></button>
 {% endif %}
 
-<button onclick='execute_plugin("player", "next", {}, refresh_player);'>>></button>
-
-{% if has_stream %}
-<button onclick='audio_playstop();'>[>]</button>
-{% endif %}
+<button onclick='execute_plugin("player", "next", {}, refresh_player);'><img src="{{ url_for('MPDClient.static', filename='images/forward.png') }}" height="12" width="12"/></button>
 
 {% if stat.state != 0 and stat.volume != -1 %}
-    <button onclick='execute_plugin("player", "volume_down", {}, refresh_player);'>-</button>
-    <button onclick='execute_plugin("player", "volume_up", {}, refresh_player);'>+</button>
-    <button onclick='execute_plugin("player", "mute", {}, refresh_player);'>@</button>
+    <button onclick='execute_plugin("player", "volume_down", {}, refresh_player);'><img src="{{ url_for('MPDClient.static', filename='images/volume-.png') }}" height="12" width="12"/></button>
+    <button onclick='execute_plugin("player", "volume_up", {}, refresh_player);'><img src="{{ url_for('MPDClient.static', filename='images/volume+.png') }}" height="12" width="12"/></button>
+    <!--<button onclick='execute_plugin("player", "mute", {}, refresh_player);'>@</button>-->
     {{ stat.volume }}%
 {% endif %}
 """
@@ -68,7 +64,7 @@ Error : Can't play that!
         {{ loop.cycle("", "class='p'") }}
     {% endif %}
     > {{ "%03d"|format(index) }}
-        <a href='#' onclick='execute_plugin("player", "delete", {idx: {{index}} }, refresh_player);'><span>X</span></a>
+        <a href='#' onclick='execute_plugin("player", "delete", {idx: {{index}} }, refresh_player);'><span><img src="{{ url_for('MPDClient.static', filename='images/delete.png') }}" height="12" width="12"/></span></a>
         <a href='#' onclick='execute_plugin("player", "play", {idx: {{index}} }, refresh_player);'>{{ entry.formatted_title }}</a>
     </li>
 {% endfor %}
