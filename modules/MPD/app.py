@@ -7,7 +7,7 @@ app.config.from_object('config')
 import ConfigParser
 from functools import wraps
 import json
-from modules.MPD.libs.mpdsafe import MpdSafe
+from modules.MPD.lib.mpdsafe import MpdSafe
 
 config = ConfigParser.SafeConfigParser()
 mpd = MpdSafe()
