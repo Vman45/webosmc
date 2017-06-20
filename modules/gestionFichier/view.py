@@ -1,4 +1,4 @@
-# coding: utf-8
+coding: utf-8
 import codecs, os, subprocess
 from flask import Flask,render_template, redirect, request, url_for, Blueprint, jsonify
 app = Flask(__name__)
@@ -7,8 +7,8 @@ gestionFichier = Blueprint('gestionFichier',__name__)
 from modules.gestionFichier.code import Action
 from modules.gestionFichier.code import make_tree
 from modules.gestionFichier.code import recup_files
-from modules.gestionFichier.code import launch_script
 from modules.gestionFichier.code import getLog
+from modules.webConfig import launch_process
 from modules.webConfig import readConfig
 
 
@@ -39,9 +39,11 @@ def FichiersScriptsPOST(pathFiles):
     return redirect(url_for('gestionFichier.FichiersScriptsGET',pathFiles=pathFiles))
 @gestionFichier.route('/_retScripts/<path:pathFiles>', methods=['GET'])
 def retScriptsGET(pathFiles):
-    app.logger.info('lancement_script' + pathFiles)
-    ret = launch_script('/' + pathFiles)
-    app.logger.info(' retour script' + str(ret))
+    pathFiles = './' + pathFiles
+    app.logger.info('lancement_script : ' + pathFiles)
+    # ret = launch_process(['sh', pathFiles])
+    ret = launch_process([pathFiles,''])
+    app.logger.info(' retour script : ' + str(ret))
     return jsonify(ret)
 @gestionFichier.route('/_modScripts/<path:pathFiles>', methods=['GET'])
 def modScriptsGET(pathFiles):

@@ -120,10 +120,6 @@ def Action(request,pathFiles):
             fic.write(content)
         return pathFiles
     
-    
-def launch_script(pathFiles):
-    return launch_process(['sh', pathFiles])
-    
 def getLog(pathFiles):
     ret= launch_process(["ls",pathFiles])
     if ret['error'] == '':
