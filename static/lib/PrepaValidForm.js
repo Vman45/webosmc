@@ -38,7 +38,8 @@ function ChargementForm(Form){
             lblAction = "Supprimer le répertoire " + pathSelect
             break;		
         default:
-            alert("Veuillez renseigner une action (" + chxAction + ")");return false;
+            alert("Veuillez renseigner une action (" + chxAction + ")");
+            return false;
     }
     if (confirm(lblAction + "\n\nEtes vous sûr ?")) {    //alert("oui")  
     }

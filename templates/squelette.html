@@ -8,165 +8,105 @@
   <meta name="keywords" content="" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=9" />
+  <!-- jQuery is required -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  {% if DEBUG == True %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.css') }}" />
+  {% else %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" />
+  {% endif %}
+  
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
-  <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
   {% block header %}
   {% endblock %}
 </head>
 
 <body>
-  <div id="main">
-    <div id="header">
-	  <div id="banner">
-	    <div id="welcome">
-        {% block welcome %}<h1>OSMC Salon       by J.Griffon</h1>{% endblock %}
-	    </div><!--close welcome-->
-        <br>
-	    <div id="welcome_slogan">
-	      {% block welcome_slogan %}<h1><i>Ils ne savaient pas que c'était impossible alors ils l'ont fait</i></h1>{% endblock %}
-	    </div><!--close welcome_slogan-->
-	  </div><!--close banner-->
-    </div><!--close header-->
-	{% with messages = get_flashed_messages() %}
-	  {% if messages %}
-	    <div id="content_grey"> 
-	   <div class="content_grey_container_box1">
-	    <h1>{% for message in messages %}
-	      <ul>{{ message }}</ul>
-		    {% endfor %}</h1>
-	    </div></div>
-	  {% endif %}
-	{% endwith %}
-	 
-	<div id="menubar">
-      <ul id="menu">
-{%- for item in MENU %}
-    {%-   for name, path in MENU[item].items()  %}
-    <li
+<div id="main">
+	{%- with messages = get_flashed_messages(with_categories=true) %}
+	  {%- if messages %}
+        {%- for category, message in messages %}
+            {%- if category=='error' %}
+                {%- set typemessage = 'uk-alert-danger' %}
+            {%- endif %}
+            {%- if category=='warning' %}
+                {%- set typemessage = 'uk-alert-warning' %}
+            {%- endif %}
+            {%- if category=='info' %}
+                {%- set typemessage = 'uk-alert-success' %}
+            {%- endif %}
+           <div id="messageFlash" class="uk-alert {{ typemessage }} uk-alert-large uk-animation-slide-top">
+                <a href="" class="uk-alert-close uk-close"></a>
+                <p>{{ message|safe }}</p>
+            </div>
+		{%- endfor %}
+	  {%- endif %}
+	{%- endwith %}
     
-        {% if request.path ==  path %}
-            class="current"
-        {% endif %}
-        ><a href="{{ path }}">{{ name }}</a>
-    </li>
-     {%- endfor %}
-{%- endfor %}
-      </ul>
-    </div><!--close menubar-->	
-    
-	<div id="site_content">
-      {% if AFF_BANDEAU %}
-	  <div class="sidebar_container">       
-		<div class="sidebar">
-		  <div class="sidebar_item">
-		    <h2>Site en construction</h2>
-		    <p>Bienvenue dans ce site experimental</p>
-            <ul><h3>Fonctionnel :</h3>
-                    <br>
-             <li>Accès SSH </li>
-             <li>Accès JDownloader </li>
-             <li>Organisation des fichiers </li>
-             <li>Accès SSH </li><
-             <li>Esthétique globale</li>
-             <li>Fichier Config</li>
-            /ul>
-            <ul><h3>En cours : </h3>
-             <br>
-             <li>Etat du raspberry + logs</li>
-             <li>Accès kodi</li>
-             <li>Accès musique</li> 
-             <br>
-             </ul>
-            <ul>A venir : 
-                    <br>
+    {%- macro menu() %}
+        {%- for item in MENU %}
+        {%-   for name, path in MENU[item].items()  %}
+            {%- if request.path ==  path %}
+                {%- set navstatus = 'uk-active' %}
+            {%- else %}
+                {%- set navstatus = '' %}
+            {%- endif %}
+            <li class="{{ navstatus }}"><a href="{{ path }}">{{ name }}</a></li>
+        {%-   endfor %}
+        {%- endfor %}
+    {%- endmacro %}
 
-             <li> </li>
-             </ul>
-		  </div><!--close sidebar_item--> 
-		  <div class="sidebar_item">
-		    <h2>Latest Update</h2>
-		    <h3>05 Avril 2016</h3>
-		    <p>Gestion Fichier</p>         
-		  </div><!--close sidebar_item--> 
-		  <div class="sidebar_item">
-		    <h2>Latest Update</h2>
-		    <h3>22 Mars 2016</h3>
-		    <p>Interface visuelle</p>         
-		  </div><!--close sidebar_item--> 
-		  <div class="sidebar_item">
-		    <h2>Latest Update</h2>
-		    <h3>01 Mars 2016</h3>
-		    <p>Création du site</p>         
-		  </div><!--close sidebar_item--> 
-        	  <div class="sidebar_item">
-		    <h2>Mise à jour</h2>
-		    <p>Attention ne lancer que si une mise à jour de github a été faite :</p>
-		    <p><a href="/majWeb/">MaJ du serveur</a></p>
-		  </div><!--close sidebar_item--> 
-	     </div><!--close sidebar-->
-         </div><!--close sidebar_container-->	
-        {% endif %}
+
+    <div class="uk-container uk-container-center">   
+        <div class="uk-margin">
+            <nav class="uk-navbar">
+                <ul class="uk-navbar-nav uk-hidden-small uk-hidden-medium">
+                    {{ menu() }}
+                </ul>
+                <a href="#navbar-mobile" class="uk-navbar-toggle uk-hidden-large" data-uk-offcanvas="{mode:'slide'}"></a>
+            </nav>
+        </div>
+    </div>
+    <div id="navbar-mobile" class="uk-offcanvas">
+        <div class="uk-offcanvas-bar">
+            <ul class="uk-nav uk-nav-offcanvas" data-uk-nav>
+                {{ menu() }}
+            </ul>
+        </div>
+    </div>
+	<div id="site_content">
          <div id="content">
         	<div class="content_item">
 		  	{% block corps %}
           		{% endblock %}
-<!--    
-         	  <div class="content_container">
-		  	<div class="button_small">
-		      <a href="#">Read more</a>
-		    </div><!--close button_small-->
-<!--    
-            </div><!--close content_container-->
-<!--    
-            <div class="content_container">
-		  	<div class="button_small">
-		        <a href="#">Read more</a>
-		    </div><!--close button_small-->		  
-<!--        </div><!--close content_container-->
-          
-		</div><!--close content_item-->
-      </div><!--close content-->   
+            </div><!--close content_item-->
+         </div><!--close content-->   
 	</div><!--close site_content--> 
-<!--	   
-	 <div id="content_grey">
-<!--	
-    <div class="content_grey_container_box">
-		<h4>Latest Blog Post</h4>
-	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
-		<div class="readmore">
-		  <a href="#">Read more</a>
-		</div><!--close readmore-->
-<!--
-        </div><!--close content_grey_container_box-->
-<!--      
-      <div class="content_grey_container_box">
-       <h4>Latest News</h4>
-	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
-	    <div class="readmore">
-		  <a href="#">Read more</a>
-		</div><!--close readmore-->
-<!--
-        </div><!--close content_grey_container_box-->
-<!--
-        <div class="content_grey_container_boxl">
-		<h4>Latest Projects</h4>
-	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
-	    <div class="readmore">
-		  <a href="#">Read more</a>
-		</div><!--close readmore-->	  
-<!--
-        </div><!--close content_grey_container_box1-->      
-<!--	
-        <br style="clear:both"/>  -->
-       
-    	<!--</div><!--close content_grey-->   
-
-
-  </div><!--close main-->
+</div><!--close main-->
+   
+   
   
   <div id="footer">
     {% block footer %}KuganCorp 2017{% endblock %}
-  </div><!--close footer-->  
+  </div>
+    {%- if temperature <= 40 -%}
+        {%- set logotemp = 'empty' -%}
+    {%- elif temperature <= 55 -%}
+        {%- set logotemp = 'quarter' -%}
+    {%- elif temperature <= 70 -%}
+        {%- set logotemp = 'half' -%}
+    {%- elif temperature <= 85 -%}
+        {%- set logotemp = 'three-quarters' -%}
+    {%- else -%}
+        {%- set logotemp = 'full' -%}
+    {%- endif -%}
+   <div id="footer_temp"><i class="fa fa-thermometer-{{logotemp}}  fa-border fa-2x" aria-hidden="true">  {{ temperature }} °C</i></div>
   
+  </div><!--close footer-->  
+  <!-- UIkit CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.25.0/css/uikit.min.css" />
+<!-- UIkit JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.25.0/js/uikit.min.js"></script>
+
 </body>
 </html>

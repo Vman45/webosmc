@@ -8,7 +8,8 @@ class Search(object):
     button_index = 100
     button_label = ""
     button_html = """
-        <form onsubmit='load_plugin_content("search", "index", {search_type: $("#tq").val(), term:$("#q").val()}); return false'>
+        <form class="uk-form" onsubmit='load_plugin_content("search", "index", {search_type: $("#tq").val(), term:$("#q").val()}); return false'>
+            <fieldset data-uk-margin>
             <input type='text' id='q' size="10"/>
             <select id='tq'>
                 <option value='filename'>filename</option>
@@ -16,7 +17,8 @@ class Search(object):
                 <option value='album'>album</option>
                 <option value='title'>title</option>
             </select>
-            <button type='submit'>Search</button>
+            <button class="uk-button" type='submit'>Search</button>
+            </fieldset>
         </form>
     """
 

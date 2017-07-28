@@ -4,14 +4,14 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/gestionFichier.css') }}">
     <script src="{{ url_for('static', filename='lib/jqTree/tree.jquery.js') }}"></script>
-    {% macro remastering(list,id) %}{% autoescape false %}
+    {%- macro remastering(list,id) -%}{%- autoescape false -%}
         {%- set idxs = [0] -%}
-        [{%- for item in list.children recursive %}
-            {%- if loop.index0 > 0 -%},{%- endif %}{name: '{{ item.name }}', fullname: '{{ item.fullname }}'{%- if id -%}, id: {{ idxs|length*1000 + loop.index}}{%- endif %}
-            {%- if item.children -%}{%- set tmp = idxs.append(loop.index) -%},children: [{{ loop(item.children) }}]{%- set tmp = idxs.pop() -%}{%- endif %}
-        }{%- endfor %}]
-        {% endautoescape %}
-    {%- endmacro %}
+        [{%- for item in list.children recursive -%}
+            {%- if loop.index0 > 0 -%},{%- endif -%}{name: '{{ item.name }}', fullname: '{{ item.fullname }}'{%- if id -%}, id: {{ idxs|length*1000 + loop.index}}{%- endif -%}
+            {%- if item.children -%}{%- set tmp = idxs.append(loop.index) -%},children: [{{ loop(item.children) }}]{%- set tmp = idxs.pop() -%}{%- endif -%}
+        }{%- endfor -%}]
+        {%- endautoescape -%}
+    {%- endmacro -%}
     <script type="text/javascript" charset="utf-8">
     $(function() {
             var $treeFic = $('#treeFic');
@@ -24,37 +24,35 @@
     });
     </script>
 {% endblock %}
-
-
 {% block titre %}Osmc Salon by JGriffon{% endblock %}
 
 {% block corps %}
 <h1>scripts machine {{ self.titre() }}</h1>
 <br><br>
 <div id="ButtonChoix">
-<form class="form_settings" method="POST" action="">
-    <p>
-        <label for="repPrinc">emplacement des scripts :</label> :
-        <input type="text" name="repPrinc" id="repPrinc" value={{ pathFiles }} />
-        <button type="submit" name="submitButton" value="ModifPath">Modifier</button>
-    </p>
-</form>
+    <form class="uk-form" method="POST" action="">
+        <p>
+            <label for="repPrinc">emplacement des scripts :</label> :
+            <input type="text" name="repPrinc" id="repPrinc" value={{ pathFiles }} />
+            <button class="uk-button" type="submit" name="submitButton" value="ModifPath">Modifier</button>
+        </p>
+    </form>
 
-<p>Selectionnez le script puis cliquez sur le bouton Executer</p>
-<fieldset>
-    <div class="liste">
-        <h2>Liste Fichiers</h2> 
-        <div id="treeFic">		</div>
-        <textarea id="FilesSelected" style="display:none;" name="FilesSelected"></textarea>
-    </div>
-</fieldset>
+    <p>Selectionnez le script puis cliquez sur le bouton Executer</p>
+    <fieldset>
+        <div class="liste">
+            <h2>Liste Fichiers</h2> 
+            <div id="treeFic">		</div>
+            <textarea id="FilesSelected" style="display:none;" name="FilesSelected"></textarea>
+        </div>
+    </fieldset>
+    <button class="uk-button" onclick="ConfirmExec()">Lancer script</button>
+    <button class="uk-button" onclick="OuvertureEdition()">Editer</button>
+</div>
+<!-- https://stackoverflow.com/questions/21956500/use-jinja2-template-engine-in-external-javascript-file -->
 
- <button onclick="ConfirmExec()">Lancer MAJ</button>
- 
- <button onclick="OuvertureEdition()">Editer</button>
- </div>
- <script type="text/javascript">
-function ConfirmExec(){
+    <script type="text/javascript">
+        function ConfirmExec(){
     var FileSelect=$('#treeFic').tree('getSelectedNode').fullname;
     if (FileSelect == undefined){alert("Pas de script selectionné");return false;}
     var lblAction = "Vous aller executer le script " + FileSelect;
@@ -118,19 +116,19 @@ function changeaffiche(element,visible){
     if (visible == true){targetElement.style.display = "" ;}
     else{targetElement.style.display = "none" ;}
 }
-</script>
+    </script>
+
 
 <div id="scriptmodif" style="display:none">
 <h1>Fichier</h1>
- <form class="form_settings" method="post" onSubmit="return ChargementForm(this);" action="">
+ <form class="uk-form" method="post" onSubmit="return ChargementForm(this);" action="">
    <p>
      <h1 id="TitreFichier">?</h1>
      <textarea id="FileSelected" style="display:none;" name="FileSelected"></textarea>
      <label for="Scriptcontenu">Contenu du fichier :<br></label>
-     
      <textarea name="Scriptcontenu" id="Scriptcontenu" rows="30" cols="500"></textarea><br>
      
-     <button type="submit" name="submitButton" value="EnregFichier">Modifier</button>
+     <button class="uk-button" type="submit" name="submitButton" value="EnregFichier">Modifier</button>
    </p>
 </form>
 </div>           

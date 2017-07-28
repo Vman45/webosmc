@@ -6,10 +6,9 @@ class Playlists(object):
     button_label = "Playlists"
     index_template = """
 <h2>Playlists</h2>
-
-{% for playlist in playlists %}
-    <li {{ loop.cycle("", "class='p'") }}><a href="#" onclick='execute_plugin("playlists", "load", {playlist: "{{ playlist.path }}"}, refresh_player);'>{{ playlist.path }}</a></li> 
-{% endfor %}
+{%- for playlist in playlists -%}
+    <li{{ loop.cycle("", "class='p'") }}><a href="#" onclick='execute_plugin("playlists", "load", {playlist: "{{ playlist.path }}"}, refresh_player);'>{{ playlist.path }}</a></li> 
+{%- endfor -%}
 """
 
     def __init__(self, mpd, config):

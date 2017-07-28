@@ -5,69 +5,67 @@ class Player(object):
     button_index = 100
     button_label = ""
     index_template = """
-{% if stat %}
-    {% if stat.state in (2, 3) %}
-        {% if current_song.is_stream %}
-            [Stream]
-            {{ current_song.title }}
-        {% else %}
-            {{ current_song.formatted_title|safe }}
-        {% endif %}
+{%- if stat -%}
+    {%- if stat.state in (2, 3) -%}
         <br />
-
+        {%- if current_song.is_stream -%}
+            [Stream]{{ current_song.title }}
+        {%- else -%}
+            {{ current_song.formatted_title|safe }}
+        {%- endif -%}
+        <br />
         <table>
             <tr>
                 <td>
                     <a id='sb' onclick='seekclick(event);'><div id='sbc' style='width:{{percent_time*2}}px'></div></a>
                 </td>
                 <td>
-                    {{percent_time|int}}% - {{"%02d:%02d"|format(elapsed_time/60, elapsed_time%60)}}/{{"%02d:%02d"|format(total_time/60, total_time%60)}}
+                    {{percent_time|int}}% - {{"%02d:%02d"|format(elapsed_time/60, elapsed_time%60)}}/<b>{{"%02d:%02d"|format(total_time/60, total_time%60)}}</b>
                 </td>
             </tr>
         </table>
-    {% endif %}
-{% else %}
+    {%- endif -%}
+{%- else -%}
 Error : Can't play that!
-{% endif %}
+{%- endif -%}
 
-<button onclick='execute_plugin("player", "prev", {}, refresh_player);'><img src="{{ url_for('MPDClient.static', filename='images/rewind.png') }}" height="12" width="12"/></button>
-{% if stat.state != 2 %}
-    <button onclick='execute_plugin("player", "play", {}, refresh_player);'><img src="{{ url_for('MPDClient.static', filename='images/play.png') }}" height="12" width="12"/></button>
-{% else %}
-    <button onclick='execute_plugin("player", "pause", {}, refresh_player);'><img src="{{ url_for('MPDClient.static', filename='images/pause.png') }}" height="12" width="12"/></button>
-{% endif %}
-{% if stat.state != 1 %}
-    <button onclick='execute_plugin("player", "stop", {}, refresh_player);'><img src="{{ url_for('MPDClient.static', filename='images/stop.png') }}" height="12" width="12"/></button>
-{% endif %}
+<button class="uk-button" onclick='execute_plugin("player", "prev", {}, refresh_player);'><span class="fa-stack"><i class="fa fa-fast-backward fa-2x" aria-hidden="true"></i></span></button>
+{%- if stat.state != 2 -%}
+    <button class="uk-button" onclick='execute_plugin("player", "play", {}, refresh_player);'><span class="fa-stack"><i class="fa fa-play fa-2x" aria-hidden="true"></i></span></button>
+{%- else -%}
+    <button class="uk-button" onclick='execute_plugin("player", "pause", {}, refresh_player);'><span class="fa-stack"><i class="fa fa-pause fa-2x" aria-hidden="true"></i></span></button>
+{%- endif -%}
+{%- if stat.state != 1 -%}
+    <button class="uk-button" onclick='execute_plugin("player", "stop", {}, refresh_player);'><span class="fa-stack"><i class="fa fa-stop fa-2x" aria-hidden="true"></i></span></button>
+{%- endif -%}
 
-<button onclick='execute_plugin("player", "next", {}, refresh_player);'><img src="{{ url_for('MPDClient.static', filename='images/forward.png') }}" height="12" width="12"/></button>
+<button class="uk-button" onclick='execute_plugin("player", "next", {}, refresh_player);'><span class="fa-stack"><i class="fa fa-fast-forward fa-2x" aria-hidden="true"></i></span></button>
 
-{% if stat.state != 0 and stat.volume != -1 %}
-    <button onclick='execute_plugin("player", "volume_down", {}, refresh_player);'><img src="{{ url_for('MPDClient.static', filename='images/volume-.png') }}" height="12" width="12"/></button>
-    <button onclick='execute_plugin("player", "volume_up", {}, refresh_player);'><img src="{{ url_for('MPDClient.static', filename='images/volume+.png') }}" height="12" width="12"/></button>
-    <!--<button onclick='execute_plugin("player", "mute", {}, refresh_player);'>@</button>-->
-    {{ stat.volume }}%
-{% endif %}
+{%- if stat.state != 0 and stat.volume != -1 -%}
+    <button class="uk-button" onclick='execute_plugin("player", "volume_down", {}, refresh_player);'><span class="fa-stack"><i class="fa fa-volume-down fa-2x" aria-hidden="true"></i></span></button>
+    <button class="uk-button" onclick='execute_plugin("player", "volume_up", {}, refresh_player);'><span class="fa-stack"><i class="fa fa-volume-up fa-2x" aria-hidden="true"></i></span></button>
+    <button class="uk-button"onclick='execute_plugin("player", "mute", {}, refresh_player);'><span class="fa-stack"><i class="fa fa-volume-off fa-stack-2x"></i><i class="fa fa-ban text-danger fa-stack-2x"></i></span></button>
+             <span class="fa-stack fa-5x"><i class="fa fa-volume-off fa inverse fa-stack-1x"></i><strong class="fa-stack-1x fa-stack-text fa-inverse" style="font-size:11px">{{ stat.volume }}%</strong></span>
+{%- endif -%}
 """
     playlist_template = """
 <h2>Playlist ({{ total_index }})
-    <button onclick='execute_plugin("player", "clear", {}, refresh_player);'>clear</button>
-    <button onclick='execute_plugin("player", "clear_old", {}, refresh_player);'>clear old</button>
-    <button onclick='execute_plugin("player", "shuffle", {}, refresh_player);'>shuffle</button>
+    <button class="uk-button" onclick='execute_plugin("player", "clear", {}, refresh_player);'>clear</button>
+    <button class="uk-button" onclick='execute_plugin("player", "clear_old", {}, refresh_player);'>clear old</button>
+    <button class="uk-button" onclick='execute_plugin("player", "shuffle", {}, refresh_player);'>shuffle</button>
 </h2>
 
-{% for index, entry in enumerate(playlist) %}
-    <li 
-    {% if current_index == index+1 %}
+{%- for index, entry in enumerate(playlist) -%}
+    <li
+    {%- if current_index == index+1 -%}
         class='s'
-    {% else %}
+    {%- else -%}
         {{ loop.cycle("", "class='p'") }}
-    {% endif %}
-    > {{ "%03d"|format(index) }}
-        <a href='#' onclick='execute_plugin("player", "delete", {idx: {{index}} }, refresh_player);'><span><img src="{{ url_for('MPDClient.static', filename='images/delete.png') }}" height="12" width="12"/></span></a>
+    {%- endif -%}
+    >{{ "%03d"|format(index) }}<a href='#' onclick='execute_plugin("player", "delete", {idx: {{index}} }, refresh_player);'><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></a>
         <a href='#' onclick='execute_plugin("player", "play", {idx: {{index}} }, refresh_player);'>{{ entry.formatted_title }}</a>
     </li>
-{% endfor %}
+{%- endfor -%}
 
 """
 

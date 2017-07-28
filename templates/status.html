@@ -1,0 +1,188 @@
+{% extends "squelette.html" %}
+
+{% block titre %}Osmc Salon by JGriffon{% endblock %}
+
+{% block corps %}
+<h1>Bienvenue {{ self.titre() }}</h1>
+<br>
+<button class="uk-button" onclick="start()">Lancer MAJ</button>
+<button class="uk-button" onclick="stop()">stopper MAJ</button>
+<br><br><br>
+<div id="bip" class="display"></div>
+<script src="https://cdn.rawgit.com/Mikhus/canvas-gauges/gh-pages/download/2.1.4/all/gauge.min.js"></script>
+<!-- <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='lib/status.js') }}"></script> -->
+<script>var counter = 0;
+var intervalId = null;
+function stop(){
+  clearInterval(intervalId);
+  document.getElementById("bip").innerHTML = "";	
+}
+function bip(){
+    document.getElementById("bip").innerHTML = counter + " secondes passées";
+    counter++;
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    var content = $SCRIPT_ROOT+"/_majData";
+    $.getJSON($SCRIPT_ROOT+"/_majData",
+        function(data) {
+            /* temperature graph*/
+            var template_tempgraph = {
+                renderTo: 'canvas-temp',
+                width: 120,
+                height: 300,
+                units: "°C",
+                minValue: 0,
+                valueBox: true,
+                maxValue: 120,
+                majorTicks: ["0","10","20","30","40","50","60","70","80","90","100","110","120"],
+                minorTicks: 5,
+                strokeTicks: true,
+                highlights: [
+                    {"from": 100,"to": 120,"color": "#000"},
+                    {"from": 80,"to": 100,"color": "rgba(200, 50, 50, .75)"},
+                    {"from": 60,"to": 80,"color": "rgba(200, 170, 50, .75)"},
+                    {"from": 40,"to": 60,"color": "rgba(50, 205, 50, .75)"}
+                ],
+                colorPlate: "#fff",
+                borderShadowWidth: 10,
+                borders: false,
+                needleType: "arrow",
+                needleWidth: 2,
+                needleCircleSize: 7,
+                needleCircleOuter: true,
+                needleCircleInner: false,
+                barWidth: 15,
+                valueDec:1,
+                animateOnInit:true,
+                animationRule: "elastic",
+                animationDuration: 300,
+                value: data.temperature
+            };
+            var gauge = new LinearGauge(template_tempgraph).draw();
+            var template_cpugraph={
+                width: 120,
+                height: 115,
+                units: "CPU %",
+                minValue: 0,
+                valueBox: true,
+                valueDec:1,
+                maxValue: 100,
+                majorTicks: ["0","20","40","60","80","100"],
+                minorTicks:0,
+                strokeTicks: false,
+                highlights: [
+                    {"from": 80,"to": 100,"color": "rgba(200, 50, 50, .75)"},
+                    {"from": 60,"to": 80,"color": "rgba(200, 170, 50, .75)"},
+                    {"from": 40,"to": 60,"color": "rgba(50, 205, 50, .75)"}
+                ],
+                colorPlate: "#fff",
+                borderShadowWidth: 10,
+                borders: false,
+                needleType: "arrow",
+                needleWidth: 2,
+                needleCircleSize: 0,
+                needleCircleOuter: true,
+                needleCircleInner: false,
+                barWidth: 15,
+                barBeginCircle: false,
+                colorBarProgress:"#000",
+                colorBarProgressEnd:"#fff",
+                            ticksWidth:4,
+                ticksPadding:0,
+                tickSide: "left",
+                numberSide: "left",
+                needleSide: "left",
+                animateOnInit:true,
+                animationRule: "elastic",
+                animationDuration: 500
+            }
+            
+            var cpu_graph = Object.assign({}, template_cpugraph);
+            cpu_graph.value = data.cpuusage.average;
+            cpu_graph.renderTo = 'canvas-cpu';
+            cpu_graph.width = 270;
+            cpu_graph.height = 260;
+            var gauge = new LinearGauge(cpu_graph).draw();
+            if (data.numcpu > 1){
+                for(var i= 0; i < data.numcpu; i++){
+                    var cpux_graph = Object.assign({}, template_cpugraph);
+                    cpux_graph.units = "CPU " + (i+1) + " %";
+                    cpux_graph.value = data.cpuusage.values[i];
+                    cpux_graph.renderTo = 'canvas-cpu'   + (i +1);
+                    var gauge = new LinearGauge(cpux_graph).draw();
+                }
+            }
+            var sortie = "<hr>";
+            sortie += "<h2>Processus :</h2>";
+            for(elt in data.processes){
+                sortie += "<li>" + data.processes[elt].name + " : " + (data.processes[elt].lstPID == "" ? "OFF !!" : data.processes[elt].lstPID) + "</li>";
+            };
+            sortie += "<hr>";
+            sortie += "<table><tr><th>Nom</th><th>CPU</th><th>PID</th></tr>"
+            for(elt in data.allprocesses){
+            
+                sortie += "<tr><th>" + data.allprocesses[elt].name + "</th><td>" + data.allprocesses[elt].cpu_percent + "</td><td>" + data.allprocesses[elt].pid + "</td></tr>";
+            };
+            sortie += "</table><hr>";
+            
+            
+            $("#processus").html(sortie);
+            
+            sortie = "<h2>Généralités</h2><ul>";
+            sortie += "<li>hostname  " + data.hostname + "</li>";
+            sortie += "<li>uptime : " + data.uptime + "</li>";
+            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li>";
+            sortie += "<li>Connexions : " + data.ip.IPadress + "</li><ul>";
+            sortie += "<li>détail Général  : sent=" + data.ip.detail.lo.bytes_sent + "   received=" + data.ip.detail.lo.bytes_recv + "</li>";
+            sortie += "<li>détail Ethernet : sent=" + data.ip.detail.eth0.bytes_sent + "   received=" + data.ip.detail.eth0.bytes_recv + "</li>";
+            sortie += "<li>détail Wi-Fi    : sent=" + data.ip.detail.wlan0.bytes_sent + "   received=" + data.ip.detail.wlan0.bytes_recv + "</li></ul>";
+            sortie += "</ul><hr>";
+            $("#gen").html(sortie);
+            
+            sortie = "<h2>Processeur</h2><ul>";
+            sortie += "<li>Nb cpu : " + data.numcpu + "</li>";
+            sortie += "<li>cpuusage :</li><ul>";
+            sortie += "<li>average : " + data.cpuusage.average + "</li>";
+            sortie += "<li>values : " + data.cpuusage.values + "</li></ul>";
+            sortie += "</ul><hr>";
+            $("#cpu").html(sortie);
+            
+            sortie = "<h2>Mémoire</h2>";
+            sortie += "<li>total : " + data.memory.total + "</li>";
+            sortie += "<li>used : " + data.memory.used + "</li>";
+            sortie += "<li>available : " + data.memory.available + "</li>";
+            sortie += "<li>free : " + data.memory.free + "</li>";
+            sortie += "<hr>";
+            $("#mem").html(sortie);
+
+            sortie = "<h2>Disques</h2>";
+            for(elt in data.disk){
+                sortie += "<li>disk device : " + data.disk[elt].device + "( mountpoint : " +  data.disk[elt].mountpoint + ", fstype : " + data.disk[elt].fstype + " )<ul>";
+                sortie+= "<li>total : " + data.disk[elt].total + "</li>";
+                sortie+= "<li>used  : " + data.disk[elt].used + "</li>";
+                sortie+= "<li>free  : " + data.disk[elt].free + " ( " + data.disk[elt].percent + " % )</li>";
+                sortie+= "</ul></li>";
+            };
+            sortie += "<hr>";
+            $("#disk").html(sortie);
+
+            
+        }
+    );
+}
+
+function start()
+{
+  intervalId = setInterval(bip, 1000);
+}
+$(document).ready(function () {
+   bip();
+});
+</script>    
+<canvas id="canvas-temp"></canvas><canvas id="canvas-cpu"></canvas><canvas id="canvas-cpu1"></canvas><canvas id="canvas-cpu2"></canvas><canvas id="canvas-cpu3"></canvas><canvas id="canvas-cpu4"></canvas>
+<div class="status" id="gen"></div>
+<div class="status" id="processus"></div>
+<div class="status" id="cpu"></div>
+<div class="status" id="mem"></div>
+<div class="status" id="disk"></div>
+<br><br><br><br><hr>
+{% endblock %}

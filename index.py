@@ -25,17 +25,23 @@ from modules.webConfig import launch_process
 #OK Terminé
 @app.context_processor
 def inject_dict_for_all_templates():
-    return dict(MENU=app.config["GEN_MENU"],AFF_BANDEAU=app.config["GEN_AFF_BANDEAU"])
-    
+    if app.config["LINK_AFF_MSG"] == True :
+        ret = launch_process(app.config["LINK_VERIFMAJ"])
+        app.logger.info('Verif MAJ :' + ' Resultat : ' + ret['output'] + '///' + ret['error'])
+        if (ret['error']  != '') :
+            flash(u"<h1>Un problème est survenu dans la vérification de mise à jour</h1> Message : " + ret['output'] + u"<br><br>Erreur :" + ret['error'],'error')
+        elif (ret['output'][:10] != "Up-to-date" or ret['error']  != '') :
+            flash(u"<h1>Une nouvelle version du site est disponible.</h1><br>Veuillez faire une mise à jour<br>Message : " + ret['output'] + "<br><h2><a href='/majWeb/'>MaJ du serveur</a></h2>" , 'warning')
+    import modules.status.status_functions as status_functions
+    temperature=status_functions.getTemperature()
+    return dict(MENU=app.config["GEN_MENU"],DEBUG=app.config["DEBUG"],temperature=temperature)
+        
 @app.route('/')
 def index():
-    ret = launch_process(app.config["LINK_VERIFMAJ"])
-    app.logger.info('Verif MAJ :' + ' Resultat : ' + ret['output'] + '///' + ret['error'])
-    if (ret['error']  != '') :
-        flash(u"Un problème est surcenu dans la vérification de mise à jour n\nMessage : <br>" + ret['output'] + u"\n\nErreur :\n" + ret['error'])
-    elif (ret['output'][:10] != "Up-to-date" or ret['error']  != '') :
-        flash(u"Une nouvelle version du site est disponible.\nVeuillez faire une mise à jour\n\nMessage : \n" + ret['output'] )
-    return render_template('index.html')
+   return render_template('index.html')
+@app.route('/status/')
+def status():
+    return render_template('status.html')
 @app.route('/_majData/', methods=['GET'])
 def get_majData():
     data = get_status(app.config["STATUS_LSTPROC"],app.config["STATUS_CPUMIN"])
@@ -53,14 +59,12 @@ def JD():
 @app.route('/majWeb/')
 def majWeb():
     ret = launch_process(app.config["LINK_MAJ_SITE"])
-    app.logger.info('MAJ site :' + ' Resultat : ' + ret['output'] + '///' + ret['error'])
+    app.logger.info('<h1>MAJ site :</h1>' + ' Resultat : ' + ret['output'] + '<br><br>Erreur :' + ret['error'])
     if ret['error']  == '':
-        message = u'OK maj faite !!!!\n\n' + ret['output']
+        flash(u'<h1>OK maj faite !!!!</h1>' + ret['output'],'info')
     else:
-        message = u'Problème de mise à jour !!!!\n\n' + ret['output'] + u'\n\nErreur:\n' + ret['error']
-    flash(message)
-    return redirect(url_for('index'))
-    
+        flash(u'<h1>Problème de mise à jour !!!!</h1>' + ret['output'] + u'<br><br>Erreur:' + ret['error'],'error')
+    return redirect(url_for('index'))    
 @app.route('/config/',methods=['GET'])
 def GETconfigWeb():
     content = readConfig('config.py')
@@ -69,12 +73,6 @@ def GETconfigWeb():
 def POSTconfigWeb():
     ret = writeConfig('config.py',request.form['contenu'].strip())
     return render_template('config.html',content=request.form['contenu'].strip())
-
-  #                                         En cours développement
-
-@app.route('/test/')
-def lancement_test():
-    return render_template('test.html')
 
 
 if __name__ == '__main__':
@@ -93,7 +91,6 @@ if __name__ == '__main__':
         app.logger.setLevel(logging.DEBUG)
 #        app.logger.setLevel(logging.INFO)
         app.logger.addHandler(logHandler)    
-
     app.run(debug=Debug, port=app.config["PORT"], host='0.0.0.0')
     
     # app.logger.warning('testing warning log %s %d','ok', 21)

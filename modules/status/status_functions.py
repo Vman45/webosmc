@@ -2,6 +2,7 @@ import psutil
 import subprocess
 import socket
 import os
+import platform
 import time
 import datetime
 from netifaces import interfaces, ifaddresses, AF_INET
@@ -94,7 +95,6 @@ def getCpuPercent():
     return {'user':user,'nice':nice,'system':system,'idle':idle,'iowait':iowait,'irq':irq,'softirq':softirq }
 
 
-
 def getNumCpu():
     return psutil.cpu_count()
 
@@ -148,9 +148,12 @@ def getUptime(text=False):
 
 
 def getTemperature():
-    process = subprocess.Popen(['/opt/vc/bin/vcgencmd', 'measure_temp'], stdout=subprocess.PIPE)
-    output, _error = process.communicate()
-    return str(output.replace('temp=','')[:4])
+    if platform.system()[:3] == 'Win':
+        return 42
+    else:
+        process = subprocess.Popen(['/opt/vc/bin/vcgencmd', 'measure_temp'], stdout=subprocess.PIPE)
+        output, _error = process.communicate()
+        return str(output.replace('temp=','')[:4])
     
 def getCpuFrequency():
     ret = psutil.cpu_freq()
