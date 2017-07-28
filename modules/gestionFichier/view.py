@@ -1,4 +1,4 @@
-coding: utf-8
+# coding: utf-8
 import codecs, os, subprocess
 from flask import Flask,render_template, redirect, request, url_for, Blueprint, jsonify
 app = Flask(__name__)
