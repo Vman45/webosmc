@@ -65,13 +65,22 @@ def majWeb():
     else:
         flash(u'<h1>Problème de mise à jour !!!!</h1>' + ret['output'] + u'<br><br>Erreur:' + ret['error'],'error')
     return redirect(url_for('index'))    
-@app.route('/config/',methods=['GET'])
-def GETconfigWeb():
-    content = readConfig('config.py')
+@app.route('/config/<path:pathFiles>',methods=['GET'])
+def GETconfigWeb((pathFiles)):
+    if pathFiles =='':
+        pathFiles = 'config.py'
+    else:
+        pathFiles = '/' + pathFiles
+    content = readConfig(pathFiles)
     return render_template('config.html',content=content.strip())
-@app.route('/config/',methods=['POST'])
-def POSTconfigWeb():
-    ret = writeConfig('config.py',request.form['contenu'].strip())
+@app.route('/config/<path:pathFiles>',methods=['POST'])
+def POSTconfigWeb((pathFiles)):
+    if pathFiles =='':
+        pathFiles = 'config.py'
+    else:
+        pathFiles = '/' + pathFiles
+    app.logger.info('file content=%s',request.form['contenu'].split())
+    ret = writeConfig(pathFiles,request.form['contenu'])
     return render_template('config.html',content=request.form['contenu'].strip())
 
 

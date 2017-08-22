@@ -53,6 +53,12 @@
 <div class="uk-grid">
     <h1>{{ self.titre() }}</h1>
     <br><br>
+        
+    <br>
+    <p class="uk-width-1-1">Selectionnez le ou les fichiers puis l'emplacement et enfin cliquez sur le bouton de votre choix</p>
+    <br>
+    <br>
+    <h2>Liste Fichiers</h2> 
     <form class="uk-form uk-width-1-1" method="POST" action="">
         <p>
             <label for="repPrinc">emplacement des fichiers à traiter :</label> :
@@ -60,7 +66,7 @@
             <button class="uk-button" type="submit" name="submitButton" value="ModifPath">Modifier</button>
         </p>
     </form>
-    <p class="uk-width-1-1">Selectionnez le ou les fichiers puis l'emplacement et enfin cliquez sur le bouton de votre choix</p>
+    <hr>
     <form class="uk-form uk-width-1-1" method="post" onSubmit="return ChargementForm(this);" action="">
         <script type="text/javascript">
             function changeaffiche(element,visible){
@@ -81,8 +87,7 @@
         </script>
         <fieldset>
             <div class="liste">
-                <h2>Liste Fichiers</h2> 
-                <div id="treeFic">		</div>
+                <div id="treeFic">	</div>
                 <textarea id="FilesSelected" style="display:none;" name="FilesSelected"></textarea>
             </div>
         </fieldset> <fieldset>
@@ -127,8 +132,9 @@
         <button class="uk-button" type="submit" name="submitButton" value="Lancer">Lancer</button>
     </form>
 </div>
+<a class="fa fa-cog" href="/config/home/osmc/scripts/AutoMoveFile/KeyList.cfg" aria-hidden="true">   réglage mode auto</a>
 {% endblock %}
- 
 {% block footer %}
+
 <footer>KuganCorp 2017</footer>
 {% endblock %}

@@ -3,12 +3,12 @@
 import subprocess
 
 def readConfig(f):
-    with open (f,"r") as fic:
-        return fic.read()
+    with open (f,'r') as fic:
+        return fic.read().decode('utf-8')
 
 def writeConfig(f,c):
-    with open (f,"w") as fic:
-        fic.write(c)
+    with open (f,'wb') as fic:
+        fic.write(c.encode('utf-8'))
     return "ok"
 
 def modifPortURL(URL,Port):
