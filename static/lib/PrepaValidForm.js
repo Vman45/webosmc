@@ -20,7 +20,7 @@ function ChargementForm(Form){
                 if (FilesSelected == ""){alert("Pas de fichier selectionné");return false;}
                  if (nodes.length > 1){alert('Vous ne pouvez renommer qu\'un fichier à la fois');return false;}
                 if (Form.RenameFile.value == ""){alert("Veuillez indiquer un nouveau nom pour le fichier");return false;}
-                lblAction = "Changement de nom du fichier " + FilesSelected + " en répertoire " + Form.RenameFile.value;
+                lblAction = "Changement de nom du fichier " + FilesSelected + " en " + Form.NomNvFile.value;
                 break;
         case "Copier":
 

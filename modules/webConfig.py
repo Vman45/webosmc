@@ -4,7 +4,7 @@ import subprocess
 
 def readConfig(f):
     with open (f,'r') as fic:
-        return fic.read().decode('utf-8')
+        return fic.read() .decode('utf-8',errors='ignore')
 
 def writeConfig(f,c):
     with open (f,'wb') as fic:
