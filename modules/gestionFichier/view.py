@@ -39,10 +39,10 @@ def FichiersScriptsPOST(pathFiles):
     return redirect(url_for('gestionFichier.FichiersScriptsGET',pathFiles=pathFiles))
 @gestionFichier.route('/_retScripts/<path:pathFiles>', methods=['GET'])
 def retScriptsGET(pathFiles):
-    pathFiles = './' + pathFiles
+    pathFiles = '/' + pathFiles
     app.logger.info('lancement_script : ' + pathFiles)
-    # ret = launch_process(['sh', pathFiles])
-    ret = launch_process([pathFiles,''])
+    ret = launch_process(['sh', pathFiles])
+    # ret = launch_process([pathFiles,''])
     app.logger.info(' retour script : ' + str(ret))
     return jsonify(ret)
 @gestionFichier.route('/_modScripts/<path:pathFiles>', methods=['GET'])
