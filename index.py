@@ -35,7 +35,14 @@ def inject_dict_for_all_templates():
     import modules.status.status_functions as status_functions
     temperature=status_functions.getTemperature()
     return dict(MENU=app.config["GEN_MENU"],DEBUG=app.config["DEBUG"],temperature=temperature)
-        
+
+@app.route("/robots.txt")
+def robots():
+	return "User-agent: *\nDisallow: /"    
+@app.route('/favicon.ico')
+def favicon():
+	return flask.send_file(os.path.join(app.root_path, 'static','favicon.ico'))
+
 @app.route('/')
 def index():
    return render_template('index.html')

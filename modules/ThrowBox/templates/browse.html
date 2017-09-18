@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+	{% block content %}
+
+		{% if route %}
+		<ul class="breadcrumb">
+			<li><a href="{{ url_for("root")}}">root</a>
+			{% for string in route %}
+			<li><a>{{string}}</a></li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+
+		{% if (folders|length > 0) or (files|length > 0) %}
+		<a href="javascript:history.back()">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<span class="glyphicon glyphicon glyphicon-arrow-left" style="margin-right:10px;"></span>
+					Back
+				</div>
+			</div>
+		</a>
+		{% endif %}
+
+		{% if (folders|length == 0) and (files|length == 0) and not Error404 %}
+		<a href="javascript:history.back()">
+			<div class="panel panel-warning">
+				<div class="panel-heading">
+					<span class="glyphicon glyphicon glyphicon-arrow-left" style="margin-right:10px;"></span>
+					Nothing here. Click to go back.
+				</div>
+			</div>
+		</a>
+		{% endif %}
+
+		{% if Error404 %}
+		<a href="javascript:history.back()">
+		<div class="panel panel-danger">
+				<div class="panel-heading">
+					<span class="glyphicon glyphicon glyphicon-arrow-left" style="margin-right:10px;"></span>
+					Error 404, not found.
+				</div>
+				<div class="panel-body">
+					The file was deleted or didn't exist at all.
+					<br>
+					However, mister <strong>{{ClientIP}}</strong>, this incident was logged.
+				</div>
+		</div>
+		</a>
+		{% endif %}
+
+		{% if folders|length > 0 %}
+			{% for folder in folders %}
+			<a href={{ url_for("browse", path=BASE_PATH + "/"+folder)}}>
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<span class="glyphicon glyphicon-folder-open" style="margin-right:10px;"></span>
+					{{folder}}
+				</div>
+			</div>
+			</a>
+			{% endfor%}
+		
+		{% endif %}
+
+		{% if files|length > 0 %}
+			{% for file in files %}
+			<a href={{ url_for("browse", path=BASE_PATH+"/"+file)}}>
+			<div class="panel panel-primary">
+				<div class="panel-body">
+					<span class="glyphicon glyphicon-cloud-download" style="margin-right:10px;"></span>
+						{{file}}
+				</div>
+			</div>
+			</a>
+			{% endfor %}
+		{% endif %}
+	{% endblock %}

@@ -29,5 +29,4 @@ STATUS_LSTPROC[2] = {"Site web":"python"}
 STATUS_LSTPROC[3] = {"MPD":"mpd"}
 STATUS_LSTPROC[4] = {"Synchronisation":"unison"}
 MPD_CONFIG="/home/osmc/webosmc/modules/MPD/MPD.ini"
-# A cabler
-# LINK_LOG = ["tail","%s" % (PATH_LOG)] #--verbose --lines 20
+THROWBOX_CONFIG="/home/osmc/webosmc/modules/ThrowBox/ThrowBox.ini"

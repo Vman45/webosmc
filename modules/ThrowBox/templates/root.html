@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+	{% block content %}
+
+	<ul class="breadcrumb">
+		<li><a>Navigation</a></li>
+	</ul>
+
+
+
+		{% if folders|length > 0 %}
+			{% for folder in folders %}
+			<a href={{ url_for("browse", path=folder)}}>
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<span class="glyphicon glyphicon-folder-open" style="margin-right:10px;"></span>
+					{{folder}}
+				</div>
+			</div>
+			</a>
+			{% endfor%}
+		
+		{% endif %}
+
+		{% if files|length > 0 %}
+			{% for file in files %}
+			<a href={{ url_for("browse", path=BASE_PATH+file)}}>
+			<div class="panel panel-primary">
+				<div class="panel-body">
+					<span class="glyphicon glyphicon-cloud-download" style="margin-right:10px;"></span>
+					{{file}}
+				</div>
+			</div>
+			</a>
+			{% endfor %}
+		{% endif %}
+	{% endblock %}
