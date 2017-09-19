@@ -19,7 +19,7 @@ LINK_JDOWNLOADER = "https://my.jdownloader.org/?deviceId=4ad32ae65d600a9b070bba5
 GESTIONFICHIER_DDL_PATH = "/mnt/LOC/USB"
 GESTIONFICHIER_LST_EXCL_PATH = ['$RECYCLE.BIN','save', 'System Volume Information', 'test', 'musique', 'photos']
 GESTIONFICHIER_LST_EXCL_FILES = ['.part','xyztetst']
-SSH_PORT = 4200
+SSH_PORT = 443
 KODI_PORT = 8080
 STATUS_CPUMIN=2
 STATUS_LSTPROC={}
@@ -29,5 +29,3 @@ STATUS_LSTPROC[2] = {"Site web":"python"}
 STATUS_LSTPROC[3] = {"MPD":"mpd"}
 STATUS_LSTPROC[4] = {"Synchronisation":"unison"}
 MPD_CONFIG="/home/osmc/webosmc/modules/MPD/MPD.ini"
-# A cabler
-# LINK_LOG = ["tail","%s" % (PATH_LOG)] #--verbose --lines 20
