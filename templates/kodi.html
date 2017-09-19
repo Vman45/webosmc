@@ -1,7 +1,6 @@
 {% extends "squelette.html" %}
 {% block header %}
-    {{ super() }} {# renvoie le contenu du block header (celui où l'on se situe) du template parent (squelette.html) #}
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/frame.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/frame.css') }}">
 <script language="JavaScript">
 function calcHeight(){
   //récupère la hauteur de la page
