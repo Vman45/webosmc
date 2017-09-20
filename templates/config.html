@@ -3,7 +3,8 @@
 {% block titre %}Osmc Salon by JGriffon{% endblock %}
 
 {% block corps %}
-
+<div class="uk-container uk-container-center">
+ <div class="uk-margin">
 <script type="text/javascript" charset="utf-8">
 function ChargementForm(Form){
 var lblAction = "Vous allez modifier un fichier important pour le site";
@@ -21,5 +22,6 @@ if (confirm(lblAction + "\n\nEtes vous sûr ?")) {    //alert("oui")
 <button class="uk-button" type="submit" name="submitButton" value="Enregistrement">Modifier</button>
    </p>
 </form>
-
+ </div>
+</div>
 {% endblock %}

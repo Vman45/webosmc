@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 # Creation d'un nom de fichier de verouillage :
 LOCKFILE="/home/osmc/tmp/launchserver.PIDLck" ;
 TMPFILE="/home/osmc/tmp/launchserver.log"
