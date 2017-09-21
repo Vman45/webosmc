@@ -3,6 +3,8 @@
 {% block titre %}Osmc Salon by JGriffon{% endblock %}
 
 {% block corps %}
+<div class="uk-container uk-container-center">
+ <div class="uk-margin">
 <h1>Bienvenue {{ self.titre() }}</h1>
 <br>
 <button class="uk-button" onclick="start()">Lancer MAJ</button>
@@ -185,4 +187,6 @@ $(document).ready(function () {
 <div class="status" id="mem"></div>
 <div class="status" id="disk"></div>
 <br><br><br><br><hr>
+</div>
+</div>
 {% endblock %}

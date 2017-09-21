@@ -1,18 +1,18 @@
-{% extends "base.html" %}
+{% extends "squelette.html" %}
 
-	{% block content %}
+	{% block corps %}
 
-		{% if route %}
-		<ul class="breadcrumb">
-			{% for string in route %}
+		{%- if route -%}
+		<ul class="uk-breadcrumb">
+			{%- for string in route -%}
 			<li><a>{{string}}</a></li>
-			{% endfor %}
+			{%- endfor -%}
 		</ul>
-		{% endif %}
+		{%- endif -%}
 
 
-		<div class="jumbotron">
+		<div class="uk-block-muted">
 			<h1>{{ filename }}</h1>
-			<a class="btn btn-lg btn-primary">Download</a>
-		</div><!-- /.jumbotron-->
+			<a class="uk-button uk-button-primary uk-button-large">Download</a>
+		</div>
 	{% endblock %}

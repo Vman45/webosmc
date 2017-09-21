@@ -3,6 +3,8 @@
 {% block titre %}Osmc Salon by JGriffon{% endblock %}
 
 {% block corps %}
+<div class="uk-container uk-container-center">
+ <div class="uk-margin">
 <h1>Fichiers Log {{ self.titre() }}</h1>
 
 {% raw %}
@@ -17,7 +19,7 @@
       v-model="currentBranch">
     <label :for="branch">{{ branch }}</label>
   </template>
-  <p>vuejs/vue@{{ currentBranch }}</p>
+  <p>{{ currentBranch }}</p>
   <ul>
     <li v-for="record in commits">
       <a :href="record.html_url" target="_blank" class="commit">{{ record.sha.slice(0, 7) }}</a>
@@ -72,4 +74,6 @@ function start()
 </script>    
 
 <div class="status" id="gen"></div>
+</div>
+</div>
 {% endblock %}
