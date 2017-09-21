@@ -15,14 +15,14 @@ from modules.gestionFichier.view import gestionFichier
 from modules.MPD.app import MPDClient
 app.register_blueprint(MPDClient)
 app.register_blueprint(gestionFichier, url_prefix='/gestionFichier')
-
+from modules.ThrowBox.app import ThrowBox
+app.register_blueprint(ThrowBox, url_prefix='/ThrowBox')
 from modules.status.app import get_status
 from modules.webConfig import modifPortURL
 from modules.webConfig import readConfig
 from modules.webConfig import writeConfig
 from modules.webConfig import launch_process
 
-#OK Terminé
 @app.context_processor
 def inject_dict_for_all_templates():
     if app.config["LINK_AFF_MSG"] == True :
@@ -39,9 +39,6 @@ def inject_dict_for_all_templates():
 @app.route("/robots.txt")
 def robots():
 	return "User-agent: *\nDisallow: /"    
-@app.route('/favicon.ico')
-def favicon():
-	return flask.send_file(os.path.join(app.root_path, 'static','favicon.ico'))
 
 @app.route('/')
 def index():

@@ -1,0 +1,12 @@
+{% extends "squelette.html" %}
+{% block corps %}
+<div class="uk-container uk-container-center">
+ <div class="uk-margin">
+    <div class="uk-block-muted uk-width-1-1">
+        <h1>Bienvenue dans le Cloud <strong>OSMC</strong></h1>
+        <p>Vous pouvez télécharger ou uploader des fichiers</p>
+        <a class="uk-button uk-button-primary uk-button-large" href={{ url_for("ThrowBox.root")}}>Explorer les fichiers</a>
+    </div>
+ </div>
+</div>
+{% endblock %}
