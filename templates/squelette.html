@@ -11,58 +11,84 @@
   <meta http-equiv="X-UA-Compatible" content="IE=9" />
   <!-- jQuery is required -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  {% if DEBUG == True %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.css') }}" />
-  {% else %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" />
-  {% endif %}
-  
+{%- if DEBUG == True %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.css') }}" />
+{%- else %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" />
+{%- endif %}
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
   {% block header %}
   {% endblock %}
 </head>
-
 <body>
 <div id="main">
-	{%- with messages = get_flashed_messages(with_categories=true) %}
-	  {%- if messages %}
-        {%- for category, message in messages %}
-            {%- if category=='error' %}
-                {%- set typemessage = 'uk-alert-danger' %}
-            {%- endif %}
-            {%- if category=='warning' %}
-                {%- set typemessage = 'uk-alert-warning' %}
-            {%- endif %}
-            {%- if category=='info' %}
-                {%- set typemessage = 'uk-alert-success' %}
-            {%- endif %}
-           <div id="messageFlash" class="uk-alert {{ typemessage }} uk-alert-large uk-animation-slide-top">
-                <a href="" class="uk-alert-close uk-close"></a>
-                <p>{{ message|safe }}</p>
-            </div>
-		{%- endfor %}
-	  {%- endif %}
-	{%- endwith %}
+{%- with messages = get_flashed_messages(with_categories=true) -%}
+{%-     if messages -%}
+{%-         for category, message in messages -%}
+{%-             if category=='error' -%}
+{%-                 set typemessage = 'uk-alert-danger' -%}
+{%-             endif -%}
+{%-             if category=='warning' -%}
+{%-                 set typemessage = 'uk-alert-warning' -%}
+{%-             endif -%}
+{%-             if category=='info' -%}
+{%-                 set typemessage = 'uk-alert-success' -%}
+{%-             endif %}
+   <div id="messageFlash" class="uk-alert {{ typemessage }} uk-alert-large uk-animation-slide-top">
+        <a href="" class="uk-alert-close uk-close"></a>
+        <p>{{ message|safe }}</p>
+    </div>
+{%-         endfor -%}
+{%-     endif -%}
+{%- endwith -%}
     
-    {%- macro menu() %}
-        {%- for item in MENU %}
-        {%-   for name, path in MENU[item].items()  %}
-            {%- if request.path ==  path %}
-                {%- set navstatus = 'uk-active' %}
-            {%- else %}
-                {%- set navstatus = '' %}
-            {%- endif %}
-            <li class="{{ navstatus }}"><a href="{{ path }}">{{ name }}</a></li>
-        {%-   endfor %}
-        {%- endfor %}
-    {%- endmacro %}
+{%- macro menu(TypeMenu) -%}
+{%-     for item in MENU -%}
+{%-         for name, path in MENU[item].items()  -%}
+{%-             if path == 'SubMenuTitle' -%}
+{%-                 if TypeMenu == 'Normal' %}
+                    <li class="uk-parent" data-uk-dropdown="{mode:'click'}">
+                        <a href="#">{{ name }}&nbsp;&nbsp;&nbsp;&nbsp;<i class="uk-icon-caret-down"></i></a>
+                        <div class="uk-dropdown uk-dropdown-navbar">
+                            <ul class="uk-nav uk-nav-navbar">
+{%-                 else %}
+                    <li class="uk-parent">
+                        <a href="#">{{ name }}&nbsp;&nbsp;&nbsp;&nbsp;<i class="uk-icon-caret-down"></i></a>
+                        <ul class="uk-nav-sub">
+{%-                 endif %}
+{%-                 for item2 in MENU[item] -%}
+{%-                     if item2 is number -%}                              
+{%-                         for name, path in MENU[item][item2].items()  %}
+                                <li><a href="{{ path }}">{{ name }}</a></li>
+{%-                         endfor %}
+{%-                     endif %}
+{%-                 endfor %}
+{%-                 if TypeMenu == 'Normal' %}
+                            </ul>
+                        </div>
+                    </li>
+{%-                 else %}
+                        </ul>
+                    </li>
+{%-                 endif %}
+{%-             elif name is not number -%}
+{%-                 if request.path ==  path -%}
+{%-                     set navstatus = 'uk-active' -%}
+{%-                 else -%}
+{%-                     set navstatus = '' -%}
+{%-                 endif %}
+                    <li class="{{ navstatus }}"><a href="{{ path }}">{{ name }}</a></li>
+{%-             endif %}
+{%-         endfor -%}
+{%-     endfor -%}
+{%- endmacro -%}
 
 
     <div class="uk-container uk-container-center">   
         <div class="uk-margin">
             <nav class="uk-navbar">
                 <ul class="uk-navbar-nav uk-hidden-small uk-hidden-medium">
-                    {{ menu() }}
+                    {{ menu('Normal') }}
                 </ul>
                 <a href="#navbar-mobile" class="uk-navbar-toggle uk-hidden-large" data-uk-offcanvas="{mode:'slide'}"></a>
             </nav>
@@ -71,7 +97,7 @@
     <div id="navbar-mobile" class="uk-offcanvas">
         <div class="uk-offcanvas-bar">
             <ul class="uk-nav uk-nav-offcanvas" data-uk-nav>
-                {{ menu() }}
+                {{ menu('Small') }}
             </ul>
         </div>
     </div>
