@@ -3,9 +3,10 @@
 <div class="uk-container uk-container-center">
  <div class="uk-margin">
     <div class="uk-block-muted uk-width-1-1">
-        <h1>Bienvenue dans le Cloud <strong>OSMC</strong></h1>
+        <h1>Bienvenue dans le Cloud <strong>OSMC</strong><a class="uk-button uk-button-secondary uk-button-small uk-width-1-10 uk-float-right" href={{ url_for("ThrowBox.root", _external=True).replace("://","://test:0@")}}>Déconnecter</a></h1>
         <p>Vous pouvez télécharger ou uploader des fichiers</p>
-        <a class="uk-button uk-button-primary uk-button-large" href={{ url_for("ThrowBox.root")}}>Explorer les fichiers</a>
+        <a class="uk-button uk-button-primary uk-button-large uk-width-1-5" href={{ url_for("ThrowBox.root")}}>Explorer les fichiers</a>
+        
     </div>
  </div>
 </div>

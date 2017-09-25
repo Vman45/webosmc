@@ -12,11 +12,13 @@ import base64
 
 InitDone = False
 StockPath = ""
+TempPass = False
 
 import os
 import time
 import functions
 import platform
+import datetime
 from werkzeug import secure_filename
 
 @ThrowBox.route('/upload')
@@ -42,9 +44,22 @@ def requires_auth(f):
         if InitDone == False:
             init()
         if config.has_option("AUTH", "enabled") and config.getboolean("AUTH", "enabled"):
-            app.logger.info('Asking authorization')
             auth = request.authorization
-            if not auth or not (auth.username == config.get("AUTH", "username") and auth.password ==  base64.b64decode(config.get("AUTH", "password"))):
+            app.logger.info('Asking authorization auth %s' %auth)
+            # Identifiant temporaire = temp
+            # mot de passe temporaire = YYYYWW
+            tempdate = datetime.date.today().isocalendar()
+            temppassword = str(tempdate[0]) + str(tempdate[1])
+            global TempPass
+            if not auth:
+                return Response(u"Autorisation acces refuse\nVous devez vous authentifier correctement", 401, {'WWW-Authenticate': 'Basic realm="Login Required"'})
+            elif (auth.username == config.get("AUTH", "username") and auth.password ==  base64.b64decode(config.get("AUTH", "password"))):
+                TempPass = False
+                app.logger.info('authorized master')
+            elif (auth.username == "temp" and auth.password == temppassword):
+                TempPass = True
+                app.logger.info('authorized temp')
+            else:
                 return Response(u"Autorisation acces refuse\nVous devez vous authentifier correctement", 401, {'WWW-Authenticate': 'Basic realm="Login Required"'})
         return f(*args, **kwargs)
     return decorated
@@ -52,6 +67,7 @@ def requires_auth(f):
 @ThrowBox.route("/")
 @requires_auth
 def index():
+    auth = ''
     return render_template("throwbox.html")
 
 @ThrowBox.route("/browse/")
@@ -78,7 +94,7 @@ def browse(path):
         if functions.IsFile(path):
             return send_file(path)
         # 404
-        elif functions.ReadPath(path)==None:
+        elif functions.ReadPath(path)==None or TempPass == True:
             functions.log("Error; 404; IP=%s" % request.remote_addr)
             Error404=True
             ClientIP=request.remote_addr
