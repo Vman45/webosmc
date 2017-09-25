@@ -28,10 +28,11 @@ def inject_dict_for_all_templates():
     if app.config["LINK_AFF_MSG"] == True :
         ret = launch_process(app.config["LINK_VERIFMAJ"])
         app.logger.info('Verif MAJ :' + ' Resultat : ' + ret['output'] + '///' + ret['error'])
-        if (ret['error']  != '') :
-            flash(u"<h1>Un problème est survenu dans la vérification de mise à jour</h1> Message : " + ret['output'] + u"<br><br>Erreur :" + ret['error'],'error')
-        elif (ret['output'][:10] != "Up-to-date" or ret['error']  != '') :
-            flash(u"<h1>Une nouvelle version du site est disponible.</h1><br>Veuillez faire une mise à jour<br>Message : " + ret['output'] + "<br><h2><a href='/majWeb/'>MaJ du serveur</a></h2>" , 'warning')
+        if (ret['output'][:10] != "Up-to-date"):
+            if (ret['error']  != '') :
+                flash(u"<h1>Un problème est survenu dans la vérification de mise à jour</h1> Message : " + ret['output'] + u"<br><br>Erreur :" + ret['error'],'error')
+            elif (ret['output'][:10] != "Up-to-date") :
+                flash(u"<h1>Une nouvelle version du site est disponible.</h1><br>Veuillez faire une mise à jour<br>Message : " + ret['output'] + "<br><h2><a href='/majWeb/'>MaJ du serveur</a></h2>" , 'warning')
     import modules.status.status_functions as status_functions
     temperature=status_functions.getTemperature()
     return dict(MENU=app.config["GEN_MENU"],DEBUG=app.config["DEBUG"],temperature=temperature)
