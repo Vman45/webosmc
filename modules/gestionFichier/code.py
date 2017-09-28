@@ -19,9 +19,9 @@ def insertAccents(f):
 
 def recup_files(path, lstExcl):
     try: 
-        tree = dict(name=os.path.basename(path).decode('utf-8'), fullname=path.decode('utf-8'), children=[])
+        tree = dict(name=os.path.basename(path).decode('utf-8'), fullname=path.decode('utf-8'), type = 'folder', children=[])
     except (UnicodeDecodeError,AttributeError) as err:
-        tree = dict(name=os.path.basename(path), fullname=path, children=[])
+        tree = dict(name=os.path.basename(path), fullname=path, type = 'folder', children=[])
     try: 
         lst = os.listdir(path)
     except UnicodeEncodeError:
@@ -42,14 +42,14 @@ def recup_files(path, lstExcl):
                 except UnicodeEncodeError:
                     isDir = os.path.isdir(fn.encode('utf-8'))
                 if isDir == False:
-                    tree['children'].append(dict(name=name.decode('utf-8',errors='ignore'), fullname=fn.decode('utf-8',errors='ignore'))) 
+                    tree['children'].append(dict(name=name.decode('utf-8',errors='ignore'), fullname=fn.decode('utf-8',errors='ignore'), type = 'file')) 
     return tree
     
 def make_tree(path, includeFiles, lstExcl):
     try: 
-        tree = dict(name=os.path.basename(path).decode('utf-8'), fullname=path.decode('utf-8'), children=[])
+        tree = dict(name=os.path.basename(path).decode('utf-8'), fullname=path.decode('utf-8'), type = 'folder', children=[])
     except (UnicodeDecodeError,AttributeError) as err:
-        tree = dict(name=os.path.basename(path), fullname=path, children=[])
+        tree = dict(name=os.path.basename(path), fullname=path, type = 'folder', children=[])
     try: 
         lst = os.listdir(path)
     except UnicodeEncodeError:
@@ -76,7 +76,7 @@ def make_tree(path, includeFiles, lstExcl):
                     tree['children'].append(make_tree(fn, includeFiles, lstExcl))
                 else:
                     if includeFiles == True:
-                        tree['children'].append(dict(name=name.decode('utf-8',errors='ignore'), fullname=fn.decode('utf-8',errors='ignore'))) 
+                        tree['children'].append(dict(name=name.decode('utf-8',errors='ignore'), fullname=fn.decode('utf-8',errors='ignore'), type = 'file')) 
     return tree
 
 def Action(request,pathFiles):

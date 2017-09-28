@@ -1,51 +1,77 @@
 {% extends "squelette.html" %}
 {% block header %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/jqtree.css') }}">
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/gestionFichier.css') }}">
-    <script src="{{ url_for('static', filename='lib/jqTree/tree.jquery.js') }}"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/themes/default/style.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/jstree.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='lib/PrepaValidForm.js') }}"></script>
     {%- macro remastering(list,id) %}{% autoescape false %}
         {%- set idxs = [0] -%}
-        [{%- for item in list.children recursive %}
-            {%- if loop.index0 > 0 -%},{%- endif %}{name: "{{ item.name }}", fullname: "{{ item.fullname }}"{%- if id -%}, id: {{ idxs|length*1000 + loop.index}}{%- endif %}
-            {%- if item.children -%}{%- set tmp = idxs.append(loop.index) -%},children: [{{ loop(item.children) }}]{%- set tmp = idxs.pop() -%}{%- endif %}
-        }{%- endfor %}]
-        {% endautoescape %}
-    {%- endmacro %}
+        [
+        {%- for item in list.children recursive %}
+            {%- if loop.index0 > 0 %}
+                ,
+            {%- endif -%}
+            {"text": "{{ item.name }}", "data": "{{ item.fullname }}"
+            {%- if id -%}
+                , "id": {{ idxs|length*1000 + loop.index}}
+            {%- endif -%}
+            {%- if item.type == 'file' -%}
+                , "icon": "uk-icon-file-o"
+            {%- endif -%}
+            
+            {%- if item.children -%}
+                {%- set tmp = idxs.append(loop.index) -%}
+                ,"children": [{{ loop(item.children) }}]
+                {% set tmp = idxs.pop() -%}
+            {%- endif -%}
+            }
+        {%- endfor %}
+        ]
+        {%- endautoescape -%}
+    {%- endmacro -%}
     <script type="text/javascript" charset="utf-8">
     $(function() {
-            var $treePath = $('#treePath');
-            var dataPath = {{ remastering(path_list, false) }};
-            $treePath.tree({data: dataPath,autoOpen: 1});
-            $treePath.bind('tree.dblclick',function(e) {
-                var selected_node = e.node;
-                alert('Le répertoire ' + selected_node.fullname + ' est chargé.\n Merci de cliquer sur le bouton Modifier pour recharger la page' );
-                document.getElementById("repPrinc").value= selected_node.fullname + '/';
-            });
-            $treePath.bind('tree.contextmenu',function(e) {
-                var selected_node = e.node;
-                alert('Le répertoire ' + selected_node.fullname + ' est chargé.\n Merci de cliquer sur le bouton Modifier pour recharger la page' );
-                document.getElementById("repPrinc").value= selected_node.fullname + '/';
-            });
-            var $treeFic = $('#treeFic');
-            var dataFile = {{ remastering(file_list, true) }};
-            $treeFic.tree({data: dataFile,autoOpen: true});
-            $treeFic.bind('tree.click',function(e) {
-                // Disable single selection
-                e.preventDefault();
-                var selected_node = e.node;
-                if (selected_node.id == undefined) {console.log('The multiple selection functions require that nodes have an id');}
-                if ($treeFic.tree('isNodeSelected', selected_node)) {$treeFic.tree('removeFromSelection', selected_node);}
-                else {$treeFic.tree('addToSelection', selected_node);}
-            });
-            $treeFic.bind('tree.dblclick',function(e) {
-                var selected_node = e.node;
-                alert(selected_node.fullname);
+        var $treePath = $('#treePath');
+        var dataPath = {{ remastering(path_list, false) }};
+        // console.log('dataPath=' + dataPath);
+        $treePath.jstree(
+            {'core' : 
+                { 'multiple' : true,
+                  'data' : dataPath
+                }
+            }
+        );
+        $treePath.on("changed.jstree", function (e, data) {
+            var selected_node = data.selected;
+            console.log(selected_node);
+            console.log(data.instance.get_selected(true)[0].text);
+            console.log(data.instance.get_selected(true)[0].data);
+            document.getElementById('PathSelected').value = data.instance.get_selected(true)[0].data;
+        });
+        var $treeFic = $('#treeFic');
+        var dataFile = {{ remastering(file_list, true) }};
+        // console.log('dataFile=' + dataFile);
+        $treeFic.jstree(
+            {'core' : 
+                { 'multiple' : true,
+                  'themes' : 
+                    { 'dots' : false
+                    },
+                  'data': dataFile
+                },
+             'plugins' : ['checkbox']
+            }
+        );
+        $treeFic.on("changed.jstree", function (e, data) {
+            var i, j, r = [];
+            for(i = 0, j = data.selected.length; i < j; i++) {
+                r.push(data.instance.get_node(data.selected[i]).data);
+            }
+            $('#FilesSelected').html(r.join(';'));
         });
     });
     </script>
-{% endblock %}
+
+    {% endblock %}
 
 {% block titre %}Organisation des fichiers osmc{% endblock %}
  
@@ -68,7 +94,7 @@
             <button class="uk-button" type="submit" name="submitButton" value="ModifPath">Modifier</button>
         </p>
     </form>
-    <hr>
+    <br><hr><br>
     <form class="uk-form uk-width-1-1" method="post" onSubmit="return ChargementForm(this);" action="">
         <script type="text/javascript">
             function changeaffiche(element,visible){
@@ -76,14 +102,29 @@
                 targetElement = document.getElementById(element) ;
                 if (element == "RenameFile")
                 {
-                    var nodes = $('#treeFic').tree('getSelectedNodes');
-                    if (nodes.length > 1){alert('Vous ne pouvez renommer qu\'un fichier à la fois');
+                    var nodes = $('#FilesSelected').value.split(';');
+                    if (nodes.length > 1){
+                        alert('Vous ne pouvez renommer qu\'un fichier à la fois');
                     }else{
-                        targetElement.value =  encodeURIComponent(nodes[0].fullname) ;
+                        targetElement.value =  encodeURIComponent(nodes) ;
                     }
                 }
-                if (visible == true){targetElement.style.display = "" ;}
-                else{targetElement.style.display = "none" ;}
+                var i;
+                var lstID=['NomNvDossier','NomNvFile'];
+                for(i = 0; i < 2; i++) {
+                    targetElement = document.getElementById(lstID[i]) ;
+                    if (visible == true && lstID[i] == element){
+                        targetElement.style.display = "" ;
+                    }else{
+                        targetElement.style.display = "none" ;
+                    }
+                }
+                return false;
+            }
+            function MajPath(){
+                PathSelected = document.getElementById('PathSelected').value
+                alert('Le répertoire ' + PathSelected + ' est chargé.\n Merci de patienter le temps du rechargement' );
+                document.getElementById("repPrinc").value= PathSelected + '/';
                 return false;
             }
         </script>
@@ -94,12 +135,11 @@
             </div>
         </fieldset> <fieldset>
             <div class="liste">
-                <h2>Liste répertoires</h2> 
+                <h2>Liste répertoires <tab><tab><tab><tab><button class="uk-button uk-button-small uk-width-3-10 uk-float-right" onclick="MajPath()">Récupération du répertoire sélectionné</button></h2> 
                 <div id="treePath">		</div>
                 <textarea id= "PathSelected" style="display:none;" name="PathSelected"></textarea>
             </div>
         </fieldset>
-        <!--<button id="test" onClick="ChargementForm(this)">test</button>-->
         <fieldset data-uk-margin> <legend>Choix de l'action :</legend>
             <p>
             <div class="uk-form-row tm-grid-truncate uk-text-center">
@@ -109,13 +149,13 @@
                     <br>
                     <label class="uk-button uk-width-1-1" for="RenameFile" onclick="changeaffiche('NomNvFile',true)">Renommer le fichier</label>
                     <br>    
-                    <label class="uk-button uk-width-1-1" for="Deplacer">Déplacer le ou les fichiers</label>
+                    <label class="uk-button uk-width-1-1" for="Deplacer" onclick="changeaffiche('',false)">Déplacer le ou les fichiers</label>
                     <br>
-                    <label class="uk-button uk-width-1-1" for="Copier">Copier le ou les fichiers</label>
+                    <label class="uk-button uk-width-1-1" for="Copier" onclick="changeaffiche('',false)">Copier le ou les fichiers</label>
                     <br>
-                    <label class="uk-button uk-width-1-1" for="SupprimerFichiers">Supprimer le ou les fichiers</label>
+                    <label class="uk-button uk-width-1-1" for="SupprimerFichiers" onclick="changeaffiche('',false)">Supprimer le ou les fichiers</label>
                     <br>
-                    <label class="uk-width-1-1" for="SupprimerDossier">Supprimer le dossier</label>
+                    <label class="uk-width-1-1" for="SupprimerDossier" onclick="changeaffiche('',false)">Supprimer le dossier</label>
                     <br>
                     <input type="radio" id="NvDossier" name="ChxAction" value="NvDossier" style="display:none;"/>
                     <input type="radio" id="RenameFile" name="ChxAction" value="RenameFile" style="display:none;"/>
