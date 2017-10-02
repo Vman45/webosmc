@@ -29,6 +29,7 @@ def traitement_gestionFichier(pathFiles):
 def FichiersScriptsGET(pathFiles):
     pathFiles = '/' + pathFiles
     treeFiles = recup_files(pathFiles.encode('utf-8'), "")
+    app.logger.info('liste_scripts : %s'  % treeFiles)
     return render_template('scripts.html',file_list=treeFiles,pathFiles=pathFiles)
 @gestionFichier.route('/scripts/<path:pathFiles>',methods=['POST'])
 def FichiersScriptsPOST(pathFiles):
