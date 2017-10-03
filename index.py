@@ -27,7 +27,7 @@ from modules.webConfig import launch_process
 def inject_dict_for_all_templates():
     if app.config["LINK_AFF_MSG"] == True and platform.system()[:3] != 'Win':
         ret = launch_process(app.config["LINK_VERIFMAJ"])
-        app.logger.info('Verif MAJ :' + ' Resultat : ' + ret['output'] + '///' + ret['error'])
+        app.logger.info('Verif MAJ :' + ' Resultat : ' + ret['output'] + '///' + ret['error'] + '///')
         if (ret['output'][:10] != "Up-to-date"):
             if (ret['error']  != '') :
                 flash(u"<h1>Un problème est survenu dans la vérification de mise à jour</h1> Message : " + ret['output'] + u"<br><br>Erreur :" + ret['error'],'error')

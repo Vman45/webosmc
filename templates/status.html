@@ -122,11 +122,9 @@ function bip(){
             sortie += "<table><tr><th>Nom</th><th>CPU</th><th>PID</th></tr>"
             for(elt in data.allprocesses){
             
-                sortie += "<tr><th>" + data.allprocesses[elt].name + "</th><td>" + data.allprocesses[elt].cpu_percent + "</td><td>" + data.allprocesses[elt].pid + "</td></tr>";
+                sortie += "<tr><th>" + elt.name + "</th><td>" + elt.cpu_percent + "</td><td>" + elt.pid + "</td><td>" + elt.memory_percent + "</td></tr>";
             };
             sortie += "</table><hr>";
-            
-            
             $("#processus").html(sortie);
             
             sortie = "<h2>Généralités</h2><ul>";
