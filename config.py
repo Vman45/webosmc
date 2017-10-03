@@ -17,7 +17,7 @@ GEN_MENU[4][0] = {u"Scripts":u"/gestionFichier/scripts/home/osmc/scripts/"}
 GEN_MENU[4][1] = {u"SSH":u"/SSH/"}  
 GEN_MENU[4][2] = {u"Config":u"/config/home/osmc/webosmc/config.py"}
 GEN_MENU[5] = {u"Cloud":u"/ThrowBox/"}
-LINK_AFF_MSG = False
+LINK_AFF_MSG = True
 LINK_MAJ_SITE = ["git", "pull"] #"sh /home/osmc/scripts/majWeb.sh"
 LINK_VERIFMAJ = ["sh","/home/osmc/webosmc/verifVersion.sh"]#["git","-C /home/osmc/webosmc/ pull --dry-run 2>&1 | grep 'master' >/dev/null |echo $?"]
 LINK_JDOWNLOADER = "https://my.jdownloader.org/?deviceId=4ad32ae65d600a9b070bba54a8f0429d#webinterface:downloads"
