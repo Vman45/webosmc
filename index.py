@@ -1,7 +1,7 @@
 #! /usr/bin/python 
 # -*- coding:utf-8 -*- 
 from flask import Flask, flash, render_template, redirect, request, url_for, jsonify
-import flask, subprocess
+import flask, subprocess, platform
 app = Flask(__name__)
 
 # Gestion Log
@@ -25,7 +25,7 @@ from modules.webConfig import launch_process
 
 @app.context_processor
 def inject_dict_for_all_templates():
-    if app.config["LINK_AFF_MSG"] == True :
+    if app.config["LINK_AFF_MSG"] == True and platform.system()[:3] != 'Win':
         ret = launch_process(app.config["LINK_VERIFMAJ"])
         app.logger.info('Verif MAJ :' + ' Resultat : ' + ret['output'] + '///' + ret['error'])
         if (ret['output'][:10] != "Up-to-date"):

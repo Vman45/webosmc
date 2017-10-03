@@ -9,14 +9,34 @@ from netifaces import interfaces, ifaddresses, AF_INET
 
 def getProcessStatus(LstProcName):
     S = {}
+    iter = psutil.process_iter()
+    procs_status = {}
     for item in LstProcName:
         for name, path in LstProcName[item].items():
                 try:
                     lstPID = subprocess.check_output(["pidof",path])
+                    for p in iter:
+                        if p in lstPID:
+                            try:
+                                p.dict = p.as_dict(['username','pid', 'nice', 'memory_info',
+                                                    'memory_percent', 'cpu_percent',
+                                                    'cpu_times', 'name', 'status','create_time'])
+                                try:
+                                    procs_status[p.dict['status']] += 1
+                                except KeyError:
+                                    procs_status[p.dict['status']] = 1
+                            except psutil.NoSuchProcess:
+                                pass
+                            else:
+                                createTime = p.dict['create_time']
+                                createTime = datetime.datetime.fromtimestamp(createTime).strftime("%Y-%m-%d %H:%M:%S")
+                                p.dict['create_time'] = createTime
+                                procs.append(p.dict)
+                        
                 except:
-                    lstPID = ""
+                    procs = ""
                     pass
-                S[item] = {'name' : name ,'lstPID': lstPID}
+                S[item] = {'name' : name ,'lstPID': procs}
     return S
 
 def ListProcess(cpumin=0):
