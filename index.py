@@ -29,7 +29,7 @@ def inject_dict_for_all_templates():
         ret = launch_process(app.config["LINK_VERIFMAJ"])
         output = ret['output'].replace('\n','')
         outputhtml =ret['output'].replace('\n','')
-        app.logger.info('Verif MAJ :' + ' Resultat : ' + ret['output'] + '///' + ret['error'] + '///')
+        # app.logger.info('Verif MAJ :' + ' Resultat : ' + ret['output'] + '///' + ret['error'] + '///')
         if (output[len(output)-10:len(output)] != "Up-to-date"):
             if (ret['error']  != '') :
                 flash(u"<h1>Un problème est survenu dans la vérification de mise à jour</h1> Message : " + outputhtml + u"<br><br>Erreur :" + ret['error'],'error')

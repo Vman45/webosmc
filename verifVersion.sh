@@ -6,11 +6,11 @@ UPSTREAM=${1:-'@{u}'}
 LOCAL=$($GITCMD rev-parse @)
 REMOTE=$($GITCMD rev-parse "$UPSTREAM")
 BASE=$($GITCMD merge-base @ "$UPSTREAM")
-echo PATH=$path
-echo STATUS=`$GITCMD status`
-echo LOCAL=$LOCAL
-echo REMOTE=$REMOTE
-echo BASE=$BASE
+# echo PATH=$path
+# echo STATUS=`$GITCMD status`
+# echo LOCAL=$LOCAL
+# echo REMOTE=$REMOTE
+# echo BASE=$BASE
 if [ $LOCAL = $REMOTE ]; then
     if [ -z "$LOCAL" ]; then
         echo "Problem with Git"

@@ -6,49 +6,54 @@ import platform
 import time
 import datetime
 from netifaces import interfaces, ifaddresses, AF_INET
+# from flask import Flask
+# app = Flask(__name__)
 
-def getProcessStatus(LstProcName):
-    S = {}
+def getProcess(LstProcName,cpumin):
     iter = psutil.process_iter()
-    procs_status = {}
+    # app.logger.info('Asking authorization auth %s' %iter)
+    allprocesses = ListProcess(iter, cpumin)
+    processes = getProcessStatus(LstProcName, iter)
+    return allprocesses, processes
+
+def getProcessStatus(LstProcName, iter):
+    S = {}
+    procs = []
     for item in LstProcName:
         for name, path in LstProcName[item].items():
                 try:
-                    lstPID = subprocess.check_output(["pidof",path])
+                    lstPID = int(subprocess.check_output(["pidof",path]).replace('\n',''))
+                    # ****** Code non fonctionnel
                     for p in iter:
-                        if p in lstPID:
-                            try:
-                                p.dict = p.as_dict(['username','pid', 'nice', 'memory_info',
-                                                    'memory_percent', 'cpu_percent',
-                                                    'cpu_times', 'name', 'status','create_time'])
-                                try:
-                                    procs_status[p.dict['status']] += 1
-                                except KeyError:
-                                    procs_status[p.dict['status']] = 1
-                            except psutil.NoSuchProcess:
-                                pass
-                            else:
+                        try:
+                            p.dict = p.as_dict(['pid', 'memory_percent', 'cpu_percent',
+                                                'name', 'status','create_time'])
+                        except psutil.NoSuchProcess:
+                            pass
+                        else:
+                            if p.dict['pid'] == lstPID:
                                 createTime = p.dict['create_time']
                                 createTime = datetime.datetime.fromtimestamp(createTime).strftime("%Y-%m-%d %H:%M:%S")
                                 p.dict['create_time'] = createTime
                                 procs.append(p.dict)
-                        
+                    # ****** fin Code non fonctionnel
+                    if not procs :
+                        procs = lstPID
                 except:
                     procs = ""
                     pass
                 S[item] = {'name' : name ,'lstPID': procs}
     return S
 
-def ListProcess(cpumin=0):
+def ListProcess(iter, cpumin=0):
     procs = []
     procs_status = {}
-    iter = psutil.process_iter()
     item =0
+    print('ListProcess : %s' %iter)
     for p in iter:
         try:
-            p.dict = p.as_dict(['username','pid', 'nice', 'memory_info',
-                                'memory_percent', 'cpu_percent',
-                                'cpu_times', 'name', 'status','create_time'])
+            p.dict = p.as_dict(['pid','memory_percent','cpu_percent',
+                                'name', 'status', 'create_time'])
             try:
                 procs_status[p.dict['status']] += 1
             except KeyError:

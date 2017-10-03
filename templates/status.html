@@ -119,10 +119,10 @@ function bip(){
                 sortie += "<li>" + data.processes[elt].name + " : " + (data.processes[elt].lstPID == "" ? "OFF !!" : data.processes[elt].lstPID) + "</li>";
             };
             sortie += "<hr>";
-            sortie += "<table><tr><th>Nom</th><th>CPU</th><th>PID</th></tr>"
+            sortie += "<table><tr><th>Nom</th><th>CPU</th><th>Memory Usage</th><th>PID</th></tr>"
             for(elt in data.allprocesses){
             
-                sortie += "<tr><th>" + elt.name + "</th><td>" + elt.cpu_percent + "</td><td>" + elt.pid + "</td><td>" + elt.memory_percent + "</td></tr>";
+                sortie += "<tr><th><center>" + data.allprocesses[elt].name + "</center></th><td><center>" + data.allprocesses[elt].cpu_percent + "</center></td><td><center>" + Math.round(data.allprocesses[elt].memory_percent*100)/100 + "</center></td><td><center>" + data.allprocesses[elt].pid + "</center></td></tr>";
             };
             sortie += "</table><hr>";
             $("#processus").html(sortie);
