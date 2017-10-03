@@ -92,6 +92,7 @@
             <label for="repPrinc">emplacement des fichiers à traiter :</label> :
             <input type="text" name="repPrinc" id="repPrinc" style="width:300px;" value={{ pathFiles }} />
             <button class="uk-button" type="submit" name="submitButton" value="ModifPath">Modifier</button>
+            <tab><tab><tab><tab><button class="uk-button uk-button-small uk-width-3-10 uk-float-right" onclick="MajPath()" type="submit" name="submitButton" value="ModifPath">Récupération du répertoire sélectionné</button>
         </p>
     </form>
     <br><hr><br>
@@ -135,7 +136,7 @@
             </div>
         </fieldset> <fieldset>
             <div class="liste">
-                <h2>Liste répertoires <tab><tab><tab><tab><button class="uk-button uk-button-small uk-width-3-10 uk-float-right" onclick="MajPath()">Récupération du répertoire sélectionné</button></h2> 
+                <h2>Liste répertoires</h2> 
                 <div id="treePath">		</div>
                 <textarea id= "PathSelected" style="display:none;" name="PathSelected"></textarea>
             </div>
