@@ -1,6 +1,7 @@
 #!/bin/sh
 path=`dirname $0`
 `cd $path`
+`git fetch origin`
 UPSTREAM=${1:-'@{u}'}
 LOCAL=$(git rev-parse @)
 REMOTE=$(git rev-parse "$UPSTREAM")
