@@ -1,22 +1,6 @@
 DEBUG = True  # Turns on debugging features in Flask
 PORT = 5000
 SECRET_KEY = "Kugan49"
-GEN_MENU={}
-GEN_MENU[0] = {u"Accueil":u"/"}
-GEN_MENU[1] = {u"T\xe9l\xe9chargements":u"SubMenuTitle"}
-GEN_MENU[1][0] = {u"Fichiers":u"/gestionFichier/mnt/LOC/USB/DDL_OK/"}
-GEN_MENU[1][1] = {u"JDownloader":u"/JD/"}
-GEN_MENU[2] = {u"T\xe9l\xe9commande":u"SubMenuTitle"}
-GEN_MENU[2][0] = {u"Kodi":u"/kodi/"}
-GEN_MENU[2][1] = {u"Musique":u"/MPD/"}
-GEN_MENU[3] = {u"Etat":u"SubMenuTitle"}
-GEN_MENU[3][0] = {u"Statuts":u"/status/"}
-GEN_MENU[3][1] = {u"log":u"/gestionFichier/log/home/osmc/tmp/"}
-GEN_MENU[4] = {u"Avanc\xe9es":u"SubMenuTitle"}
-GEN_MENU[4][0] = {u"Scripts":u"/gestionFichier/scripts/home/osmc/scripts/"}
-GEN_MENU[4][1] = {u"SSH":u"/SSH/"}  
-GEN_MENU[4][2] = {u"Config":u"/config/home/osmc/webosmc/config.py"}
-GEN_MENU[5] = {u"Cloud":u"/ThrowBox/"}
 LINK_AFF_MSG = True
 LINK_MAJ_SITE = ["git", "pull"] #"sh /home/osmc/scripts/majWeb.sh"
 LINK_VERIFMAJ = ["sh","/home/osmc/webosmc/verifVersion.sh"]#["git","-C /home/osmc/webosmc/ pull --dry-run 2>&1 | grep 'master' >/dev/null |echo $?"]
@@ -34,3 +18,98 @@ STATUS_LSTPROC[2] = {"MPD":"mpd"}
 STATUS_LSTPROC[3] = {"Synchronisation":"unison"}
 MPD_CONFIG="/home/osmc/webosmc/modules/MPD/MPD.ini"
 THROWBOX_CONFIG="/home/osmc/webosmc/modules/ThrowBox/throwbox.ini"
+GEN_MENU={
+    0: {
+        'name': u'Accueil',
+        'path':u'/',
+        'title': u''
+        },
+    1: {
+        'name': u'T\xe9l\xe9chargements',
+        'path': u'SubMenuTitle',
+        0: {
+            'name':u'Fichiers',
+            'path': u'/gestionFichier/mnt/LOC/USB/DDL_OK/',
+            'title': u'Gestion des fichiers',
+            'description': u'Permet de d\xe9placer, copier, supprimer des fichiers sur osmc.',
+            'icone': 'https://png.icons8.com/individual-server/androidL/96'
+            },
+        1: {
+            'name': u'JDownloader',
+            'path': u'/JD/',
+            'title': u'JDownloader',
+            'description': u'Gestion des t\xe9l\xe9chargements (application externe)',
+            'icone': 'https://png.icons8.com/jdownloader/androidL/96'
+            }
+   
+        },
+    2: {
+       'name':u'T\xe9l\xe9commande',
+       'path': u'SubMenuTitle',
+        0: {
+            'name': u'Multim\xe9dia',
+            'path': u'/kodi/',
+            'title': u'Kodi Multim\xe9dia',
+            'description': u'T\xe9l\xe9commande pour l\'interface multim\xe9dia d\'osmc',
+            'icone': 'https://png.icons8.com/tv/androidL/96'
+            },
+        1: {
+            'name': u'Musique',
+            'path': u'/MPD/',
+            'title': u'Musique',
+            'description': u'Piloter la musique d\'osmc et \xe9coute directe',
+            'icone': 'https://png.icons8.com/musical-notes/androidL/96'
+            }
+        },
+    3: {
+        'name':u'Etat',
+        'path': u'SubMenuTitle',
+        0: {
+            'name': u'Statuts',
+            'path': u'/status/',
+            'title': u'Statuts',
+            'description': u'Visualiser l\'\xe9tat d\'osmc (processeur, m\xe9moire, disque, ...)',
+            'icone': 'https://png.icons8.com/dashboard/androidL/96'
+            },
+        1: {
+            'name': u'log',
+            'path': u'/gestionFichier/log/home/osmc/tmp/',
+            'title': u'Logs',
+            'description': u'V\xe9rfier les logs de diff\xe9rents traitements d\'osmc',
+            'icone': 'https://png.icons8.com/order-history/androidL/96'
+            }
+        },
+    4: {
+        'name':u'Avanc\xe9es',
+        'path': u'SubMenuTitle',
+        0: {
+            'name': u'Scripts',
+            'path': u'/gestionFichier/scripts/home/osmc/scripts/',
+            'title': u'Ex\xe9cution',
+            'description': u'Permet de lancer des scripts sur osmc',
+            'icone': 'https://png.icons8.com/run-command/androidL/96'
+            },
+        1: {
+            'name': u'SSH',
+            'path': u'/SSH/',
+            'title': u'Console SSH',
+            'description': u'Acc\xe8s en mode console \xe0 osmc (EXPERTS)',
+            'icone': 'https://png.icons8.com/console/androidL/96'
+            },
+        2: {
+            'name': u'Config',
+            'path': u'/config/home/osmc/webosmc/config.py',
+            'title': u'R\xe9glagles',
+            'description': u'Configuration des param\xe8tres du serveur web osmc.',
+            'icone': 'https://png.icons8.com/adjust/androidL/96'
+            }
+
+        },
+    5: {
+        'name': u'Cloud',
+        'path': u'/ThrowBox/',
+        'title': u'Cloud',
+        'description': u'T\xe9l\xe9chargment de fichiers pr\xe9sents sur osmc.',
+        'icone': 'https://png.icons8.com/download-from-the-cloud/androidL/96'
+        }
+    }

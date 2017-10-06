@@ -1,7 +1,34 @@
 {% extends "squelette.html" %}
+{% block header %}
 
+{% endblock %}
 {% block titre %}Osmc Salon by JGriffon{% endblock %}
-
+{%- macro Tile(infoTile) -%}
+{%-     if infoTile['title'] != '' -%}    
+        <div class="uk-width-1-1 uk-width-medium-1-4">
+            <a href="{{ infoTile['path'] }}" class="uk-button uk-panel-box uk-panel-hover uk-text-center widget_text uk-text-primary"><img src="{{ infoTile['icone'] }}" title="{{ infoTile['name'] }}" width="96" height="96">
+                <h3>{{ infoTile['title'] }}</h3>
+                <p>{{ infoTile['description'] }}</p>
+            </a>
+        </div>
+{%-     endif %}
+{%- endmacro -%}
 {% block corps %}
-<h1>Bienvenue sur {{ self.titre() }}</h1>
+<div class="uk-container uk-container-center">
+    <h1>Bienvenue sur {{ self.titre() }}</h1>
+    <br>
+    <div class="uk-grid" data-uk-grid-margin>
+{%-     for item in MENU -%}
+{%-         if MENU[item]['path'] == 'SubMenuTitle' -%}
+{%-             for item2 in MENU[item] -%}
+{%-                 if MENU[item][item2] is mapping -%}
+                        {{ Tile(MENU[item][item2]) }}
+{%-                 endif %}
+{%-             endfor %}
+{%-         else -%}
+                {{ Tile(MENU[item]) }}
+{%-         endif %}
+{%-     endfor -%}
+    </div>
+</div>
 {% endblock %}

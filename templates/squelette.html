@@ -44,42 +44,38 @@
     
 {%- macro menu(TypeMenu) -%}
 {%-     for item in MENU -%}
-{%-         for name, path in MENU[item].items()  -%}
-{%-             if path == 'SubMenuTitle' -%}
-{%-                 if TypeMenu == 'Normal' %}
-                    <li class="uk-parent" data-uk-dropdown="{mode:'click'}">
-                        <a href="#">{{ name }}&nbsp;&nbsp;&nbsp;&nbsp;<i class="uk-icon-caret-down"></i></a>
-                        <div class="uk-dropdown uk-dropdown-navbar">
-                            <ul class="uk-nav uk-nav-navbar">
-{%-                 else %}
-                    <li class="uk-parent">
-                        <a href="#">{{ name }}&nbsp;&nbsp;&nbsp;&nbsp;<i class="uk-icon-caret-down"></i></a>
-                        <ul class="uk-nav-sub">
-{%-                 endif %}
-{%-                 for item2 in MENU[item] -%}
-{%-                     if item2 is number -%}                              
-{%-                         for name, path in MENU[item][item2].items()  %}
-                                <li><a href="{{ path }}">{{ name }}</a></li>
-{%-                         endfor %}
-{%-                     endif %}
-{%-                 endfor %}
-{%-                 if TypeMenu == 'Normal' %}
-                            </ul>
-                        </div>
-                    </li>
-{%-                 else %}
-                        </ul>
-                    </li>
-{%-                 endif %}
-{%-             elif name is not number -%}
-{%-                 if request.path ==  path -%}
-{%-                     set navstatus = 'uk-active' -%}
-{%-                 else -%}
-{%-                     set navstatus = '' -%}
-{%-                 endif %}
-                    <li class="{{ navstatus }}"><a href="{{ path }}">{{ name }}</a></li>
+{%-         if MENU[item]['path'] == 'SubMenuTitle' -%}
+{%-             if TypeMenu == 'Normal' %}
+                <li class="uk-parent" data-uk-dropdown="{mode:'click'}">
+                    <a href="#">{{ MENU[item]['name'] }}&nbsp;&nbsp;&nbsp;&nbsp;<i class="uk-icon-caret-down"></i></a>
+                    <div class="uk-dropdown uk-dropdown-navbar">
+                        <ul class="uk-nav uk-nav-navbar">
+{%-             else %}
+                <li class="uk-parent">
+                    <a href="#">{{ MENU[item]['name'] }}&nbsp;&nbsp;&nbsp;&nbsp;<i class="uk-icon-caret-down"></i></a>
+                    <ul class="uk-nav-sub">
 {%-             endif %}
-{%-         endfor -%}
+{%-             for item2 in MENU[item] -%}
+{%-                 if MENU[item][item2] is mapping -%}
+                        <li><a href="{{ MENU[item][item2]['path'] }}">{{ MENU[item][item2]['name'] }}</a></li>
+{%-                 endif %}
+{%-             endfor %}
+{%-             if TypeMenu == 'Normal' %}
+                        </ul>
+                    </div>
+                 </li>
+{%-             else %}
+                    </ul>
+                </li>
+{%-             endif %}
+{%-         else -%}
+{%-             if request.path ==  MENU[item]['path'] -%}
+{%-                 set navstatus = 'uk-active' -%}
+{%-             else -%}
+{%-                 set navstatus = '' -%}
+{%-             endif %}
+                <li class="{{ navstatus }}"><a href="{{ MENU[item]['path'] }}">{{ MENU[item]['name'] }}</a></li>
+{%-         endif %}
 {%-     endfor -%}
 {%- endmacro -%}
 
