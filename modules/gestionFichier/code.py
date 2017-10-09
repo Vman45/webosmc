@@ -106,10 +106,12 @@ def Action(request,pathFiles):
             shutil.move(Files[0],os.path.join(os.path.dirname(Files[0]),request.form['NomNvFile'].encode('utf-8')))
         elif TypeAction=='Deplacer':
             for File in Files:
-                if File!='':shutil.move(File,Rep)
+                if File!='':
+                    if os.path.exists(File)==True: shutil.move(File,Rep)
         elif TypeAction=='Copier':
             for File in Files:
-                if File!='':shutil.copy2(File,Rep)
+                if File!='':
+                    if os.path.exists(File)==True:shutil.copy2(File,Rep)
         return pathFiles
     elif request.form['submitButton']=='EnregFichier':
         content=request.form['Scriptcontenu'].strip()
