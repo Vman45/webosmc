@@ -21,11 +21,6 @@ import platform
 import datetime
 from werkzeug import secure_filename
 
-@ThrowBox.route('/upload')
-def upload_file():
-   return render_template('upload.html')
-	
-
 def init():
     if platform.system()[:3] == 'Win':
         LOCAL_PATH=os.path.dirname(os.path.realpath(__file__))
@@ -89,7 +84,9 @@ def browse(path):
         f = request.files['file']
         filename = secure_filename(f.filename)
         f.save(os.path.join(path, filename))
-        return 'file uploaded successfully'
+        # return 'file uploaded successfully'
+        Message = 'file uploaded successfully'
+        return render_template("browse.html",**locals())
     else:
         if functions.IsFile(path):
             return send_file(path)
