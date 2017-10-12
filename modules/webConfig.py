@@ -1,5 +1,8 @@
-# coding: utf-8
-# Permet de gérer des fonctions pour le fihcier index.py
+# -*- coding: utf-8 -*-
+# Permet de gérer des fonctions pour le fichier index.py
+
+import httplib
+from urlparse import urlparse
 import subprocess
 
 def readConfig(f):
@@ -26,4 +29,13 @@ def launch_process(param):
     process.wait()
     return {'output' : unicode(process.stdout.read(),"utf-8"), 'error' : unicode(process.stderr.read(),"utf-8")}
   
-    
+
+def checkUrl(url):
+    p = urlparse(url)
+    conn = httplib.HTTPConnection(p.netloc)
+    try:
+        conn.request('HEAD', p.path)
+        resp = conn.getresponse()
+        return resp.status < 400
+    except:
+        return False

@@ -22,6 +22,7 @@ from modules.webConfig import modifPortURL
 from modules.webConfig import readConfig
 from modules.webConfig import writeConfig
 from modules.webConfig import launch_process
+from modules.webConfig import checkUrl
 
 @app.context_processor
 def inject_dict_for_all_templates():
@@ -59,7 +60,9 @@ def ClientSSH():
     return render_template('SSH.html',path=modifPortURL(request.url_root.lstrip(),app.config['SSH_PORT']))
 @app.route('/kodi/')
 def ClientKodi():
-    return render_template('kodi.html',path=modifPortURL(request.url_root.lstrip(),app.config['KODI_PORT']))
+    path=modifPortURL(request.url_root.lstrip(),app.config['KODI_PORT'])
+    UrlStatus = checkUrl(path)
+    return render_template('kodi.html',**locals())
 @app.route('/JD/')
 def JD():
   return render_template('jDownloader.html',path=app.config["LINK_JDOWNLOADER"])

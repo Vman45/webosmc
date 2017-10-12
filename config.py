@@ -1,9 +1,10 @@
+PATH = "/home/osmc/webosmc/"
 DEBUG = True  # Turns on debugging features in Flask
 PORT = 5000
 SECRET_KEY = "Kugan49"
 LINK_AFF_MSG = True
-LINK_MAJ_SITE = ["git", "pull"] #"sh /home/osmc/scripts/majWeb.sh"
-LINK_VERIFMAJ = ["sh","/home/osmc/webosmc/verifVersion.sh"]#["git","-C /home/osmc/webosmc/ pull --dry-run 2>&1 | grep 'master' >/dev/null |echo $?"]
+LINK_MAJ_SITE = ["git", "--git-dir=" + PATH + ".git --work-tree=" + PATH + " pull"]
+LINK_VERIFMAJ = ["sh",PATH + "verifVersion.sh"]
 LINK_JDOWNLOADER = "https://my.jdownloader.org/?deviceId=4ad32ae65d600a9b070bba54a8f0429d#webinterface:downloads"
 GESTIONFICHIER_DDL_PATH = "/mnt/LOC/USB"
 GESTIONFICHIER_LST_EXCL_PATH = ['$RECYCLE.BIN','save', 'System Volume Information', 'test','install', 'musique', 'photos']
@@ -16,8 +17,8 @@ STATUS_LSTPROC[0] = {"Kodi":"kodi.bin"}
 STATUS_LSTPROC[1] = {"JDownloader":"java"}
 STATUS_LSTPROC[2] = {"MPD":"mpd"}
 STATUS_LSTPROC[3] = {"Synchronisation":"unison"}
-MPD_CONFIG="/home/osmc/webosmc/modules/MPD/MPD.ini"
-THROWBOX_CONFIG="/home/osmc/webosmc/modules/ThrowBox/throwbox.ini"
+MPD_CONFIG=PATH + "modules/MPD/MPD.ini"
+THROWBOX_CONFIG=PATH + "modules/ThrowBox/throwbox.ini"
 GEN_MENU={
     0: {
         'name': u'Accueil',
