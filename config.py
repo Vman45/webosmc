@@ -10,6 +10,7 @@ GESTIONFICHIER_DDL_PATH = "/mnt/LOC/USB"
 GESTIONFICHIER_LST_EXCL_PATH = ['$RECYCLE.BIN','save', 'System Volume Information', 'test','install', 'musique', 'photos']
 GESTIONFICHIER_LST_EXCL_FILES = ['.part','xyztetst']
 SSH_PORT = 443
+KODI_START = ["/usr/bin/sudo","-H systemctl start mediacenter"]
 KODI_PORT = 8080
 STATUS_CPUMIN=2
 STATUS_LSTPROC={}

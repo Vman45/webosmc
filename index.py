@@ -62,7 +62,12 @@ def ClientSSH():
 def ClientKodi():
     path=modifPortURL(request.url_root.lstrip(),app.config['KODI_PORT'])
     UrlStatus = checkUrl(path)
-    return render_template('kodi.html',**locals())
+    return render_template('kodi.html',**locals()) 
+@app.route('/wol_kodi/')
+def wolkodi():
+    ret = launch_process(app.config["KODI_START"])
+    flash(u'<h1>Démarrage Kodi</h1>','info')
+    return redirect(url_for('ClientKodi')) 
 @app.route('/JD/')
 def JD():
   return render_template('jDownloader.html',path=app.config["LINK_JDOWNLOADER"])
