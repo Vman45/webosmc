@@ -4,16 +4,17 @@
 
 {% block corps %}
 <div class="uk-container uk-container-center">
- <div class="uk-margin">
-<h1>Bienvenue {{ self.titre() }}</h1>
+<h1>Etats d'{{ self.titre() }}</h1>
 <br>
 <button class="uk-button" onclick="start()">Lancer MAJ</button>
 <button class="uk-button" onclick="stop()">stopper MAJ</button>
 <br><br><br>
 <div id="bip" class="display"></div>
-<script src="https://cdn.rawgit.com/Mikhus/canvas-gauges/gh-pages/download/2.1.4/all/gauge.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js" charset="utf-8"></script>
+<script src="https://rawgit.com/masayuki0812/c3/master/c3.js"></script>
 <!-- <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='lib/status.js') }}"></script> -->
-<script>var counter = 0;
+<script>
+ var counter = 0;
 var intervalId = null;
 function stop(){
   clearInterval(intervalId);
@@ -24,167 +25,237 @@ function bip(){
     counter++;
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     var content = $SCRIPT_ROOT+"/_majData";
-    $.getJSON($SCRIPT_ROOT+"/_majData",
-        function(data) {
-            /* temperature graph*/
-            var template_tempgraph = {
-                renderTo: 'canvas-temp',
-                width: 120,
-                height: 300,
-                units: "°C",
-                minValue: 0,
-                valueBox: true,
-                maxValue: 120,
-                majorTicks: ["0","10","20","30","40","50","60","70","80","90","100","110","120"],
-                minorTicks: 5,
-                strokeTicks: true,
-                highlights: [
-                    {"from": 100,"to": 120,"color": "#000"},
-                    {"from": 80,"to": 100,"color": "rgba(200, 50, 50, .75)"},
-                    {"from": 60,"to": 80,"color": "rgba(200, 170, 50, .75)"},
-                    {"from": 40,"to": 60,"color": "rgba(50, 205, 50, .75)"}
-                ],
-                colorPlate: "#fff",
-                borderShadowWidth: 10,
-                borders: false,
-                needleType: "arrow",
-                needleWidth: 2,
-                needleCircleSize: 7,
-                needleCircleOuter: true,
-                needleCircleInner: false,
-                barWidth: 15,
-                valueDec:1,
-                animateOnInit:true,
-                animationRule: "elastic",
-                animationDuration: 300,
-                value: data.temperature
-            };
-            var gauge = new LinearGauge(template_tempgraph).draw();
-            var template_cpugraph={
-                width: 120,
-                height: 115,
-                units: "CPU %",
-                minValue: 0,
-                valueBox: true,
-                valueDec:1,
-                maxValue: 100,
-                majorTicks: ["0","20","40","60","80","100"],
-                minorTicks:0,
-                strokeTicks: false,
-                highlights: [
-                    {"from": 80,"to": 100,"color": "rgba(200, 50, 50, .75)"},
-                    {"from": 60,"to": 80,"color": "rgba(200, 170, 50, .75)"},
-                    {"from": 40,"to": 60,"color": "rgba(50, 205, 50, .75)"}
-                ],
-                colorPlate: "#fff",
-                borderShadowWidth: 10,
-                borders: false,
-                needleType: "arrow",
-                needleWidth: 2,
-                needleCircleSize: 0,
-                needleCircleOuter: true,
-                needleCircleInner: false,
-                barWidth: 15,
-                barBeginCircle: false,
-                colorBarProgress:"#000",
-                colorBarProgressEnd:"#fff",
-                            ticksWidth:4,
-                ticksPadding:0,
-                tickSide: "left",
-                numberSide: "left",
-                needleSide: "left",
-                animateOnInit:true,
-                animationRule: "elastic",
-                animationDuration: 500
-            }
-            
-            var cpu_graph = Object.assign({}, template_cpugraph);
-            cpu_graph.value = data.cpuusage.average;
-            cpu_graph.renderTo = 'canvas-cpu';
-            cpu_graph.width = 270;
-            cpu_graph.height = 260;
-            var gauge = new LinearGauge(cpu_graph).draw();
-            if (data.numcpu > 1){
-                for(var i= 0; i < data.numcpu; i++){
-                    var cpux_graph = Object.assign({}, template_cpugraph);
-                    cpux_graph.units = "CPU " + (i+1) + " %";
-                    cpux_graph.value = data.cpuusage.values[i];
-                    cpux_graph.renderTo = 'canvas-cpu'   + (i +1);
-                    var gauge = new LinearGauge(cpux_graph).draw();
-                }
-            }
-            var sortie = "<hr>";
-            sortie += "<h2>Processus :</h2>";
-            for(elt in data.processes){
-                sortie += "<li>" + data.processes[elt].name + " : " + (data.processes[elt].lstPID == "" ? "OFF !!" : data.processes[elt].lstPID) + "</li>";
-            };
-            sortie += "<hr>";
-            sortie += "<table><tr><th>Nom</th><th>CPU</th><th>Memory Usage</th><th>PID</th></tr>"
-            for(elt in data.allprocesses){
-            
-                sortie += "<tr><th><center>" + data.allprocesses[elt].name + "</center></th><td><center>" + data.allprocesses[elt].cpu_percent + "</center></td><td><center>" + Math.round(data.allprocesses[elt].memory_percent*100)/100 + "</center></td><td><center>" + data.allprocesses[elt].pid + "</center></td></tr>";
-            };
-            sortie += "</table><hr>";
-            $("#processus").html(sortie);
-            
-            sortie = "<h2>Généralités</h2><ul>";
-            sortie += "<li>hostname  " + data.hostname + "</li>";
-            sortie += "<li>uptime : " + data.uptime + "</li>";
-            sortie += "<li>cpufrequency : " + data.cpufrequency + "</li>";
-            sortie += "<li>Connexions : " + data.ip.IPadress + "</li><ul>";
-            sortie += "<li>détail Général  : sent=" + data.ip.detail.lo.bytes_sent + "   received=" + data.ip.detail.lo.bytes_recv + "</li>";
-            sortie += "<li>détail Ethernet : sent=" + data.ip.detail.eth0.bytes_sent + "   received=" + data.ip.detail.eth0.bytes_recv + "</li>";
-            sortie += "<li>détail Wi-Fi    : sent=" + data.ip.detail.wlan0.bytes_sent + "   received=" + data.ip.detail.wlan0.bytes_recv + "</li></ul>";
-            sortie += "</ul><hr>";
+    $.getJSON(
+        $SCRIPT_ROOT+"/_majData",
+        function(data)
+        {
+            var elt_html="";
+            var sortie = $("#template_gen").html();
+            sortie = sortie.replace("$data.hostname",data.hostname);
+            sortie = sortie.replace("$data.uptime",data.uptime);
+            sortie = sortie.replace("$data.cpufrequency.current",data.cpufrequency.current);
+            sortie = sortie.replace("$data.cpufrequency.min",data.cpufrequency.min);
+            sortie = sortie.replace("$data.cpufrequency.max",data.cpufrequency.max);
+            sortie = sortie.replace("$$data.ip.detail.eth0.ip",data.ip.detail.eth0.ip);
+            sortie = sortie.replace("$$data.ip.detail.wlan0.ip",data.ip.detail.wlan0.ip);
+            sortie = sortie.replace("$data.ip.detail.lo.bytes_sent",data.ip.detail.lo.bytes_sent);
+            sortie = sortie.replace("$data.ip.detail.eth0.bytes_sent",data.ip.detail.eth0.bytes_sent);
+            sortie = sortie.replace("$data.ip.detail.wlan0.bytes_sent",data.ip.detail.wlan0.bytes_sent);
+            sortie = sortie.replace("$data.ip.detail.lo.bytes_recv",data.ip.detail.lo.bytes_recv);
+            sortie = sortie.replace("$data.ip.detail.eth0.bytes_recv",data.ip.detail.eth0.bytes_recv);
+            sortie = sortie.replace("$data.ip.detail.wlan0.bytes_recv",data.ip.detail.wlan0.bytes_recv);
             $("#gen").html(sortie);
-            
-            sortie = "<h2>Processeur</h2><ul>";
-            sortie += "<li>Nb cpu : " + data.numcpu + "</li>";
-            sortie += "<li>cpuusage :</li><ul>";
-            sortie += "<li>average : " + data.cpuusage.average + "</li>";
-            sortie += "<li>values : " + data.cpuusage.values + "</li></ul>";
-            sortie += "</ul><hr>";
-            $("#cpu").html(sortie);
-            
-            sortie = "<h2>Mémoire</h2>";
-            sortie += "<li>total : " + data.memory.total + "</li>";
-            sortie += "<li>used : " + data.memory.used + "</li>";
-            sortie += "<li>available : " + data.memory.available + "</li>";
-            sortie += "<li>free : " + data.memory.free + "</li>";
-            sortie += "<hr>";
-            $("#mem").html(sortie);
+            $("#template_gen").remove();
 
-            sortie = "<h2>Disques</h2>";
-            for(elt in data.disk){
-                sortie += "<li>disk device : " + data.disk[elt].device + "( mountpoint : " +  data.disk[elt].mountpoint + ", fstype : " + data.disk[elt].fstype + " )<ul>";
-                sortie+= "<li>total : " + data.disk[elt].total + "</li>";
-                sortie+= "<li>used  : " + data.disk[elt].used + "</li>";
-                sortie+= "<li>free  : " + data.disk[elt].free + " ( " + data.disk[elt].percent + " % )</li>";
-                sortie+= "</ul></li>";
+            sortie = $("#template_processus").html();
+            elt_html = "";          
+            for(elt in data.processes){
+                elt_html += $("#template_lstPID").html().replace("$data.processes[elt].name",data.processes[elt].name);
+                elt_html = elt_html.replace("$data.processes[elt].lstPID",(data.processes[elt].lstPID == "" ? "OFF !!" : data.processes[elt].lstPID));
+                
             };
-            sortie += "<hr>";
-            $("#disk").html(sortie);
+            sortie = sortie.replace("$template_lstPID",elt_html);
+            elt_html = "";         
+            for(elt in data.allprocesses){
+                elt_html += $("#template_lstProcess").html().replace("$data.allprocesses[elt].name",data.allprocesses[elt].name);
+                elt_html = elt_html.replace("$data.allprocesses[elt].cpu_percent",data.allprocesses[elt].cpu_percent);
+                elt_html = elt_html.replace("$data.allprocesses[elt].memory_percent",Math.round(data.allprocesses[elt].memory_percent*100)/100);
+                elt_html = elt_html.replace("$data.allprocesses[elt].pid",data.allprocesses[elt].pid);
+            };
+            sortie = sortie.replace("$template_lstProcess",elt_html);
+            $("#processus").append(sortie);
+            $("#template_processus").remove();        
+            $("#template_lstProcess").remove();
+            $("#template_lstPID").remove();
+                     
+            sortie =  $("#template_cpu").html();
+            sortie = sortie.replace("$data.numcpu",data.numcpu);          
+            sortie = sortie.replace("$data.cpuusage.average",data.cpuusage.average); 
+            sortie = sortie.replace("$data.cpuusage.values",data.cpuusage.values); 
+            $("#cpu").html(sortie);
+            $("#template_cpu").remove();
+          var chart = c3.generate({
+            bindto: '#canvas-cpu',  
+            data: {
+              columns: [
+                ['CPU %', data.cpuusage.average]
+              ],
+              type: 'gauge',
+              onclick: function (d, i) { console.log("onclick", d, i); },
+              onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+              onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+            },
+            gauge: {
+                     label: {
+                         format: function(value, ratio) {
+                             return value;
+                         },
+                         show: true // to turn off the min/max labels.
+                     },
+                 min: 0, // 0 is default, //can handle negative min e.g. vacuum / voltage / current flow / rate of change
+                 max: 100, // 100 is default
+                 units: ' %',
+                 width: 39 // for adjusting arc thickness
+            },
+            color: {
+              pattern: ['#60B044', '#F6C600', '#F97600','#FF0000' ], // the three color levels for the percentage values.
+              threshold: {
+                           unit: 'value', // percentage is default
+                           max: 200, // 100 is default
+                values: [10, 30, 60, 100]
+              }
+            },
+            size: {
+              height: 260,
+              width : 270
+            }
+            });
+            sortie =  $("#template_mem").html();
+            sortie = sortie.replace("$data.memory.total",data.memory.total); 
+            sortie = sortie.replace("$data.memory.used",data.memory.used); 
+            sortie = sortie.replace("$data.memory.available",data.memory.available); 
+            sortie = sortie.replace("$data.memory.free",data.memory.free); 
 
-            
+            $("#mem").html(sortie);
+            $("#template_mem").remove();
+            sortie =  $("#template_disk").html();
+
+            elt_html = "";         
+            for(elt in data.disk){
+                elt_html += $("#template_lstDisk").html().replace("$data.disk[elt].device",data.disk[elt].device);
+                elt_html = elt_html.replace("$data.disk[elt].mountpoint",data.disk[elt].mountpoint);
+                elt_html = elt_html.replace("$data.disk[elt].fstype",data.disk[elt].fstype);
+                elt_html = elt_html.replace("$data.disk[elt].total",data.disk[elt].total);
+                elt_html = elt_html.replace("$data.disk[elt].used",data.disk[elt].used);
+                elt_html = elt_html.replace("$data.disk[elt].free",data.disk[elt].free);
+                elt_html = elt_html.replace("$data.disk[elt].percent",data.disk[elt].percent);
+            };
+            sortie = sortie.replace("$template_lstDisk",elt_html);
+            $("#disk").html(sortie);
+            $("#template_disk").remove();
+            $("#template_lstDisk").remove();
         }
     );
 }
-
-function start()
-{
+function start(){
   intervalId = setInterval(bip, 1000);
 }
 $(document).ready(function () {
    bip();
 });
-</script>    
-<canvas id="canvas-temp"></canvas><canvas id="canvas-cpu"></canvas><canvas id="canvas-cpu1"></canvas><canvas id="canvas-cpu2"></canvas><canvas id="canvas-cpu3"></canvas><canvas id="canvas-cpu4"></canvas>
-<div class="status" id="gen"></div>
-<div class="status" id="processus"></div>
-<div class="status" id="cpu"></div>
-<div class="status" id="mem"></div>
-<div class="status" id="disk"></div>
-<br><br><br><br><hr>
+</script>
+
+<div class="uk-grid uk-grid-match" data-uk-grid-margin>
+    <div class="uk-panel uk-width-large-1-1">
+        
+        <div class="uk-panel uk-panel-box uk-width-1-2" id="gen"></div>
+        
+        <div class="uk-panel uk-panel-box uk-width-1-2" id="cpu"></div>
+        <div class="uk-panel uk-panel-box uk-width-1-2" id="processus"></div>
+       
+        <div class="uk-panel uk-panel-box uk-width-1-2" id="mem"></div>
+        <div class="uk-panel uk-panel-box uk-width-1-2" id="disk"></div>
+        {% raw %}
+        <div class="uk-panel uk-panel-box uk-width-1-2"id="GitStatus">
+            <h1>Dernières mises à jour du site<tab><tab><tab><tab><tab><a class="uk-button uk-button-small" href='/majWeb/'>MaJ du serveur</a></h1>
+            <template v-for="branch in branches">
+                    <input type="radio"
+                    :id="branch"
+                    :value="branch"
+                    name="branch"
+                    v-model="currentBranch">
+                <label :for="branch">{{ branch }}</label>
+            </template>
+            <p>{{ currentBranch }}</p>
+            <ul>
+                <li v-for="record in commits">
+                  <a :href="record.html_url" target="_blank" class="commit">{{ record.sha.slice(0, 7) }}</a>
+                  - <span class="message">{{ record.commit.message | truncate }}</span><br>
+                  par <span class="author"><a :href="record.author.html_url" target="_blank">{{ record.commit.author.name }}</a></span>
+                  le <span class="date">{{ record.commit.author.date | formatDate }}</span>
+                </li>
+              </ul>
+            </div>
+            {% endraw %}
+            <script src="https://unpkg.com/vue/dist/vue.js"></script>
+            <script type="text/javascript" src="{{ url_for('static', filename='lib/GitStatus.js') }}"></script>
+        </div>
+        <div class="uk-panel uk-panel-box uk-width-1-2"id="OSMCStatus">
+            grep VERSION_ID /etc/os-release
+        </div>
+	</div>
 </div>
+<div id="template_gen">
+    <h2 class='uk-text-center uk-margin'>Généralités</h2>
+  <canvas id="canvas-temp"></canvas>  
+  <ul>
+        <li>hostname  $data.hostname</li>
+        <li>Dernier redémarrage il y a : $data.uptime</li>
+        <li>Fréquence CPU : $data.cpufrequency.current MHz (Min=$data.cpufrequency.min MHZ, Max=$data.cpufrequency.max MHz)</li>
+        <li>Détail Connexions : </li>
+        <ul>
+            <li>Général  : envoyé= $data.ip.detail.lo.bytes_sent   reçu= $data.ip.detail.lo.bytes_recv</li>
+            <li>Ethernet ($data.ip.detail.eth0.ip) : envoyé= $data.ip.detail.eth0.bytes_sent   reçu= $data.ip.detail.eth0.bytes_recv</li>
+            <li>Wi-Fi    ($data.ip.detail.wlan0.ip) : envoyé= $data.ip.detail.wlan0.bytes_sent   reçu= $data.ip.detail.wlan0.bytes_recv </li>
+        </ul>
+    </ul>
+</div>
+<div id="template_processus">
+    <h2>Processus :</h2>
+    <!-- for(elt in data.processes){ -->
+        $template_lstPID
+    <hr>
+    <table><tr><th>Nom</th><th>CPU</th><th>Memory Usage</th><th>PID</th></tr>
+    <!-- for(elt in data.allprocesses){ -->
+        $template_lstProcess
+    </table><hr>
+</div>
+<div id="template_cpu">
+    <h2>Processeur</h2>
+  <div id="canvas-cpu"></div>
+    <ul>
+        <li>Nb cpu : $data.numcpu</li>
+        <li>Utilisation CPU :</li>
+        <ul>
+            <li>Moyenne : $data.cpuusage.average %</li>
+            <li>valeurs par cpu : $data.cpuusage.values</li>
+        </ul>
+    </ul>
+</div>
+<div id="template_lstProcess">
+    <tr>
+        <th><center>$data.allprocesses[elt].name</center></th>
+        <td><center>$data.allprocesses[elt].cpu_percent</center></td>
+        <td><center>$data.allprocesses[elt].memory_percent</center></td>
+        <td><center>$data.allprocesses[elt].pid</center></td>
+   </tr>
+</div>
+<div id="template_lstPID">
+  <li>$data.processes[elt].name : $data.processes[elt].lstPID</li>
+</div>
+          
+<div id="template_mem">
+    <h2>Mémoire</h2>
+    <li>total      : $data.memory.total</li>
+    <li>utilisé    : $data.memory.used</li>
+    <li>disponible : $data.memory.available</li>
+    <li>libre      : $data.memory.free</li>
+</div>
+
+<div id="template_disk">
+    <h2>Disques</h2>
+    <!-- for(elt in data.disk){ -->
+        $template_lstDisk
+</div>
+<div id="template_lstDisk">
+    <li>disque : $data.disk[elt].device ( point de montage : $data.disk[elt].mountpoint , [fstype : $data.disk[elt].fstype ])
+    <ul>
+        <li>total       : $data.disk[elt].total</li>
+        <li>utilisé     : $data.disk[elt].used</li>
+        <li>disponible  : $data.disk[elt].free ( $data.disk[elt].percent % )</li>
+    </ul>
+    </li>
 </div>
 {% endblock %}
+
+<link rel="stylesheet" href="https://rawgit.com/masayuki0812/c3/master/c3.css" />

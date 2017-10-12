@@ -81,26 +81,23 @@ def infoNetwork():
 
     for name in list(Tab.keys()):
         p = Tab[name]
-        TabRet[name] = {'bytes_sent' : getDisplayValue(p.bytes_sent),'bytes_recv':getDisplayValue(p.bytes_recv)}
+        IP =  ifaddresses(name)[AF_INET][0]['addr']
+        TabRet[name] = {'ip' : IP, 'bytes_sent' : getDisplayValue(p.bytes_sent),'bytes_recv':getDisplayValue(p.bytes_recv)}
     return TabRet
-    # {'lo': snetio(bytes_sent=547971, bytes_recv=547971, packets_sent=5075, packets_recv=5075, errin=0, errout=0, dropin=0, dropout=0),
-    # 'wlan0': snetio(bytes_sent=13921765, bytes_recv=62162574, packets_sent=79097, packets_recv=89648, errin=0, errout=0, dropin=0, dropout=0)}
     
 def getHostName():
     return socket.gethostname()
 
-def getIP():
-    ip_list = []
-    for interface in interfaces():
-        try:
-            for interface in ifaddresses(interface)[AF_INET]:
-                if not interface['addr'].startswith("127."):
-                    ip_list.append(interface['addr'])
-        except:
-            pass
-    return ip_list
-
-#    return [ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1]
+# def getIP():
+    # ip_list = []
+    # for interface in interfaces():
+        # try:
+            # for interface in ifaddresses(interface)[AF_INET]:
+                # if not interface['addr'].startswith("127."):
+                    # ip_list.append(interface['addr'])
+        # except:
+            # pass
+    # return ip_list
 
 def getCpu():
     return psutil.cpu_times()
@@ -182,7 +179,8 @@ def getTemperature():
     
 def getCpuFrequency():
     ret = psutil.cpu_freq()
-    return str(ret)
+    return {'current':ret[0],'min':ret[1],'max':ret[2]}
+    # return str(ret)
 
 def getDisplayValue(value):
     if value>(1024*1024*1024):
