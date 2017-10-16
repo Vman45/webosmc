@@ -135,23 +135,24 @@ def getMemory():
     total = getDisplayValue(memory.total)
     available = getDisplayValue(memory.available)
     availableraw=memory.available
-    cached=getDisplayValue(memory.cached)
-    cachedraw=memory.cached
-
+    
     used = getDisplayValue(memory.total-memory.available)
     usedraw = memory.total-memory.available
-    percent = int(memory.percent)
-    buffers = getDisplayValue(memory.buffers)
-    bufferraw = memory.buffers
     free = getDisplayValue(memory.free)
     freeraw = memory.free
-    memory=psutil.swap_memory()
-    swtotal = getDisplayValue(memory.total)
-    swused = getDisplayValue(memory.used)
-    swpercent = int(memory.percent)
-    swfree = getDisplayValue(memory.free)
+    percent = int(memory.percent)
+    # cached=getDisplayValue(memory.cached)
+    # cachedraw=memory.cached
+    # buffers = getDisplayValue(memory.buffers)
+    # bufferraw = memory.buffers
+    
+    # memory=psutil.swap_memory()
+    # swtotal = getDisplayValue(memory.total)
+    # swused = getDisplayValue(memory.used)
+    # swpercent = int(memory.percent)
+    # swfree = getDisplayValue(memory.free)
 
-    return {'cached':cached,'cachedraw':cachedraw,'usedraw':usedraw,'bufferraw':bufferraw,'freeraw':freeraw,'total':total,'available':available,'used':used,'percent':percent,'buffers':buffers,'free':free,'swfree':swfree,'swtotal':swtotal,'swpercent':swpercent}
+    return {'total':total,'available':available,'availableraw':availableraw,'used':used,'usedraw':usedraw,'free':free,'freeraw':freeraw,'percent':percent} #,'buffers':buffers,'bufferraw':bufferraw,'swfree':swfree,'swtotal':swtotal,'swpercent':swpercent}
     
 def getUptime(text=False):
     try:
@@ -166,7 +167,7 @@ def getUptime(text=False):
     bt-=hour*3600
     minute=int(bt/60)
     seconde=int(bt-minute*60)
-    return "%id %ih %im %is" % (day,hour,minute,seconde)
+    return "%i jours %i:%i:%i" % (day,hour,minute,seconde)
 
 
 def getTemperature():
@@ -203,8 +204,11 @@ def getDiskSummary():
         total= getDisplayValue(space.total)
         free = getDisplayValue(space.free)
         used = getDisplayValue(space.used)
+        totalraw= space.total
+        freeraw = space.free
+        usedraw = space.used
         percent = int(space.percent)
-        summary.append({ 'device':device,'mountpoint':mountpoint,'fstype':fstype,'total':total,'free':free,'used':used,'percent':percent})
+        summary.append({ 'device':device,'mountpoint':mountpoint,'fstype':fstype,'total':total,'free':free,'used':used,'totalraw':totalraw,'freeraw':freeraw,'usedraw':usedraw,'percent':percent})
 
     return summary
 
