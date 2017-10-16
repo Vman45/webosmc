@@ -82,7 +82,7 @@ def infoNetwork():
     for name in list(Tab.keys()):
         p = Tab[name]
         IP =  ifaddresses(name)[AF_INET][0]['addr']
-        TabRet[name] = {'ip' : IP, 'bytes_sent' : getDisplayValue(p.bytes_sent),'bytes_recv':getDisplayValue(p.bytes_recv)}
+        TabRet[name] = {'ip' : IP, 'bytes_sent' : getDisplayValue(p.bytes_sent),'bytes_recv':getDisplayValue(p.bytes_recv)'bytes_sent_raw' : p.bytes_sent,'bytes_recv_raw': p.bytes_recv}        
     return TabRet
     
 def getHostName():

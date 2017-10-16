@@ -1,6 +1,6 @@
 PATH = "/home/osmc/webosmc/"
 DEBUG = True  # Turns on debugging features in Flask
-PORT = 5000
+PORT = 80
 SECRET_KEY = "Kugan49"
 LINK_AFF_MSG = True
 LINK_MAJ_SITE = ["git", "--git-dir=" + PATH + ".git --work-tree=" + PATH + " pull"]
