@@ -39,7 +39,7 @@ function bip(){
             $("#gen").html(sortie);
             $("#template_gen").remove();
 
-           var chartnetwork = c3.generate({bindto: '#canvas-network',
+            var chartnetwork = c3.generate({bindto: '#canvas-network',
                 size: {height: 120},
                 data: {columns: [['data1', data.ip.detail.eth0.bytes_sent_raw, data.ip.detail.wlan0.bytes_sent_raw],['data2', data.ip.detail.eth0.bytes_recv_raw, data.ip.detail.wlan0.bytes_recv_raw]],
                     names: {data1: 'envoyées',data2: 'reçues'},
@@ -71,16 +71,16 @@ function bip(){
                 elt_html = elt_html.replace("$data.allprocesses[elt].pid",data.allprocesses[elt].pid);
             };
 
-  elt_html = elt_html.replace("<table>","");
-  elt_html = elt_html.replace("<tbody>","");
-  elt_html = elt_html.replace("</table>","");
-  elt_html = elt_html.replace("</tbody>","");
-  console.log("sortie = %s",sortie);       
-  console.log("elt_html = %s",elt_html);
-  
-  sortie = sortie.replace("<!--$template_lstProcess-->",elt_html);
-         console.log("sortie = %s",sortie);
-  $("#process").append(sortie);
+            elt_html = elt_html.replace("<table>","");
+            elt_html = elt_html.replace("<tbody>","");
+            elt_html = elt_html.replace("</table>","");
+            elt_html = elt_html.replace("</tbody>","");
+            console.log("sortie = %s",sortie);       
+            console.log("elt_html = %s",elt_html);
+
+            sortie = sortie.replace("<!--$template_lstProcess-->",elt_html);
+            console.log("sortie = %s",sortie);
+            $("#process").append(sortie);
             $("#template_process").remove();
             $("#template_lstProcess").remove();
             $("#template_lstPID").remove();
@@ -141,6 +141,8 @@ function bip(){
                     tooltip: {format: {value: function (value, ratio, id){var format = d3.format('.4s');return format(value);}}}
                 });
             }
+        }
+    );
 }
 function start(){
   intervalId = setInterval(bip, 1000);
