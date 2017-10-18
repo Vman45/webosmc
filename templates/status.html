@@ -16,11 +16,70 @@
 <script>
  var counter = 0;
 var intervalId = null;
+var chartnetwork;
+var chartcpu;
+var chartmem;
 function stop(){
   clearInterval(intervalId);
+  counter = 0;
   document.getElementById("bip").innerHTML = "";	
 }
-function bip(){
+
+function Init(){
+    chartnetwork = c3.generate({bindto: '#canvas-network',
+        size: {height: 120},
+        data: {columns: [['data1', 0, 0],['data2', 0, 0]],
+            names: {data1: 'envoyées',data2: 'reçues'},
+            type: 'bar',
+            colors: {data1: '#1A5A92',data2: '#B32E4D'},
+            labels: {format: {data1: d3.format('.4s'),data2: d3.format('.4s')}}},
+        bar: {width: {ratio: 0.75}},
+        axis: {x: {type: 'category',categories: ['Ethernet', 'Wi-Fi']},y:{label: 'Quantités données',tick: {format: d3.format(".2s")}},rotated: true},
+        tooltip: {format: {title: function (d) { return 'IP ' + (d==0 ? data.ip.detail.eth0.ip : data.ip.detail.wlan0.ip) ; },
+                value: function (value, ratio, id) {var format = d3.format('.4s');return format(value);}}}
+    });
+
+    chartcpu = c3.generate({bindto: '#canvas-cpu',
+        size: {width : 270},
+        data: {columns: [['data1', 0]],type: 'gauge',names:{data1:'CPU %'}},
+        gauge: {label: {format: function(value, ratio) {return value;},show: true},min: 0,max: 100,units: ' %',width: 39},
+        tooltip: {contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
+            var $$ = this, config = $$.config, CLASS = $$.CLASS,
+                titleFormat = config.tooltip_format_title || defaultTitleFormat,
+                nameFormat = config.tooltip_format_name || function (name) { return name; },
+                valueFormat = config.tooltip_format_value || defaultValueFormat,
+                text, i, title, value, name, bgcolor;
+            for (i = 0; i < d.length; i++) {
+                if (! text) {title = 'Nombre de CPU :' + data.numcpu;text = "<table class='" + CLASS.tooltip + "'>" + (title || title === 0 ? "<tr><th colspan='2'>" + title + "</th></tr>" : "");}
+                name = nameFormat(d[i].name);
+                value = valueFormat(d[i].value, d[i].ratio, d[i].id, d[i].index);
+                bgcolor = $$.levelColor ? $$.levelColor(d[i].value) : color(d[i].id);
+                text += "<tr class='" + CLASS.tooltipName + "-" + d[i].id + "'>";
+                text += "<td class='name'><span style='background-color:" + bgcolor + "'></span>valeur moyenne :</td>";
+                text += "<td class='value'>" + value + "</td>";
+                text += "</tr>";
+                text += "<tr class='" + CLASS.tooltipName + "-" + d[i].id + "'>";
+                text += "<td class='name'><tab>valeur de chaque CPU :</td>";
+                text += "<td class='value'>" + data.cpuusage.values + "</td>";
+                text += "</tr>";
+            }
+            return text + "</table>";}},
+        color: {pattern: ['#60B044', '#F6C600', '#F97600','#FF0000' ], threshold: {unit: 'value',max: 100,values: [10, 30, 60, 100]}}
+    });
+    chartmem = c3.generate({bindto: '#canvas-mem',
+        size: {height: 240},
+        data: {columns: [['data1', data.memory.usedraw],['data2', data.memory.availableraw]],
+            names: {data1: 'Utilisée',data2: 'Libre'},
+            type : 'donut',
+            colors: {data1: '#B32E4D',data2: '#89B2D7',},
+            labels: {format: {data1: d3.format('.4s'),data2: d3.format('.4s')}}},
+        donut: {title: 'Mémoire ' + data.memory.total},
+        tooltip: {format: {value: function (value, ratio, id) {
+          var format = d3.format('.4s');
+          return format(value);}}}
+    });
+}
+function refreshValues(){
     document.getElementById("bip").innerHTML = counter + " secondes passées";
     counter++;
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
@@ -39,18 +98,10 @@ function bip(){
             $("#gen").html(sortie);
             $("#template_gen").remove();
 
-            var chartnetwork = c3.generate({bindto: '#canvas-network',
-                size: {height: 120},
-                data: {columns: [['data1', data.ip.detail.eth0.bytes_sent_raw, data.ip.detail.wlan0.bytes_sent_raw],['data2', data.ip.detail.eth0.bytes_recv_raw, data.ip.detail.wlan0.bytes_recv_raw]],
-                    names: {data1: 'envoyées',data2: 'reçues'},
-                    type: 'bar',
-                    colors: {data1: '#1A5A92',data2: '#B32E4D'},
-                    labels: {format: {data1: d3.format('.4s'),data2: d3.format('.4s')}}},
-                bar: {width: {ratio: 0.75}},
-                axis: {x: {type: 'category',categories: ['Ethernet', 'Wi-Fi']},y:{label: 'Quantités données',tick: {format: d3.format(".2s")}},rotated: true},
-                tooltip: {format: {title: function (d) { return 'IP ' + (d==0 ? data.ip.detail.eth0.ip : data.ip.detail.wlan0.ip) ; },
-                        value: function (value, ratio, id) {var format = d3.format('.4s');return format(value);}}}
-            });
+            chartnetwork.load({columns: [
+                    ['data1', data.ip.detail.eth0.bytes_sent_raw, data.ip.detail.wlan0.bytes_sent_raw],
+                    ['data2', data.ip.detail.eth0.bytes_recv_raw, data.ip.detail.wlan0.bytes_recv_raw]
+                    ]})
 
             sortie = $("#template_process").html();
             sortie = sortie.replace("$data.numcpu",data.numcpu);
@@ -75,55 +126,21 @@ function bip(){
             elt_html = elt_html.replace("<tbody>","");
             elt_html = elt_html.replace("</table>","");
             elt_html = elt_html.replace("</tbody>","");
-            console.log("sortie = %s",sortie);       
-            console.log("elt_html = %s",elt_html);
-
+           
             sortie = sortie.replace("<!--$template_lstProcess-->",elt_html);
-            console.log("sortie = %s",sortie);
             $("#process").append(sortie);
             $("#template_process").remove();
             $("#template_lstProcess").remove();
             $("#template_lstPID").remove();
-
-            var chartcpu = c3.generate({bindto: '#canvas-cpu',
-            size: {width : 270},
-            data: {columns: [['data1', data.cpuusage.average]],type: 'gauge',names:{data1:'CPU %'}},
-            gauge: {label: {format: function(value, ratio) {return value;},show: true},min: 0,max: 100,units: ' %',width: 39},
-            tooltip: {contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
-                var $$ = this, config = $$.config, CLASS = $$.CLASS,
-                    titleFormat = config.tooltip_format_title || defaultTitleFormat,
-                    nameFormat = config.tooltip_format_name || function (name) { return name; },
-                    valueFormat = config.tooltip_format_value || defaultValueFormat,
-                    text, i, title, value, name, bgcolor;
-                for (i = 0; i < d.length; i++) {
-                    if (! text) {title = 'Nombre de CPU :' + data.numcpu;text = "<table class='" + CLASS.tooltip + "'>" + (title || title === 0 ? "<tr><th colspan='2'>" + title + "</th></tr>" : "");}
-                    name = nameFormat(d[i].name);
-                    value = valueFormat(d[i].value, d[i].ratio, d[i].id, d[i].index);
-                    bgcolor = $$.levelColor ? $$.levelColor(d[i].value) : color(d[i].id);
-                    text += "<tr class='" + CLASS.tooltipName + "-" + d[i].id + "'>";
-                    text += "<td class='name'><span style='background-color:" + bgcolor + "'></span>valeur moyenne :</td>";
-                    text += "<td class='value'>" + value + "</td>";
-                    text += "</tr>";
-                    text += "<tr class='" + CLASS.tooltipName + "-" + d[i].id + "'>";
-                    text += "<td class='name'><tab>valeur de chaque CPU :</td>";
-                    text += "<td class='value'>" + data.cpuusage.values + "</td>";
-                    text += "</tr>";
-                }
-                return text + "</table>";}},
-            color: {pattern: ['#60B044', '#F6C600', '#F97600','#FF0000' ], threshold: {unit: 'value',max: 100,values: [10, 30, 60, 100]}}
-            });
-            var chartmem = c3.generate({bindto: '#canvas-mem',
-                size: {height: 240},
-                data: {columns: [['data1', data.memory.usedraw],['data2', data.memory.availableraw]],
-                    names: {data1: 'Utilisée',data2: 'Libre'},
-                    type : 'donut',
-                    colors: {data1: '#B32E4D',data2: '#89B2D7',},
-                    labels: {format: {data1: d3.format('.4s'),data2: d3.format('.4s')}}},
-                donut: {title: 'Mémoire ' + data.memory.total},
-                tooltip: {format: {value: function (value, ratio, id) {
-                  var format = d3.format('.4s');
-                  return format(value);}}}
-            });
+            
+            chartcpu.load({columns: [
+                    ['data1', data.cpuusage.average]
+                    ]})
+            chartmem.load({columns: [
+                    ['data1', data.memory.usedraw],
+                    ['data2', data.memory.availableraw]
+                    ]})
+                    
             sortie =  $("#template_disk").html();
             $("#disk").html(sortie);
             $("#template_disk").remove();
@@ -145,10 +162,11 @@ function bip(){
     );
 }
 function start(){
-  intervalId = setInterval(bip, 1000);
+  intervalId = setInterval(refreshValues, 1000);
 }
 $(document).ready(function () {
-   bip();
+   Init();
+   refreshValues();
 });
 </script>
 
@@ -236,6 +254,6 @@ $(document).ready(function () {
 <div id="template_disk">
     <h2 class='uk-text-center uk-margin'>Disques</h2>
 </div>
+<link rel="stylesheet" href="https://rawgit.com/masayuki0812/c3/master/c3.css" />
 {% endblock %}
 
-<link rel="stylesheet" href="https://rawgit.com/masayuki0812/c3/master/c3.css" />
