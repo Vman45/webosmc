@@ -101,7 +101,7 @@ console.log("eth0 sent %s  received %s\wlan0 sent %s received %s" , data.ip.deta
             chartnetwork.load({columns: [
                     ['data1', data.ip.detail.eth0.bytes_sent_raw, data.ip.detail.wlan0.bytes_sent_raw],
                     ['data2', data.ip.detail.eth0.bytes_recv_raw, data.ip.detail.wlan0.bytes_recv_raw]
-                    ]})
+                    ]});
 
             sortie = $("#template_process").html();
             sortie = sortie.replace("$data.numcpu",data.numcpu);
@@ -135,11 +135,11 @@ console.log("eth0 sent %s  received %s\wlan0 sent %s received %s" , data.ip.deta
             
             chartcpu.load({columns: [
                     ['data1', data.cpuusage.average]
-                    ]})
+                    ]});
             chartmem.load({columns: [
                     ['data1', data.memory.usedraw],
                     ['data2', data.memory.availableraw]
-                    ]})
+                    ]});
                     
             sortie =  $("#template_disk").html();
             $("#disk").html(sortie);
