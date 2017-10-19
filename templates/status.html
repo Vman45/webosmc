@@ -97,7 +97,7 @@ function refreshValues(){
             sortie = sortie.replace("$data.cpufrequency.max",data.cpufrequency.max);
             $("#gen").html(sortie);
             $("#template_gen").remove();
-console.log("eth0 sent %s  received %s\wlan0 sent %s received %s" , data.ip.detail.eth0.bytes_sent_raw,data.ip.detail.eth0.bytes_recv_raw,ata.ip.detail.wlan0.bytes_sent_raw,data.ip.detail.wlan0.bytes_recv_raw)
+console.log("eth0 sent %s  received %s\wlan0 sent %s received %s" , data.ip.detail.eth0.bytes_sent_raw,data.ip.detail.eth0.bytes_recv_raw, data.ip.detail.wlan0.bytes_sent_raw,data.ip.detail.wlan0.bytes_recv_raw)
             chartnetwork.load({columns: [
                     ['data1', data.ip.detail.eth0.bytes_sent_raw, data.ip.detail.wlan0.bytes_sent_raw],
                     ['data2', data.ip.detail.eth0.bytes_recv_raw, data.ip.detail.wlan0.bytes_recv_raw]
