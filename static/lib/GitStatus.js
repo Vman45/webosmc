@@ -1,6 +1,6 @@
 var apiURL = 'https://api.github.com/repos/kugan49/webosmc/'
 var apiBranches = 'branches'
-var apiCommits = 'commits?per_page=5&sha='
+var apiCommits = 'commits?per_page=3&sha='
 
 
 var GitStatus = new Vue({
@@ -45,7 +45,7 @@ var GitStatus = new Vue({
         for (i = 0; i <  ret.length; i++) {
           Locbranches.push(ret[i].name)
         }
-        console.log(Locbranches)
+        // console.log(Locbranches)
         self1.branches = Locbranches
       }
       xhr1.send()
@@ -54,7 +54,7 @@ var GitStatus = new Vue({
       xhr.open('GET', apiURL + apiCommits + self.currentBranch)
       xhr.onload = function () {
         self.commits = JSON.parse(xhr.responseText)
-        console.log(self.commits)
+        // console.log(self.commits)
       }
       xhr.send()
     }
