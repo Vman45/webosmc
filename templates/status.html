@@ -105,14 +105,12 @@ function refreshValues(){
             sortie = sortie.replace("$data.cpufrequency.max",data.cpufrequency.max);
             $("#gen").html(sortie);
             $("#template_gen").remove();
-console.log("eth0 sent %s  received %s\wlan0 sent %s received %s" , data.ip.detail.eth0.bytes_sent_raw,data.ip.detail.eth0.bytes_recv_raw, data.ip.detail.wlan0.bytes_sent_raw,data.ip.detail.wlan0.bytes_recv_raw)
+console.log("eth0 sent %s  received %s wlan0 sent %s received %s" , data.ip.detail.eth0.bytes_sent_raw,data.ip.detail.eth0.bytes_recv_raw, data.ip.detail.wlan0.bytes_sent_raw,data.ip.detail.wlan0.bytes_recv_raw)
             chartnetwork.load({columns: [
-                    ['data1', data.ip.detail.eth0.bytes_sent_raw, data.ip.detail.wlan0.bytes_sent_raw],
-                    ['data2', data.ip.detail.eth0.bytes_recv_raw, data.ip.detail.wlan0.bytes_recv_raw]
-                    ]});
+                ['data1', data.ip.detail.eth0.bytes_sent_raw, data.ip.detail.wlan0.bytes_sent_raw],
+                ['data2', data.ip.detail.eth0.bytes_recv_raw, data.ip.detail.wlan0.bytes_recv_raw]]
+            });
 
-                    
-                    
             sortie = $("#template_process").html();
             sortie = sortie.replace("$data.numcpu",data.numcpu);
             sortie = sortie.replace("$data.cpuusage.average",data.cpuusage.average);
@@ -144,12 +142,13 @@ console.log("eth0 sent %s  received %s\wlan0 sent %s received %s" , data.ip.deta
             $("#template_lstPID").remove();
             
             chartcpu.load({columns: [
-                    ['data1', data.cpuusage.average]
-                    ]});
+                    ['data1', data.cpuusage.average]]
+            });
+            
             chartmem.load({columns: [
                     ['data1', data.memory.usedraw],
-                    ['data2', data.memory.availableraw]
-                    ]});
+                    ['data2', data.memory.availableraw]]
+            });
                     
             sortie =  $("#template_disk").html();
             $("#disk").html(sortie);
