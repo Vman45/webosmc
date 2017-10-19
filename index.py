@@ -52,7 +52,7 @@ def status():
     return render_template('status.html')
 @app.route('/_majData/', methods=['GET'])
 def get_majData():
-    data = get_status(app.config["STATUS_LSTPROC"],app.config["STATUS_CPUMIN"])
+    data = get_status(app.config["STATUS_LSTPROC"],app.config["STATUS_CPUMIN"],app.config["STATUS_RECH_VERSION"])
     app.logger.info('majdata : ' + str(data) )
     return jsonify(data)
 @app.route('/SSH/')

@@ -88,10 +88,7 @@ def browse(path):
         Message = 'file uploaded successfully'
         return render_template("browse.html",**locals())
     else:
-        if functions.IsFile(path):
-            return send_file(path)
-        # 404
-        elif functions.ReadPath(path)==None or TempPass == True:
+        if functions.IsFile(path) or functions.ReadPath(path)==None or TempPass == True:
             functions.log("Error; 404; IP=%s" % request.remote_addr)
             Error404=True
             ClientIP=request.remote_addr
@@ -116,3 +113,31 @@ def browse(path):
             
         # app.logger.info("route: %s" %route)
         return render_template("browse.html",**locals())
+
+@ThrowBox.route("/download/<path:path>", methods = ['GET'])
+@requires_auth
+def download(path):
+    BASE_PATH=path
+    path=os.path.join(StockPath,path)
+   
+    if functions.IsFile(path):
+        return send_file(path)
+    # 404
+    elif functions.ReadPath(path)==None or TempPass == True:
+        functions.log("Error; 404; IP=%s" % request.remote_addr)
+        Error404=True
+        ClientIP=request.remote_addr
+    else:
+        folders,files=functions.ReadPath(path)
+        
+        # Gestion du téléchargement 
+        
+        # app.logger.info("folders: %s  \n files : %s" %(folders,files))
+        # Remove the hidden files and folders (hidden=beggining with ".")
+        folders=functions.RemoveHiddenObjects(folders)
+        files=functions.RemoveHiddenObjects(files)
+
+        # Sort the folders and files list.
+        folders.sort()
+        files.sort()
+    return render_template("browse.html",**locals())

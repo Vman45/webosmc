@@ -22,7 +22,7 @@
 
         {%- if files|length > 0 -%}
             {%- for file in files -%}
-            <a href={{ url_for("ThrowBox.browse", path=BASE_PATH+file)}}>
+            <a href={{ url_for("ThrowBox.download", path=BASE_PATH+file)}}>
             <div class="uk-panel uk-panel-box-primary uk-width-1-1">
                     <span class="uk-icon-download" style="margin-right:10px;"></span>
                     {{file}}

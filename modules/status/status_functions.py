@@ -6,6 +6,7 @@ import platform
 import time
 import datetime
 from netifaces import interfaces, ifaddresses, AF_INET
+from modules.webConfig import launch_process
 # from flask import Flask
 # app = Flask(__name__)
 
@@ -215,3 +216,10 @@ def getDiskSummary():
 def getLoadAvg():
     tab=os.getloadavg()
     return {'la1':tab[0],'la2':tab[1],'la3':tab[2]}
+
+def getInfoVersion(LstInfos):
+    LstInfosRet = []
+    for key,value in LstInfos.items():
+        ret = launch_process(value)
+        output = ret['output'].replace('\n','<br>')
+        LstInfosRet.append({'name':key,'value':output})

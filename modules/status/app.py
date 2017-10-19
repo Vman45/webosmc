@@ -2,7 +2,7 @@
 import modules.status.status_functions as status_functions
 import json
 
-def get_status(LstProcName,cpumin):
+def get_status(LstProcName,cpumin,RechVersion):
     cpu=status_functions.getCpuPercent()
     numcpu=status_functions.getNumCpu()
     cpuusage=status_functions.getCPUusage()
@@ -29,5 +29,6 @@ def get_status(LstProcName,cpumin):
     uptime=status_functions.getUptime(True)
     ip = {'detail':status_functions.infoNetwork()}
     allprocesses, processes = status_functions.getProcess(LstProcName,cpumin)
-    content={'allprocesses':allprocesses,'processes':processes,'freespace':freespace,'cpufrequency':cpufrequency,'uptime':uptime,'loadavg':loadavg,'ip':ip,'hostname':hostname,'cpu':cpu,'numcpu':numcpu,'cpuusage':cpuusage,'disk':disk,'temperature':temperature,'memory':memory}	
+    InfoVersion = getInfoVersion(RechVersion)
+    content={'InfoVersion':InfoVersion,'allprocesses':allprocesses,'processes':processes,'freespace':freespace,'cpufrequency':cpufrequency,'uptime':uptime,'loadavg':loadavg,'ip':ip,'hostname':hostname,'cpu':cpu,'numcpu':numcpu,'cpuusage':cpuusage,'disk':disk,'temperature':temperature,'memory':memory}	
     return content

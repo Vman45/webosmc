@@ -142,6 +142,21 @@ function bip(){
                     tooltip: {format: {value: function (value, ratio, id){var format = d3.format('.4s');return format(value);}}}
                 });
             }
+            
+            
+            sortie = $("#template_VersionStatus").html();
+            elt_html = "";
+            for(elt in data.InfoVersion){
+                elt_html += $("#template_lstVersionStatus").html().replace("$data.InfoVersion[elt].name",data.InfoVersion[elt].name);
+                elt_html = elt_html.replace("$data.InfoVersion[elt].value",data.InfoVersion[elt].value);
+                
+            };
+           
+            sortie = sortie.replace("$template_VersionStatus",elt_html);
+            
+            $("#VersionStatus").html(sortie);            
+            InfoVersion
+            
         }
     );
 }
@@ -157,9 +172,7 @@ $(document).ready(function () {
         <div class="uk-panel uk-panel-box uk-width-large-1-2" id="gen"></div>
         <div class="uk-panel uk-panel-box uk-width-large-1-2" id="process"></div>
         <div class="uk-panel uk-panel-box uk-width-large-1-2" id="disk"></div>
-        <div class="uk-panel uk-panel-box uk-width-large-1-2"id="OSMCStatus">
-            grep VERSION_ID /etc/os-release
-        </div>
+        <div class="uk-panel uk-panel-box uk-width-large-1-2"id="VersionStatus"></div>
         {% raw %}
         <div class="uk-panel uk-panel-box uk-width-large-1-2"id="GitStatus">
             <h1>Dernières mises à jour du site<tab><tab><tab><tab><tab><a class="uk-button uk-button-small" href='/majWeb/'>MaJ du serveur</a></h1>
@@ -238,6 +251,13 @@ $(document).ready(function () {
     <div id="template_disk">
         <h2 class='uk-text-center uk-margin'>Disques</h2>
     </div>
+    <div id="template_VersionStatus">
+        <h2 class='uk-text-center uk-margin'>Versions :</h2>
+            $template_lstVersionStatus
+    </div>
+    <div id="template_lstVersionStatus">
+        <h3>$data.InfoVersion[elt].name</h3><br>$data.InfoVersion[elt].value
+    
 </div>
 <link rel="stylesheet" href="https://rawgit.com/masayuki0812/c3/master/c3.css" />
 {% endblock %}
