@@ -18,10 +18,11 @@ var counter = 0;
 var intervalId = null;
 function stop(){
   clearInterval(intervalId);
-  document.getElementById("bip").innerHTML = "";	
+  document.getElementById("bip").innerHTML = "";
+  counter = 0;
 }
 function bip(){
-    document.getElementById("bip").innerHTML = counter + " secondes passÃ©es";
+    document.getElementById("bip").innerHTML = counter + " secondes passées";
     counter++;
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     var content = $SCRIPT_ROOT+"/_majData";
@@ -37,7 +38,7 @@ function bip(){
             sortie = sortie.replace("$data.cpufrequency.min",data.cpufrequency.min);
             sortie = sortie.replace("$data.cpufrequency.max",data.cpufrequency.max);
             $("#gen").html(sortie);
-            $("#template_gen").remove();
+            //$("#template_gen").remove();
 
             var chartnetwork = c3.generate({bindto: '#canvas-network',
                 size: {height: 120},
@@ -80,9 +81,9 @@ function bip(){
             sortie = sortie.replace("<!--$template_lstProcess-->",elt_html);
             
             $("#process").append(sortie);
-            $("#template_process").remove();
-            $("#template_lstProcess").remove();
-            $("#template_lstPID").remove();
+            //$("#template_process").remove();
+            //$("#template_lstProcess").remove();
+            //$("#template_lstPID").remove();
 
             var chartcpu = c3.generate({bindto: '#canvas-cpu',
             size: {width : 270},
@@ -126,7 +127,7 @@ function bip(){
 
             sortie =  $("#template_disk").html();
             $("#disk").html(sortie);
-            $("#template_disk").remove();
+            //$("#template_disk").remove();
             var chartdsk = [];
             for(elt in data.disk){
                 $("#disk").append("<div id='canvas-dsk" + elt + "'></div>");
@@ -187,54 +188,56 @@ $(document).ready(function () {
        
 	</div>
 </div>
-<div id="template_gen">
-    <h2 class='uk-text-center uk-margin'>Généralités</h2>
-  <li>Nom machine  $data.hostname</li>
-  <li>Dernier redémarrage il y a : $data.uptime</li>
-        <li>Fréquence CPU : $data.cpufrequency.current MHz (Min=$data.cpufrequency.min MHZ, Max=$data.cpufrequency.max MHz)</li>
-  <hr>
-        <li>Détail Connexions : </li>
-           <div id="canvas-network"></div>
-  <hr>
-        <li>Mémoire :</li>
-            <div id="canvas-mem"></div>
-  </ul>
-</div>
-<div id="template_process">
-  <h2 class='uk-text-center uk-margin'>Processus</h2>
-  <li>Statuts des process :<li>
-  <ul>
-  <!-- for(elt in data.processes){ -->
-        $template_lstPID
-  </ul>
-    <hr>
-  <h3 class='uk-text-center uk-margin'>Utilisation Processeur</h3>
-  <div class='uk-text-center uk-margin' id="canvas-cpu"></div>
-  <hr>
-    <h3 class='uk-text-center uk-margin'>Détails Process</h3>
-   <table class="uk-text-center"><tr><th>Nom</th><th>CPU</th><th>Utilisation mémoire</th><th>PID</th></tr>
-     <!--WARNING Keep in comment because of html verification in table
-          Code is ok for this-->
-     <!--$template_lstProcess-->
-    </table>
- 
-</div>
-<div id="template_lstPID">
-  <li>$data.processes[elt].name : $data.processes[elt].lstPID</li>
-</div>
-<div id="template_lstProcess">
-  <table>  
-  <tr>
-        <th>$data.allprocesses[elt].name</th>
-        <td>$data.allprocesses[elt].cpu_percent</td>
-      <td>$data.allprocesses[elt].memory_percent</td>
-        <td>$data.allprocesses[elt].pid</td>
-   </tr>
-   </table>
-</div>
+<div class="uk-hidden">
+    <div id="template_gen">
+        <h2 class='uk-text-center uk-margin'>Généralités</h2>
+      <li>Nom machine  $data.hostname</li>
+      <li>Dernier redémarrage il y a : $data.uptime</li>
+            <li>Fréquence CPU : $data.cpufrequency.current MHz (Min=$data.cpufrequency.min MHZ, Max=$data.cpufrequency.max MHz)</li>
+      <hr>
+            <li>Détail Connexions : </li>
+               <div id="canvas-network"></div>
+      <hr>
+            <li>Mémoire :</li>
+                <div id="canvas-mem"></div>
+      </ul>
+    </div>
+    <div id="template_process">
+      <h2 class='uk-text-center uk-margin'>Processus</h2>
+      <li>Statuts des process :<li>
+      <ul>
+      <!-- for(elt in data.processes){ -->
+            $template_lstPID
+      </ul>
+        <hr>
+      <h3 class='uk-text-center uk-margin'>Utilisation Processeur</h3>
+      <div class='uk-text-center uk-margin' id="canvas-cpu"></div>
+      <hr>
+        <h3 class='uk-text-center uk-margin'>Détails Process</h3>
+       <table class="uk-text-center"><tr><th>Nom</th><th>CPU</th><th>Utilisation mémoire</th><th>PID</th></tr>
+         <!--WARNING Keep in comment because of html verification in table
+              Code is ok for this-->
+         <!--$template_lstProcess-->
+        </table>
+     
+    </div>
+    <div id="template_lstPID">
+      <li>$data.processes[elt].name : $data.processes[elt].lstPID</li>
+    </div>
+    <div id="template_lstProcess">
+      <table>  
+      <tr>
+            <th>$data.allprocesses[elt].name</th>
+            <td>$data.allprocesses[elt].cpu_percent</td>
+          <td>$data.allprocesses[elt].memory_percent</td>
+            <td>$data.allprocesses[elt].pid</td>
+       </tr>
+       </table>
+    </div>
 
-<div id="template_disk">
-    <h2 class='uk-text-center uk-margin'>Disques</h2>
+    <div id="template_disk">
+        <h2 class='uk-text-center uk-margin'>Disques</h2>
+    </div>
 </div>
 <link rel="stylesheet" href="https://rawgit.com/masayuki0812/c3/master/c3.css" />
 {% endblock %}
