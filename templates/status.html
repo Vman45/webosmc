@@ -26,58 +26,66 @@ function stop(){
 }
 
 function Init(){
-    chartnetwork = c3.generate({bindto: '#canvas-network',
-        size: {height: 120},
-        data: {columns: [['data1', 0, 0],['data2', 0, 0]],
-            names: {data1: 'envoyées',data2: 'reçues'},
-            type: 'bar',
-            colors: {data1: '#1A5A92',data2: '#B32E4D'},
-            labels: {format: {data1: d3.format('.4s'),data2: d3.format('.4s')}}},
-        bar: {width: {ratio: 0.75}},
-        axis: {x: {type: 'category',categories: ['Ethernet', 'Wi-Fi']},y:{label: 'Quantités données',tick: {format: d3.format(".2s")}},rotated: true},
-        tooltip: {format: {title: function (d) { return 'IP ' + (d==0 ? 0 : 0) ; },
-                value: function (value, ratio, id) {var format = d3.format('.4s');return format(value);}}}
-    });
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    var content = $SCRIPT_ROOT+"/_majData";
+    $.getJSON(
+        $SCRIPT_ROOT+"/_majData",
+        function(data)
+        {
+            chartnetwork = c3.generate({bindto: '#canvas-network',
+                size: {height: 120},
+                data: {columns:  {columns: [['data1', data.ip.detail.eth0.bytes_sent_raw, data.ip.detail.wlan0.bytes_sent_raw],['data2', data.ip.detail.eth0.bytes_recv_raw, data.ip.detail.wlan0.bytes_recv_raw]],
+                    names: {data1: 'envoyées',data2: 'reçues'},
+                    type: 'bar',
+                    colors: {data1: '#1A5A92',data2: '#B32E4D'},
+                    labels: {format: {data1: d3.format('.4s'),data2: d3.format('.4s')}}},
+                bar: {width: {ratio: 0.75}},
+                axis: {x: {type: 'category',categories: ['Ethernet', 'Wi-Fi']},y:{label: 'Quantités données',tick: {format: d3.format(".2s")}},rotated: true},
+                tooltip: {format: {title: function (d) { return 'IP ' + (d==0 ? data.ip.detail.eth0.ip : data.ip.detail.wlan0.ip) ; },
+                        value: function (value, ratio, id) {var format = d3.format('.4s');return format(value);}}}
+            });
 
-    chartcpu = c3.generate({bindto: '#canvas-cpu',
-        size: {width : 270},
-        data: {columns: [['data1', 0]],type: 'gauge',names:{data1:'CPU %'}},
-        gauge: {label: {format: function(value, ratio) {return value;},show: true},min: 0,max: 100,units: ' %',width: 39},
-        tooltip: {contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
-            var $$ = this, config = $$.config, CLASS = $$.CLASS,
-                titleFormat = config.tooltip_format_title || defaultTitleFormat,
-                nameFormat = config.tooltip_format_name || function (name) { return name; },
-                valueFormat = config.tooltip_format_value || defaultValueFormat,
-                text, i, title, value, name, bgcolor;
-            for (i = 0; i < d.length; i++) {
-                if (! text) {title = 'Nombre de CPU :' + 0;text = "<table class='" + CLASS.tooltip + "'>" + (title || title === 0 ? "<tr><th colspan='2'>" + title + "</th></tr>" : "");}
-                name = nameFormat(d[i].name);
-                value = valueFormat(d[i].value, d[i].ratio, d[i].id, d[i].index);
-                bgcolor = $$.levelColor ? $$.levelColor(d[i].value) : color(d[i].id);
-                text += "<tr class='" + CLASS.tooltipName + "-" + d[i].id + "'>";
-                text += "<td class='name'><span style='background-color:" + bgcolor + "'></span>valeur moyenne :</td>";
-                text += "<td class='value'>" + value + "</td>";
-                text += "</tr>";
-                text += "<tr class='" + CLASS.tooltipName + "-" + d[i].id + "'>";
-                text += "<td class='name'><tab>valeur de chaque CPU :</td>";
-                text += "<td class='value'>" + 0 + "</td>";
-                text += "</tr>";
-            }
-            return text + "</table>";}},
-        color: {pattern: ['#60B044', '#F6C600', '#F97600','#FF0000' ], threshold: {unit: 'value',max: 100,values: [10, 30, 60, 100]}}
-    });
-    chartmem = c3.generate({bindto: '#canvas-mem',
-        size: {height: 240},
-        data: {columns: [['data1', 0],['data2', 0]],
-            names: {data1: 'Utilisée',data2: 'Libre'},
-            type : 'donut',
-            colors: {data1: '#B32E4D',data2: '#89B2D7',},
-            labels: {format: {data1: d3.format('.4s'),data2: d3.format('.4s')}}},
-        donut: {title: 'Mémoire ' + 0},
-        tooltip: {format: {value: function (value, ratio, id) {
-          var format = d3.format('.4s');
-          return format(value);}}}
-    });
+            chartcpu = c3.generate({bindto: '#canvas-cpu',
+                size: {width : 270},
+                data: {columns: [['data1', data.cpuusage.average]],type: 'gauge',names:{data1:'CPU %'}},
+                gauge: {label: {format: function(value, ratio) {return value;},show: true},min: 0,max: 100,units: ' %',width: 39},
+                tooltip: {contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
+                    var $$ = this, config = $$.config, CLASS = $$.CLASS,
+                        titleFormat = config.tooltip_format_title || defaultTitleFormat,
+                        nameFormat = config.tooltip_format_name || function (name) { return name; },
+                        valueFormat = config.tooltip_format_value || defaultValueFormat,
+                        text, i, title, value, name, bgcolor;
+                    for (i = 0; i < d.length; i++) {
+                        if (! text) {title = 'Nombre de CPU :' + data.numcpu;text = "<table class='" + CLASS.tooltip + "'>" + (title || title === 0 ? "<tr><th colspan='2'>" + title + "</th></tr>" : "");}
+                        name = nameFormat(d[i].name);
+                        value = valueFormat(d[i].value, d[i].ratio, d[i].id, d[i].index);
+                        bgcolor = $$.levelColor ? $$.levelColor(d[i].value) : color(d[i].id);
+                        text += "<tr class='" + CLASS.tooltipName + "-" + d[i].id + "'>";
+                        text += "<td class='name'><span style='background-color:" + bgcolor + "'></span>valeur moyenne :</td>";
+                        text += "<td class='value'>" + value + "</td>";
+                        text += "</tr>";
+                        text += "<tr class='" + CLASS.tooltipName + "-" + d[i].id + "'>";
+                        text += "<td class='name'><tab>valeur de chaque CPU :</td>";
+                        text += "<td class='value'>" + data.cpuusage.values + "</td>";
+                        text += "</tr>";
+                    }
+                    return text + "</table>";}},
+                color: {pattern: ['#60B044', '#F6C600', '#F97600','#FF0000' ], threshold: {unit: 'value',max: 100,values: [10, 30, 60, 100]}}
+            });
+            chartmem = c3.generate({bindto: '#canvas-mem',
+                size: {height: 240},
+                data: {columns: [['data1', data.memory.usedraw],['data2', data.memory.availableraw]],
+                    names: {data1: 'Utilisée',data2: 'Libre'},
+                    type : 'donut',
+                    colors: {data1: '#B32E4D',data2: '#89B2D7',},
+                    labels: {format: {data1: d3.format('.4s'),data2: d3.format('.4s')}}},
+                donut: {title: 'Mémoire ' + data.memory.total},
+                tooltip: {format: {value: function (value, ratio, id) {
+                  var format = d3.format('.4s');
+                  return format(value);}}}
+            });
+        }
+    );
 }
 function refreshValues(){
     document.getElementById("bip").innerHTML = counter + " secondes passées";
@@ -103,6 +111,8 @@ console.log("eth0 sent %s  received %s\wlan0 sent %s received %s" , data.ip.deta
                     ['data2', data.ip.detail.eth0.bytes_recv_raw, data.ip.detail.wlan0.bytes_recv_raw]
                     ]});
 
+                    
+                    
             sortie = $("#template_process").html();
             sortie = sortie.replace("$data.numcpu",data.numcpu);
             sortie = sortie.replace("$data.cpuusage.average",data.cpuusage.average);
