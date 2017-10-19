@@ -35,7 +35,7 @@ function Init(){
             labels: {format: {data1: d3.format('.4s'),data2: d3.format('.4s')}}},
         bar: {width: {ratio: 0.75}},
         axis: {x: {type: 'category',categories: ['Ethernet', 'Wi-Fi']},y:{label: 'Quantités données',tick: {format: d3.format(".2s")}},rotated: true},
-        tooltip: {format: {title: function (d) { return 'IP ' + (d==0 ? data.ip.detail.eth0.ip : data.ip.detail.wlan0.ip) ; },
+        tooltip: {format: {title: function (d) { return 'IP ' + (d==0 ? 0 : 0) ; },
                 value: function (value, ratio, id) {var format = d3.format('.4s');return format(value);}}}
     });
 
@@ -50,7 +50,7 @@ function Init(){
                 valueFormat = config.tooltip_format_value || defaultValueFormat,
                 text, i, title, value, name, bgcolor;
             for (i = 0; i < d.length; i++) {
-                if (! text) {title = 'Nombre de CPU :' + data.numcpu;text = "<table class='" + CLASS.tooltip + "'>" + (title || title === 0 ? "<tr><th colspan='2'>" + title + "</th></tr>" : "");}
+                if (! text) {title = 'Nombre de CPU :' + 0;text = "<table class='" + CLASS.tooltip + "'>" + (title || title === 0 ? "<tr><th colspan='2'>" + title + "</th></tr>" : "");}
                 name = nameFormat(d[i].name);
                 value = valueFormat(d[i].value, d[i].ratio, d[i].id, d[i].index);
                 bgcolor = $$.levelColor ? $$.levelColor(d[i].value) : color(d[i].id);
@@ -60,7 +60,7 @@ function Init(){
                 text += "</tr>";
                 text += "<tr class='" + CLASS.tooltipName + "-" + d[i].id + "'>";
                 text += "<td class='name'><tab>valeur de chaque CPU :</td>";
-                text += "<td class='value'>" + data.cpuusage.values + "</td>";
+                text += "<td class='value'>" + 0 + "</td>";
                 text += "</tr>";
             }
             return text + "</table>";}},
@@ -68,12 +68,12 @@ function Init(){
     });
     chartmem = c3.generate({bindto: '#canvas-mem',
         size: {height: 240},
-        data: {columns: [['data1', data.memory.usedraw],['data2', data.memory.availableraw]],
+        data: {columns: [['data1', 0],['data2', 0]],
             names: {data1: 'Utilisée',data2: 'Libre'},
             type : 'donut',
             colors: {data1: '#B32E4D',data2: '#89B2D7',},
             labels: {format: {data1: d3.format('.4s'),data2: d3.format('.4s')}}},
-        donut: {title: 'Mémoire ' + data.memory.total},
+        donut: {title: 'Mémoire ' + 0},
         tooltip: {format: {value: function (value, ratio, id) {
           var format = d3.format('.4s');
           return format(value);}}}
@@ -199,7 +199,7 @@ $(document).ready(function () {
               </ul>
             </div>
             {% endraw %}
-            <script src="https://unpkg.com/vue/dist/vue.js"></script>
+            <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
             <script type="text/javascript" src="{{ url_for('static', filename='lib/GitStatus.js') }}"></script>
         </div>
        
