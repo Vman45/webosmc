@@ -1,3 +1,4 @@
+# coding: utf-8
 import psutil
 import subprocess
 import socket
@@ -7,12 +8,11 @@ import time
 import datetime
 from netifaces import interfaces, ifaddresses, AF_INET
 from modules.webConfig import launch_process
-# from flask import Flask
-# app = Flask(__name__)
+
 
 def getProcess(LstProcName,cpumin):
     iter = psutil.process_iter()
-    # app.logger.info('Asking authorization auth %s' %iter)
+    print('Asking authorization auth %s' %iter)
     allprocesses = ListProcess(iter, cpumin)
     processes = getProcessStatus(LstProcName, iter)
     return allprocesses, processes
@@ -142,16 +142,6 @@ def getMemory():
     free = getDisplayValue(memory.free)
     freeraw = memory.free
     percent = int(memory.percent)
-    # cached=getDisplayValue(memory.cached)
-    # cachedraw=memory.cached
-    # buffers = getDisplayValue(memory.buffers)
-    # bufferraw = memory.buffers
-    
-    # memory=psutil.swap_memory()
-    # swtotal = getDisplayValue(memory.total)
-    # swused = getDisplayValue(memory.used)
-    # swpercent = int(memory.percent)
-    # swfree = getDisplayValue(memory.free)
 
     return {'total':total,'available':available,'availableraw':availableraw,'used':used,'usedraw':usedraw,'free':free,'freeraw':freeraw,'percent':percent} #,'buffers':buffers,'bufferraw':bufferraw,'swfree':swfree,'swtotal':swtotal,'swpercent':swpercent}
     
@@ -219,7 +209,11 @@ def getLoadAvg():
 
 def getInfoVersion(LstInfos):
     LstInfosRet = []
-    for key,value in LstInfos.items():
-        ret = launch_process(value)
-        output = ret['output'].replace('\n','<br>')
-        LstInfosRet.append({'name':key,'value':output})
+    print('GetinfoVersion %s' %LstInfos)
+    for key,info in LstInfos.items():
+        print('GetinfoVersion Key= %s   value  %s' %(key,info))
+        for name,value in info.items():
+            ret = launch_process(value)
+            output = ret['output'].replace('\n','<br>')
+            LstInfosRet.append({'name':name,'value':output})
+    return LstInfosRet

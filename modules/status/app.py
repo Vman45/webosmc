@@ -29,6 +29,6 @@ def get_status(LstProcName,cpumin,RechVersion):
     uptime=status_functions.getUptime(True)
     ip = {'detail':status_functions.infoNetwork()}
     allprocesses, processes = status_functions.getProcess(LstProcName,cpumin)
-    InfoVersion = getInfoVersion(RechVersion)
+    InfoVersion = status_functions.getInfoVersion(RechVersion)
     content={'InfoVersion':InfoVersion,'allprocesses':allprocesses,'processes':processes,'freespace':freespace,'cpufrequency':cpufrequency,'uptime':uptime,'loadavg':loadavg,'ip':ip,'hostname':hostname,'cpu':cpu,'numcpu':numcpu,'cpuusage':cpuusage,'disk':disk,'temperature':temperature,'memory':memory}	
     return content
