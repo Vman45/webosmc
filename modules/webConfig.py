@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # Permet de gérer des fonctions pour le fichier index.py
-
 import httplib
 from urlparse import urlparse
 import subprocess
@@ -27,18 +26,27 @@ def modifPortURL(URL,Port):
 def launch_process(param):
     inc=0
     cmd=[]
+    cmd.append([])
+    # print('Lancement processus %s' %param)
     for word in param:
-        cmd[inc].append(word)
         if "|" in word:
             inc=inc+1
-    if inc = 0:    
+            cmd.append([])
+        else:
+            cmd[inc].append(word)
+    if inc == 0:
         process = subprocess.Popen(param, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         process.wait()
+        sortie = process.stdout
     else:
-        process.stdout = ""
+        sortie = ""
         for c in cmd:
-            process = subprocess.Popen(param, stdin=process.stdout,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if sortie=='':
+                process = subprocess.Popen(c, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            else:
+                process = subprocess.Popen(c, stdin=sortie,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             process.wait()
+            sortie=process.stdout
         # Connecting Segments of a Pipe
 
         # Multiple commands can be connected into a pipeline, similar to the way the Unix shell works, by creating separate Popen instances and chaining their inputs and outputs together. The stdout attribute of one Popen instance is used as the stdin argument for the next in the pipeline, instead of the constant PIPE. The output is read from the stdout handle for the final command in the pipeline.
@@ -74,7 +82,7 @@ def launch_process(param):
         # The pipeline reads the reStructuredText source file for this section and finds all of the lines that include other files, then prints the names of the files being included.
         
         
-    return {'output' : unicode(process.stdout.read(),"utf-8"), 'error' : unicode(process.stderr.read(),"utf-8")}
+    return {'output' : unicode(sortie.read(),"utf-8"), 'error' : unicode(process.stderr.read(),"utf-8")}
   
 
 def checkUrl(url):

@@ -60,10 +60,27 @@ function bip(){
             elt_html = "";
             for(elt in data.processes){
                 elt_html += $("#template_lstPID").html().replace("$data.processes[elt].name",data.processes[elt].name);
-                elt_html = elt_html.replace("$data.processes[elt].lstPID",(data.processes[elt].lstPID == "" ? "OFF !!" : data.processes[elt].lstPID));
-                
+                // console.log("pocesses=%i %s",elt, data.processes[elt]);
+                if (data.processes[elt].lstPID == "OFF"){
+                    elt_html = elt_html.replace("$data.processes[elt].pid","OFF !!");
+                    elt_html = elt_html.replace("$data.processes[elt].cpu_percent","");
+                    elt_html = elt_html.replace("$data.processes[elt].memory_percent","");
+                    elt_html = elt_html.replace("$data.processes[elt].create_time","");
+                    elt_html = elt_html.replace("$data.processes[elt].lstPID","");
+                }else{
+                    elt_html = elt_html.replace("$data.processes[elt].pid",data.processes[elt].lstPID.pid);
+                    elt_html = elt_html.replace("$data.processes[elt].cpu_percent",Math.round(data.processes[elt].lstPID.cpu_percent*100)/100);
+                    elt_html = elt_html.replace("$data.processes[elt].memory_percent",Math.round(data.processes[elt].lstPID.memory_percent*100)/100);
+                    elt_html = elt_html.replace("$data.processes[elt].create_time",data.processes[elt].lstPID.create_time);
+                };
             };
-            sortie = sortie.replace("$template_lstPID",elt_html);
+            elt_html = elt_html.split("<table>").join("");
+            elt_html = elt_html.split("<tbody>").join("");
+            elt_html = elt_html.split("</table>").join("");
+            elt_html = elt_html.split("</tbody>").join("");
+            console.log('elt process %s', elt_html);
+            sortie = sortie.replace("<!--$template_lstPID-->",elt_html);
+            
             elt_html = "";
             for(elt in data.allprocesses){
                 elt_html += $("#template_lstProcess").html().replace("$data.allprocesses[elt].name",data.allprocesses[elt].name);
@@ -72,10 +89,10 @@ function bip(){
                 elt_html = elt_html.replace("$data.allprocesses[elt].pid",data.allprocesses[elt].pid);
             };
 
-            elt_html = elt_html.replace("<table>","");
-            elt_html = elt_html.replace("<tbody>","");
-            elt_html = elt_html.replace("</table>","");
-            elt_html = elt_html.replace("</tbody>","");
+            elt_html = elt_html.split("<table>").join("");
+            elt_html = elt_html.split("<tbody>").join("");
+            elt_html = elt_html.split("</table>").join("");
+            elt_html = elt_html.split("</tbody>").join("");
             // console.log("sortie = %s",sortie);       
             // console.log("elt_html = %s",elt_html);
             sortie = sortie.replace("<!--$template_lstProcess-->",elt_html);
@@ -217,10 +234,12 @@ $(document).ready(function () {
     <div id="template_process">
       <h2 class='uk-text-center uk-margin'>Processus</h2>
       <li>Statuts des process :<li>
-      <ul>
+      <table class="uk-text-center"><tr><th>Nom</th><th>CPU</th><th>Utilisation mémoire</th><th>PID</th><th>Démarré depuis :</tr>
       <!-- for(elt in data.processes){ -->
-            $template_lstPID
-      </ul>
+            <!--WARNING Keep in comment because of html verification in table
+              Code is ok for this-->
+         <!--$template_lstPID-->
+      </table>
         <hr>
       <h3 class='uk-text-center uk-margin'>Utilisation Processeur</h3>
       <div class='uk-text-center uk-margin' id="canvas-cpu"></div>
@@ -234,7 +253,15 @@ $(document).ready(function () {
      
     </div>
     <div id="template_lstPID">
-      <li>$data.processes[elt].name : $data.processes[elt].lstPID</li>
+    <table>  
+      <tr>
+            <th>$data.processes[elt].name</th>
+            <td>$data.processes[elt].cpu_percent</td>
+          <td>$data.processes[elt].memory_percent</td>
+            <td>$data.processes[elt].pid</td>
+            <td>$data.processes[elt].create_time</td>
+       </tr>
+       </table>
     </div>
     <div id="template_lstProcess">
       <table>  

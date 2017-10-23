@@ -9,6 +9,7 @@ import ConfigParser
 from functools import wraps
 config = ConfigParser.SafeConfigParser()
 import base64
+from zip import zipdir
 
 InitDone = False
 StockPath = ""
@@ -121,23 +122,20 @@ def download(path):
     path=os.path.join(StockPath,path)
    
     if functions.IsFile(path):
-        return send_file(path)
+        return send_file(path.encode('utf-8'))
     # 404
     elif functions.ReadPath(path)==None or TempPass == True:
         functions.log("Error; 404; IP=%s" % request.remote_addr)
         Error404=True
         ClientIP=request.remote_addr
     else:
-        folders,files=functions.ReadPath(path)
+        # folders,files=functions.ReadPath(path)
         
-        # Gestion du téléchargement 
-        
-        # app.logger.info("folders: %s  \n files : %s" %(folders,files))
-        # Remove the hidden files and folders (hidden=beggining with ".")
-        folders=functions.RemoveHiddenObjects(folders)
-        files=functions.RemoveHiddenObjects(files)
+        # Gestion du téléchargement
+        zipname="/tmp/CloudBox.zip"
+        if os.path.exists(zipname):
+            os.remove(zipname)
+        zipdir(path.encode('utf-8'), zipname, False) #Omit the top level directory
+        return send_file(zipname)
 
-        # Sort the folders and files list.
-        folders.sort()
-        files.sort()
     return render_template("browse.html",**locals())

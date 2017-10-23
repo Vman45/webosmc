@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, abort, Response, Blueprint
+from modules.webConfig import checkUrl
 MPDClient = Blueprint('MPDClient',__name__, static_folder='static', static_url_path='/modules/MPD/static', template_folder='templates')
 app = Flask(__name__)
 app.config.from_object('config')
-
 
 import ConfigParser
 from functools import wraps
@@ -33,6 +33,8 @@ def init():
     plugin_configs['player']['has_stream'] = bool(config.get('mpd', 'stream'))
 
     # connect to MPD
+    UrlStatus = checkUrl('http://' + config.get("mpd", "host") + ':' +  config.get("mpd", "port"))
+    
     mpd.connect(config.get("mpd", "host"), config.getint("mpd", "port"))
 
     # discover plugins

@@ -3,7 +3,6 @@
 from flask import Flask, flash, render_template, redirect, request, url_for, jsonify
 import flask, subprocess, platform
 app = Flask(__name__)
-
 # Gestion Log
 import logging
 from logging.handlers import RotatingFileHandler

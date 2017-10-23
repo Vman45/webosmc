@@ -8,49 +8,54 @@ import time
 import datetime
 from netifaces import interfaces, ifaddresses, AF_INET
 from modules.webConfig import launch_process
-
+from flask import current_app as app
 
 def getProcess(LstProcName,cpumin):
     iter = psutil.process_iter()
-    print('Asking authorization auth %s' %iter)
     allprocesses = ListProcess(iter, cpumin)
+    iter = psutil.process_iter()
     processes = getProcessStatus(LstProcName, iter)
     return allprocesses, processes
+
 
 def getProcessStatus(LstProcName, iter):
     S = {}
     procs = []
+    procsStatus = []
+    # app.logger.debug('test %s' %LstProcName)
+    for p in iter:
+        try:
+            p.dict = p.as_dict(['pid', 'memory_percent', 'cpu_percent',
+                                'name', 'status','create_time'])
+            procs.append(p.dict)
+        except psutil.NoSuchProcess:
+            app.logger.debug('error on p : %s' %p)
+            pass
+        except:
+            app.logger.debug('unknown error on path %s' %path)
     for item in LstProcName:
         for name, path in LstProcName[item].items():
-                try:
-                    lstPID = int(subprocess.check_output(["pidof",path]).replace('\n',''))
-                    # ****** Code non fonctionnel
-                    for p in iter:
-                        try:
-                            p.dict = p.as_dict(['pid', 'memory_percent', 'cpu_percent',
-                                                'name', 'status','create_time'])
-                        except psutil.NoSuchProcess:
-                            pass
-                        else:
-                            if p.dict['pid'] == lstPID:
-                                createTime = p.dict['create_time']
-                                createTime = datetime.datetime.fromtimestamp(createTime).strftime("%Y-%m-%d %H:%M:%S")
-                                p.dict['create_time'] = createTime
-                                procs.append(p.dict)
-                    # ****** fin Code non fonctionnel
-                    if not procs :
-                        procs = lstPID
-                except:
-                    procs = ""
-                    pass
-                S[item] = {'name' : name ,'lstPID': procs}
+            try:
+                procsStatus="OFF"
+                lstPID = int(subprocess.check_output(["pidof",path]).replace('\n',''))
+                # app.logger.debug('Info process %s   PID=%s' %(path,lstPID))
+                for p in procs:
+                    if p['pid'] == lstPID:
+                        createTime = p['create_time']
+                        createTime = datetime.datetime.fromtimestamp(createTime).strftime("%Y-%m-%d %H:%M:%S")
+                        p['create_time'] = createTime
+                        procsStatus = p
+                        # app.logger.debug('procs %s' %procsStatus)
+            except:
+                pass
+            S[item] = {'name' : name ,'lstPID': procsStatus}
+    # app.logger.debug('retour=%s' %S)
     return S
 
 def ListProcess(iter, cpumin=0):
     procs = []
     procs_status = {}
     item =0
-    print('ListProcess : %s' %iter)
     for p in iter:
         try:
             p.dict = p.as_dict(['pid','memory_percent','cpu_percent',
@@ -88,17 +93,6 @@ def infoNetwork():
     
 def getHostName():
     return socket.gethostname()
-
-# def getIP():
-    # ip_list = []
-    # for interface in interfaces():
-        # try:
-            # for interface in ifaddresses(interface)[AF_INET]:
-                # if not interface['addr'].startswith("127."):
-                    # ip_list.append(interface['addr'])
-        # except:
-            # pass
-    # return ip_list
 
 def getCpu():
     return psutil.cpu_times()
@@ -172,7 +166,6 @@ def getTemperature():
 def getCpuFrequency():
     ret = psutil.cpu_freq()
     return {'current':ret[0],'min':ret[1],'max':ret[2]}
-    # return str(ret)
 
 def getDisplayValue(value):
     if value>(1024*1024*1024):
@@ -209,9 +202,7 @@ def getLoadAvg():
 
 def getInfoVersion(LstInfos):
     LstInfosRet = []
-    print('GetinfoVersion %s' %LstInfos)
     for key,info in LstInfos.items():
-        print('GetinfoVersion Key= %s   value  %s' %(key,info))
         for name,value in info.items():
             ret = launch_process(value)
             output = ret['output'].replace('\n','<br>')
