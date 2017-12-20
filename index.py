@@ -56,10 +56,10 @@ def get_majData():
     return jsonify(data)
 @app.route('/SSH/')
 def ClientSSH():
-    return render_template('SSH.html',path=modifPortURL(request.url_root.lstrip(),app.config['SSH_PORT']))
+    return render_template('SSH.html',path="/ext/ssh/") # modifPortURL(request.url_root.lstrip(),app.config['SSH_PORT']))
 @app.route('/kodi/')
 def ClientKodi():
-    path=modifPortURL(request.url_root.lstrip(),app.config['KODI_PORT'])
+    path="/ext/kodi" # "modifPortURL(request.url_root.lstrip(),app.config['KODI_PORT'])
     UrlStatus = checkUrl(path)
     return render_template('kodi.html',**locals()) 
 @app.route('/wol_kodi/')
