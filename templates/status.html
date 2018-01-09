@@ -1,14 +1,23 @@
 {% extends "squelette.html" %}
 
-{% block titre %}Osmc Salon by JGriffon{% endblock %}
-
 {% block corps %}
 <div class="uk-container uk-container-center">
-<h1>Etats d'{{ self.titre() }}</h1>
+<h1>Etats d'OSMC</h1>
 <br>
-<button class="uk-button" onclick="start()">Lancer MAJ</button>
-<button class="uk-button" onclick="stop()">stopper MAJ</button>
-<br><br><br>
+<div class="uk-grid">
+    <div class="uk-width-1-2">
+        <button class="uk-button" onclick="start()">Lancer MAJ</button>
+        <button class="uk-button" onclick="stop()">stopper MAJ</button>
+    </div>
+    
+    <div class="uk-width-1-2">
+        <a class="uk-thumbnail uk-thumbnail-mini uk-align-right" href="/ext/monit/">
+            <img class="uk-align-center" src="{{ url_for('static', filename='images/monit.png') }}" width=40 alt="">
+            <div class="uk-thumbnail-caption">Monit</div>
+        </a>
+    </div>
+</div>
+<br><br>
 <div id="bip" class="display"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js" charset="utf-8"></script>
 <script src="https://rawgit.com/masayuki0812/c3/master/c3.js"></script>
@@ -39,7 +48,12 @@ function bip(){
             sortie = sortie.replace("$data.cpufrequency.max",data.cpufrequency.max);
             $("#gen").html(sortie);
             //$("#template_gen").remove();
-
+            sortie = ""
+            for(elt in data.Statuts_Phone){
+                sortie += data.Statuts_Phone[elt].name + " : " + data.Statuts_Phone[elt].value + "<br>"
+            }
+            sortie += "<br>"
+            $("#liste_connexions").html(sortie);
             var chartnetwork = c3.generate({bindto: '#canvas-network',
                 size: {height: 120},
                 data: {columns: [['data1', data.ip.detail.eth0.bytes_sent_raw, data.ip.detail.wlan0.bytes_sent_raw],['data2', data.ip.detail.eth0.bytes_recv_raw, data.ip.detail.wlan0.bytes_recv_raw]],
@@ -222,9 +236,10 @@ $(document).ready(function () {
         <h2 class='uk-text-center uk-margin'>Généralités</h2>
       <li>Nom machine  $data.hostname</li>
       <li>Dernier redémarrage il y a : $data.uptime</li>
-            <li>Fréquence CPU : $data.cpufrequency.current MHz (Min=$data.cpufrequency.min MHZ, Max=$data.cpufrequency.max MHz)<br>Surveillance système (Monit) :<a href="/ext/monit/">Détails</a></li>
+            <li>Fréquence CPU : $data.cpufrequency.current MHz (Min=$data.cpufrequency.min MHZ, Max=$data.cpufrequency.max MHz)</li>
       <hr>
             <li>Détail Connexions : </li>
+               <div id="liste_connexions"></div>
                <div id="canvas-network"></div>
       <hr>
             <li>Mémoire :</li>

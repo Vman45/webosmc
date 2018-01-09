@@ -9,9 +9,7 @@ LINK_JDOWNLOADER = "https://my.jdownloader.org/?deviceId=4ad32ae65d600a9b070bba5
 GESTIONFICHIER_DDL_PATH = "/mnt/LOC/USB"
 GESTIONFICHIER_LST_EXCL_PATH = ['$RECYCLE.BIN','save', 'System Volume Information', 'test','install', 'musique', 'photos']
 GESTIONFICHIER_LST_EXCL_FILES = ['.part','xyztetst']
-SSH_PORT = 443
 KODI_START = ["/usr/bin/sudo","-H systemctl start mediacenter"]
-KODI_PORT = 8080
 STATUS_CPUMIN=2
 STATUS_LSTPROC={}
 STATUS_LSTPROC[0] = {"Kodi":"kodi.bin"}
@@ -22,6 +20,9 @@ STATUS_RECH_VERSION={}
 STATUS_RECH_VERSION[0]={"Version OSMC" :["grep","VERSION_ID","/etc/os-release"]}
 STATUS_RECH_VERSION[1]={"Version Kodi" :["grep","Kodi","/home/osmc/.kodi/temp/kodi.log", "|","head", "-3"]}
 MPD_CONFIG=PATH + "modules/MPD/MPD.ini"
+LST_IP_TEST={}
+LST_IP_TEST[0]={u"Portable J" : "192.168.1.31"}
+LST_IP_TEST[1]={u"Portable C" : "192.168.1.32"}
 THROWBOX_CONFIG=PATH + "modules/ThrowBox/throwbox.ini"
 GEN_MENU={
     0: {

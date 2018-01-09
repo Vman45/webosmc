@@ -2,7 +2,6 @@
 {% block header %}
 
 {% endblock %}
-{% block titre %}Osmc Salon by JGriffon{% endblock %}
 {%- macro Tile(infoTile) -%}
 {%-     if infoTile['title'] != '' -%}    
         <div class="uk-width-1-1 uk-width-medium-1-4">
@@ -15,7 +14,7 @@
 {%- endmacro -%}
 {% block corps %}
 <div class="uk-container uk-container-center">
-    <h1>Bienvenue sur {{ self.titre() }}</h1>
+    <h1>Tableau de contrôle Osmc</h1>
     <br>
     <div class="uk-grid" data-uk-grid-margin>
 {%-     for item in MENU -%}

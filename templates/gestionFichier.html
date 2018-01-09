@@ -73,13 +73,11 @@
 
     {% endblock %}
 
-{% block titre %}Organisation des fichiers osmc{% endblock %}
- 
 {% block corps %}
 <div class="uk-container uk-container-center">
  <div class="uk-margin">
 <div class="uk-grid">
-    <h1>{{ self.titre() }}</h1>
+    <h1>Organisation des fichiers</h1>
     <br><br>
         
     <br>
@@ -124,7 +122,7 @@
             }
             function MajPath(){
                 PathSelected = document.getElementById('PathSelected').value
-                alert('Le répertoire ' + PathSelected + ' est chargé.\n Merci de patienter le temps du rechargement' );
+                //alert('Le répertoire ' + PathSelected + ' est chargé.\n Merci de patienter le temps du rechargement' );
                 document.getElementById("repPrinc").value= PathSelected + '/';
                 return false;
             }

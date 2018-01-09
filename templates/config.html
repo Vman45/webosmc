@@ -1,6 +1,5 @@
 {% extends "squelette.html" %}
 
-{% block titre %}Osmc Salon by JGriffon{% endblock %}
 
 {% block corps %}
 <div class="uk-container uk-container-center">
@@ -14,7 +13,7 @@ if (confirm(lblAction + "\n\nEtes vous sûr ?")) {    //alert("oui")
 }
 </script>
 
-<h1>Fichier Config {{ self.titre() }}</h1>
+<h1>Fichier Config</h1>
  <form class="uk-form" method="post" onSubmit="return ChargementForm(this);" action="" autocomplete="false">
    <p>
      <label for="contenu">Contenu du fichier config :<br></label>

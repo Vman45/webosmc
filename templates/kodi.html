@@ -11,10 +11,9 @@ function calcHeight(){
 }
 </script>
 {% endblock %}
-{% block titre %}Osmc Salon by JGriffon{% endblock %}
 
 {% block corps %}
-<h1>Kodi {{ self.titre() }}</h1>
+<h1>Contrôle Kodi</h1>
 {%- if UrlStatus == False -%}
    <h1> Démarrer kodi :</h1><a href="/wol_kodi"> Lancement<\a>
 {%- else -%}

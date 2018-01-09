@@ -1,8 +1,9 @@
 # coding: utf-8
 import modules.status.status_functions as status_functions
+import modules.status.phone_home as phone_home
 import json
 
-def get_status(LstProcName,cpumin,RechVersion):
+def get_status(LstProcName,cpumin,RechVersion,LstIPs):
     cpu=status_functions.getCpuPercent()
     numcpu=status_functions.getNumCpu()
     cpuusage=status_functions.getCPUusage()
@@ -30,5 +31,6 @@ def get_status(LstProcName,cpumin,RechVersion):
     ip = {'detail':status_functions.infoNetwork()}
     allprocesses, processes = status_functions.getProcess(LstProcName,cpumin)
     InfoVersion = status_functions.getInfoVersion(RechVersion)
-    content={'InfoVersion':InfoVersion,'allprocesses':allprocesses,'processes':processes,'freespace':freespace,'cpufrequency':cpufrequency,'uptime':uptime,'loadavg':loadavg,'ip':ip,'hostname':hostname,'cpu':cpu,'numcpu':numcpu,'cpuusage':cpuusage,'disk':disk,'temperature':temperature,'memory':memory}	
+    Statuts_Phone = phone_home.returnState(LstIPs)
+    content={'InfoVersion':InfoVersion,'allprocesses':allprocesses,'processes':processes,'freespace':freespace,'cpufrequency':cpufrequency,'uptime':uptime,'loadavg':loadavg,'ip':ip,'hostname':hostname,'cpu':cpu,'numcpu':numcpu,'cpuusage':cpuusage,'disk':disk,'temperature':temperature,'memory':memory,'Statuts_Phone':Statuts_Phone}	
     return content
