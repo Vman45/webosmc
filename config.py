@@ -2,7 +2,7 @@ PATH = "/home/osmc/webosmc/"
 DEBUG = False  # Turns on debugging features in Flask
 PORT = 5000
 SECRET_KEY = "Kugan49"
-LINK_AFF_MSG = True
+LINK_AFF_MSG = False
 LINK_MAJ_SITE = ["git", "--git-dir=" + PATH + ".git", "--work-tree=" + PATH, "pull"]
 LINK_VERIFMAJ = ["sh",PATH + "verifVersion.sh"]
 LINK_JDOWNLOADER = "https://my.jdownloader.org/?deviceId=4ad32ae65d600a9b070bba54a8f0429d#webinterface:downloads"
