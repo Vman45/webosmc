@@ -6,7 +6,7 @@ import os
 import platform
 import time
 import datetime
-from netifaces import interfaces, ifaddresses, AF_INET
+from netifaces import ifaddresses, AF_INET
 from modules.webConfig import launch_process
 from flask import current_app as app
 
@@ -32,7 +32,7 @@ def getProcessStatus(LstProcName, iter):
             app.logger.debug('error on p : %s' %p)
             pass
         except:
-            app.logger.debug('unknown error on path %s' %path)
+            app.logger.debug('unknown error on p %s' %p)
     for item in LstProcName:
         for name, path in LstProcName[item].items():
             try:
