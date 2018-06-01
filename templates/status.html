@@ -19,8 +19,9 @@
 </div>
 <br><br>
 <div id="bip" class="display"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js" charset="utf-8"></script>
-<script src="https://rawgit.com/masayuki0812/c3/master/c3.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.5.2/c3.min.js" charset="utf-8"></script>
+<!-- <script src="https://rawgit.com/masayuki0812/c3/master/c3.js"></script> -->
 <!-- <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='lib/status.js') }}"></script> -->
 <script>
 var counter = 0;
@@ -115,7 +116,7 @@ function bip(){
             //$("#template_process").remove();
             //$("#template_lstProcess").remove();
             //$("#template_lstPID").remove();
-
+/* */
             var chartcpu = c3.generate({bindto: '#canvas-cpu',
             size: {width : 270},
             data: {columns: [['data1', data.cpuusage.average]],type: 'gauge',names:{data1:'CPU %'}},
@@ -173,8 +174,7 @@ function bip(){
                     tooltip: {format: {value: function (value, ratio, id){var format = d3.format('.4s');return format(value);}}}
                 });
             }
-            
-            
+/* */
             sortie = $("#template_VersionStatus").html();
             elt_html = "";
             for(elt in data.InfoVersion){
@@ -300,6 +300,6 @@ $(document).ready(function () {
         <h3>$data.InfoVersion[elt].name</h3><br>$data.InfoVersion[elt].value
     
 </div>
-<link rel="stylesheet" href="https://rawgit.com/masayuki0812/c3/master/c3.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.5.2/c3.min.css" />
 {% endblock %}
 

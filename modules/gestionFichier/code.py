@@ -27,6 +27,8 @@ def recup_files(path, lstExcl):
     except UnicodeEncodeError:
         lst = os.listdir(path.encode('utf-8'))
     else:
+        if lst != []:
+            lst.sort()
         for name in lst:
             Excluded=False
             for word in lstExcl:
@@ -58,6 +60,9 @@ def make_tree(path, includeFiles, lstExcl):
     #    pass #ignore errors
     else:
     #   raise
+        app.logger.info('lst = %s' %lst)
+        if lst != []:
+            lst.sort()
         for name in lst:
             Excluded=False
             for word in lstExcl:

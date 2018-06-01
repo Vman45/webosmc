@@ -12,7 +12,7 @@ function bip(){
     $.getJSON($SCRIPT_ROOT+"/_majData",
         function(data) {
             /* temperature graph*/
-            var gauge = new LinearGauge({
+/*            var gauge = new LinearGauge({
                 renderTo: 'canvas-temp',
                 width: 120,
                 height: 300,
@@ -141,7 +141,7 @@ function bip(){
             };
             sortie += "<hr>";
             $("#disk").html(sortie);
-
+*/
             
         }
     );
