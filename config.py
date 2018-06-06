@@ -1,5 +1,5 @@
 PATH = "/home/osmc/webosmc/"
-DEBUG = False  # Turns on debugging features in Flask
+DEBUG = True #False  # Turns on debugging features in Flask
 PORT = 5000
 SECRET_KEY = "Kugan49"
 LINK_AFF_MSG = False
