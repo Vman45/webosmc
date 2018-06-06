@@ -1,5 +1,5 @@
 PATH = "/home/osmc/webosmc/"
-DEBUG = True #False  # Turns on debugging features in Flask
+DEBUG = False  # Turns on debugging features in Flask
 PORT = 5000
 SECRET_KEY = "Kugan49"
 LINK_AFF_MSG = False
@@ -44,7 +44,7 @@ GEN_MENU={
             'description': u'Permet de d\xe9placer, copier, supprimer des fichiers sur osmc',
             'icone': 'https://png.icons8.com/individual-server/androidL/96'
             },
-      
+
         1: {
             'name': u'JDownloader',
             'path': u'/JD/',
