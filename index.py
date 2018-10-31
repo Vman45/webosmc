@@ -11,8 +11,6 @@ from logging.handlers import RotatingFileHandler
 app.config.from_object('config')
 # Modules complémentaires
 from modules.gestionFichier.view import gestionFichier
-from modules.MPD.app import MPDClient
-app.register_blueprint(MPDClient)
 app.register_blueprint(gestionFichier, url_prefix='/gestionFichier')
 from modules.ThrowBox.app import ThrowBox
 app.register_blueprint(ThrowBox, url_prefix='/ThrowBox')

@@ -14,16 +14,14 @@ STATUS_CPUMIN=2
 STATUS_LSTPROC={}
 STATUS_LSTPROC[0] = {"Kodi":"kodi.bin"}
 STATUS_LSTPROC[1] = {"JDownloader":"java"}
-STATUS_LSTPROC[2] = {"MPD":"mpd"}
-STATUS_LSTPROC[3] = {"Synchronisation":"unison"}
-STATUS_LSTPROC[4] = {"Jace":"python3"}
-STATUS_LSTPROC[5] = {"pyload":"python"}
-STATUS_LSTPROC[6] = {"Monit":"monit"}
+STATUS_LSTPROC[2] = {"Synchronisation":"unison"}
+STATUS_LSTPROC[3] = {"Jace":"python3"}
+STATUS_LSTPROC[4] = {"pyload":"python"}
+STATUS_LSTPROC[5] = {"Monit":"monit"}
 STATUS_RECH_VERSION={}
 STATUS_RECH_VERSION[0]={"Version OSMC locale" :["grep","VERSION_ID","/etc/os-release"]}
 STATUS_RECH_VERSION[1]={"Version OSMC Disponible" : ["curl","-s","https://raw.githubusercontent.com/osmc/osmc/master/package/base-files-osmc/files/etc/os-release","|","grep","VERSION_ID"]}
 STATUS_RECH_VERSION[2]={"Version Kodi" :["grep","Kodi","/home/osmc/.kodi/temp/kodi.log", "|","head", "-3"]}
-MPD_CONFIG=PATH + "modules/MPD/MPD.ini"
 LST_IP_TEST={}
 LST_IP_TEST[0]={u"Portable J" : "192.168.1.31"}
 LST_IP_TEST[1]={u"Portable C" : "192.168.1.32"}
@@ -69,13 +67,6 @@ GEN_MENU={
             'title': u'Kodi Multim\xe9dia',
             'description': u'T\xe9l\xe9commande pour l\'interface multim\xe9dia d\'osmc',
             'icone': 'https://png.icons8.com/tv/androidL/96'
-            },
-        1: {
-            'name': u'Musique',
-            'path': u'/MPD/',
-            'title': u'Musique',
-            'description': u'Piloter la musique d\'osmc et \xe9coute directe',
-            'icone': 'https://png.icons8.com/musical-notes/androidL/96'
             }
         },
     4: {
