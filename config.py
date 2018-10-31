@@ -7,8 +7,8 @@ LINK_MAJ_SITE = ["git", "--git-dir=" + PATH + ".git", "--work-tree=" + PATH, "pu
 LINK_VERIFMAJ = ["sh",PATH + "verifVersion.sh"]
 LINK_JDOWNLOADER = "https://my.jdownloader.org/?deviceId=4ad32ae65d600a9b070bba54a8f0429d#webinterface:downloads"
 GESTIONFICHIER_DDL_PATH = "/mnt/LOC/USB"
-GESTIONFICHIER_LST_EXCL_PATH = ['$RECYCLE.BIN','sauve', 'System Volume Information', 'test','install', 'musique', 'photos']
-GESTIONFICHIER_LST_EXCL_FILES = ['.part','xyztetst']
+GESTIONFICHIER_LST_EXCL_PATH = ['$RECYCLE.BIN','sauve', 'System Volume Information', 'test','install', 'musique', 'photos','lost+found']
+GESTIONFICHIER_LST_EXCL_FILES = ['.partf','.chunk']
 KODI_START = ["/usr/bin/sudo","-H systemctl start mediacenter"]
 STATUS_CPUMIN=2
 STATUS_LSTPROC={}
