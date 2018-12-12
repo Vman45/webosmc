@@ -10,6 +10,7 @@ GESTIONFICHIER_DDL_PATH = "/mnt/LOC/USB"
 GESTIONFICHIER_LST_EXCL_PATH = ['$RECYCLE.BIN','sauve', 'System Volume Information', 'test','install', 'musique', 'photos','lost+found']
 GESTIONFICHIER_LST_EXCL_FILES = ['.partf','.chunk']
 KODI_START = ["/usr/bin/sudo","-H systemctl start mediacenter"]
+PYLOAD_START = ["/usr/bin/sudo","-H bash /home/osmc/scripts/wake_pyload.sh"]
 STATUS_CPUMIN=2
 STATUS_LSTPROC={}
 STATUS_LSTPROC[0] = {"Kodi":"kodi.bin"}

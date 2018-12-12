@@ -65,6 +65,16 @@ def wolkodi():
     ret = launch_process(app.config["KODI_START"])
     flash(u'<h1>Démarrage Kodi</h1>','info')
     return redirect(url_for('ClientKodi')) 
+@app.route('/pyload/')
+def Clientpyload():
+    path="/ext/pyload"
+    UrlStatus = checkUrl(path)
+    return render_template('pyload.html',**locals()) 
+@app.route('/wake_pyload/')
+def wakepyload():
+    ret = launch_process(app.config["PYLOAD_START"])
+    flash(u'<h1>Démarrage Pyload</h1>','info')
+    return redirect(url_for('Clientpyload')) 
 @app.route('/JD/')
 def JD():
   return render_template('jDownloader.html',path=app.config["LINK_JDOWNLOADER"])
