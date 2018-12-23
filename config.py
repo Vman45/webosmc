@@ -53,7 +53,7 @@ GEN_MENU={
             },
         2: {
             'name': u'Pyload',
-            'path': u'/pyload/',
+            'path': u'/int_pyload/',
             'title': u'Py Load',
             'description': u'Gestion des t\xe9l\xe9chargements (application externe)',
             'icone': 'https://png.icons8.com/software-installer/androidL/96'
