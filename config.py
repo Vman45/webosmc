@@ -41,7 +41,7 @@ GEN_MENU={
             'path': u'/gestionFichier/mnt/LOC/USB/DDL_OK/',
             'title': u'Gestion des fichiers',
             'description': u'Permet de d\xe9placer, copier, supprimer des fichiers sur osmc',
-            'icone': '/static/image/icons8-individual-server-80.png'
+            'icone': '/static/images/icons8-individual-server-80.png'
             },
 
         1: {
@@ -49,14 +49,14 @@ GEN_MENU={
             'path': u'/JD/',
             'title': u'JDownloader',
             'description': u'Gestion des t\xe9l\xe9chargements (application externe)',
-            'icone': '/static/image/icons8-jdownloader-80.png'
+            'icone': '/static/images/icons8-jdownloader-80.png'
             },
         2: {
             'name': u'Pyload',
             'path': u'/int_pyload/',
             'title': u'Py Load',
             'description': u'Gestion des t\xe9l\xe9chargements (application externe)',
-            'icone': '/static/image/pyload.png'
+            'icone': '/static/images/pyload.png'
             }
         },
     3: {
@@ -67,7 +67,7 @@ GEN_MENU={
             'path': u'/kodi/',
             'title': u'Kodi Multim\xe9dia',
             'description': u'T\xe9l\xe9commande pour l\'interface multim\xe9dia d\'osmc',
-            'icone': '/static/image/icons8-tv-80.png'
+            'icone': '/static/images/icons8-tv-80.png'
             }
         },
     4: {
@@ -78,14 +78,14 @@ GEN_MENU={
             'path': u'/status/',
             'title': u'Statuts',
             'description': u'Visualiser l\'\xe9tat d\'osmc (processeur, m\xe9moire, disque, ...)',
-            'icone': '/static/image/icons8-dashboard-80.png'
+            'icone': '/static/images/icons8-dashboard-80.png'
             },
         1: {
             'name': u'log',
             'path': u'/gestionFichier/log/home/osmc/tmp/',
             'title': u'Logs',
             'description': u'V\xe9rfier les logs de diff\xe9rents traitements d\'osmc',
-            'icone': '/static/image/icons8-order-history-80.png'
+            'icone': '/static/images/icons8-order-history-80.png'
             }
         },
     5: {
@@ -96,21 +96,21 @@ GEN_MENU={
             'path': u'/gestionFichier/scripts/home/osmc/scripts/',
             'title': u'Ex\xe9cution',
             'description': u'Permet de lancer des scripts sur osmc',
-            'icone': '/static/image/icons8-run-command-80.png'
+            'icone': '/static/images/icons8-run-command-80.png'
             },
         1: {
             'name': u'SSH',
             'path': u'/SSH/',
             'title': u'Console SSH',
             'description': u'Acc\xe8s en mode console \xe0 osmc (EXPERTS)',
-            'icone': '/static/image/icons8-console-80.png'
+            'icone': '/static/images/icons8-console-80.png'
             },
         2: {
             'name': u'Config',
             'path': u'/config/home/osmc/webosmc/config.py',
             'title': u'R\xe9glagles',
             'description': u'Configuration des param\xe8tres du serveur web osmc',
-            'icone': '/static/image/icons8-adjust-80.png'
+            'icone': '/static/images/icons8-adjust-80.png'
             }
 
         },
@@ -119,7 +119,7 @@ GEN_MENU={
         'path': u'/ThrowBox/',
         'title': u'Cloud',
         'description': u'T\xe9l\xe9chargment de fichiers pr\xe9sents sur osmc',
-        'icone': '/static/image/icons8-download-from-the-cloud-80.png'
+        'icone': '/static/images/icons8-download-from-the-cloud-80.png'
         }
     }
 
