@@ -112,7 +112,7 @@
    
   
   <div id="footer">
-    {% block footer %}Yunatane 2018{% endblock %}
+    {% block footer %}Yunatane 2020 <a target="_blank" href="https://icons8.com">Icons8</a>{% endblock %}
   </div>
     {%- if temperature <= 40 -%}
         {%- set logotemp = 'empty' -%}
@@ -125,8 +125,8 @@
     {%- else -%}
         {%- set logotemp = 'full' -%}
     {%- endif -%}
-   <div id="footer_temp"><i class="fa fa-thermometer-{{logotemp}}  fa-border fa-2x" aria-hidden="true">  {{ temperature }} °C</i></div>
-  
+   <div id="footer_temp"><i class="fa fa-thermometer-{{logotemp}}  fa-border fa-2x" aria-hidden="true">  {{ temperature }} °C</i> </div>
+   
   </div><!--close footer-->  
   <!-- UIkit CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.5/css/uikit.min.css" />
