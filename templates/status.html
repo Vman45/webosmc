@@ -165,7 +165,7 @@ function bip(){
                 $("#disk").append("<div id='canvas-dsk" + elt + "'></div>");
                 chartdsk[elt] = c3.generate({bindto: '#canvas-dsk' + elt,
                     size:{height: 240},
-                    data: {columns: [['data1', data.disk[elt].freeraw],['data2', data.disk[elt].usedraw]],
+                    data: {columns: [['data1', data.disk[elt].usedraw],['data2', data.disk[elt].freeraw]],
                         names: {data1: 'Utilisée',data2: 'Libre'},
                         type : 'donut',
                         colors: {data1: '#B32E4D',data2: '#89B2D7'},
